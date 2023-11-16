@@ -1,9 +1,12 @@
+/*Just a test so please ignore it, otherwise please test in the test folder*/
 #include <ESP32Servo.h>
 Servo ESC;
 Servo ESC2;
-int potPin  = 4;
-int val;
 int btnPin = 33;
+int potPin  = 4;
+
+// Volatile var
+volatile int val;
 volatile boolean flag = false;
 void setup() {
   // put your setup code here, to run once:
