@@ -3,8 +3,14 @@
 #include <ESP32Servo.h>
 class Drone {
     public:
+        // ESC declaration
         Servo ESC;
+        Servo ESC2;
+        Servo ESC3;
+        Servo ESC4;
+
         int speedVal;
+        
         int potPin1;
         int motorPin1;
 
