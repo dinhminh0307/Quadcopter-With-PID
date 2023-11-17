@@ -8,19 +8,20 @@ void Drone::droneInit() {
 }
 
 void Drone::btnInit() {
-    this->forwardButton = 27;
-    this->leftButton = 26;
-    this->rightButton = 25;
-    this->downButton = 33;
-
-    pinMode(this->forwardButton, INPUT_PULLUP);
-    pinMode(this->leftButton, INPUT_PULLUP);
-    pinMode(this->rightButton, INPUT_PULLUP);
-    pinMode(this->downButton, INPUT_PULLUP);
+    this->landBtn = 33;
+    pinMode(this->landBtn, INPUT_PULLUP);
 }
 
 void Drone::controlESC() {
     this->speedVal = analogRead(potPin1);
     this->speedVal = map(this->speedVal, 0, 4095, 0, 180);
     ESC.write(this->speedVal);
+}
+
+void Drone::stopDrone(bool state) {
+    if(state) {
+        for(int i = speedVal; i > 0; i--) {
+            ESC.write(i);
+        }
+    }\
 }

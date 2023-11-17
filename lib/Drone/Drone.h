@@ -15,14 +15,12 @@ class Drone {
         int motorPin1;
 
         //Declare btn
-        int forwardButton;
-        int leftButton;
-        int rightButton;
-        int downButton;
+        int landBtn;
 
         //function declaration
         void droneInit();
         void controlESC();
         void btnInit(); // 4 btn for 4 different directions
+        void stopDrone(bool state);
 };
 #endif
