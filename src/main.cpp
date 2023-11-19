@@ -14,6 +14,7 @@ void setup() {
   ESC.attach(13,1000,2000);
   ESC2.attach(18,1000,2000);
   pinMode(btnPin, INPUT_PULLUP);
+  attachInterrupt(btnPin, ISR, FALLING);
 }
 
 void loop() {
