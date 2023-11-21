@@ -1,5 +1,5 @@
 #include "./Drone.h"
-
+volatile bool landState;
 void Drone::droneInit() {
     this->potPin1 = 4;
     this->motorPin1 = 18;
@@ -10,6 +10,13 @@ void Drone::droneInit() {
 void Drone::btnInit() {
     this->landBtn = 33;
     pinMode(this->landBtn, INPUT_PULLUP);
+}
+void  IRAM_ATTR ISR() {
+    landState = true;
+}
+
+void Drone::setInterupt() {
+    attachInterrupt(this->landBtn, ISR, FALLING);
 }
 
 void Drone::controlESC() {
@@ -23,5 +30,5 @@ void Drone::stopDrone(bool state) {
         for(int i = speedVal; i > 0; i--) {
             ESC.write(i);
         }
-    }\
+    }
 }
