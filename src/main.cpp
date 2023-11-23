@@ -1,119 +1,124 @@
 /*Just a test so please ignore it, otherwise please test in the test folder*/
-// #include <ESP32Servo.h>
-// #include <esp32_button.h>
-// Servo ESC;
-// Servo ESC2;
-// Servo ESC3;
-// Servo ESC4;
+#if 0
+#include <ESP32Servo.h>
+#include <esp32_button.h>
+#define BUTTON_1_PIN 33
+Servo ESC;
+Servo ESC2;
+Servo ESC3;
+Servo ESC4;
 
-// button_t btn1;
-// bool flag = false;
-// int btnPin = 33;
-// int potPin = 4;
-// int val;
-// int escPWM = 18;
-// int escPWM2 = 19;
-// // int escPWM3 = 33;
-// int escPWM4 = 25;
 
-// void IRAM_ATTR button_isr()
-// {
-//   button_update(&btn1);
-//   flag = true;
-// }
+bool flag = false;
+int btnPin = 33;
+int potPin = 4;
+int val;
+int escPWM = 18;
+int escPWM2 = 19;
+// int escPWM3 = 33;
+int escPWM4 = 25;
 
-// void setup()
-// {
-//   ESC.attach(escPWM, 1000, 2000);
-//   ESC2.attach(escPWM2, 1000, 2000);
-//   // ESC3.attach(escPWM3, 1000, 2000);
-//   ESC4.attach(escPWM4, 1000, 2000);
-//   button_add_default(&btn1, 33);
-//   pinMode(btnPin, INPUT_PULLUP);
-//   button_init(&button_isr);
-//   // Serial.begin(9600);
-// }
+button_t button_1;
 
-// void loop()
-// {
-//   int loopCount = 1;
-//   val = analogRead(potPin);
-//   val = map(val, 0, 4095, 0, 180);
-//   if(flag) {
-//     val = 0;
-//     ESC.write(val);
-//     ESC2.write(val);
-//     ESC3.write(val);
-//   }
-//   else {
+//Function definitions 
+void rotateBLDC(int myVal) {
+  int loopCount = 1;
+  while (true)
+    {
+      if (loopCount == 1)
+      {
+        ESC.write(myVal);
+      }
+      else if (loopCount == 2)
+      {
+        ESC2.write(myVal);
+      }
+      // else if (loopCount == 3)
+      // {
+      //   ESC3.write(val);
+      // }
+      else if (loopCount == 4)
+      {
+        ESC4.write(myVal);
+      }
+      loopCount++;
+      if (loopCount == 5)
+      {
+        break;
+      }
+      delay(100);
+    }
+}
 
-//   }
-//   // Serial.println(val);
-//   while (true)
-//   {
-//     if (loopCount == 1)
-//     {
-//       ESC.write(val);
-//     }
-//     else if (loopCount == 2)
-//     {
-//       ESC2.write(val);
-//     }
-//     // else if (loopCount == 3)
-//     // {
-//     //   ESC3.write(val);
-//     // }
-//     else if (loopCount == 4)
-//     {
-//       ESC4.write(val);
-//     }
-//     loopCount++;
-//     if (loopCount == 5)
-//     {
-//       break;
-//     }
-//     delay(100);
-//   }
-// }
+void IRAM_ATTR button_isr()
+{
+  button_update(&button_1);
+}
+
+void setup()
+{
+  ESC.attach(escPWM, 1000, 2000);
+  ESC2.attach(escPWM2, 1000, 2000);
+  // ESC3.attach(escPWM3, 1000, 2000);
+  ESC4.attach(escPWM4, 1000, 2000);
+  button_add_default(&button_1, BUTTON_1_PIN);
+  button_init(&button_isr);
+  // Serial.begin(9600);
+}
+
+void loop()
+{
+  val = analogRead(potPin);
+  val = map(val, 0, 4095, 0, 180);
+  // Serial.println(val);
+  if(button_1.mode == 0) {
+    rotateBLDC(val);
+  }
+  else {
+    val = 0;
+    rotateBLDC(val);
+  }
+}
+#endif
 
 /*Testing external interupt*/
 #if 0 //
-Servo ESC;
-Servo ESC2;
-int btnPin = 33;
-int potPin  = 4;
+#include <esp32_button.h>
 
-// Volatile var
-volatile int val;
-volatile boolean flag = false;
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  ESC.attach(13,1000,2000);
-  ESC2.attach(18,1000,2000);
-  pinMode(btnPin, INPUT_PULLUP);
-  attachInterrupt(btnPin, ISR, FALLING);
+#define BUTTON_1_PIN 33
+
+
+button_t button_1;
+
+void IRAM_ATTR button_isr()
+{
+  button_update(&button_1);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  if(flag) {
-    val = 50;
-    Serial.println(val);
-    flag = false;
+void setup()
+{
+  Serial.begin(9600);
+
+  button_add_default(&button_1, BUTTON_1_PIN);
+
+  button_init(&button_isr);
+}
+
+void loop()
+{
+  if (button_1.mode)
+  {
+    // Print modes: 1- Clicked, 2- Double Clicked 3- Long Pressed
+    Serial.println(button_1.mode);
+
+    // Reset modes
+    button_1.mode = NONE;
   }
   else {
-    val = analogRead(potPin);
-    val = map(val, 0, 4095, 0, 180);
-    Serial.println(val);
-    ESC.write(val);
-    ESC2.write(val);
+    Serial.println(button_1.mode);
   }
-  delay(100);
-}
 
-void IRAM_ATTR ISR() {
-  flag = true;
+  delay(1000);
 }
 #endif
 #if 0
@@ -256,41 +261,3 @@ void loop() {
 #endif
 
 
-#include <esp32_button.h>
-
-#define BUTTON_1_PIN 33
-
-
-button_t button_1;
-
-void IRAM_ATTR button_isr()
-{
-  button_update(&button_1);
-}
-
-void setup()
-{
-  Serial.begin(9600);
-
-  button_add_default(&button_1, BUTTON_1_PIN);
-
-  button_init(&button_isr);
-}
-
-void loop()
-{
-  if (button_1.mode)
-  {
-    // Print modes: 1- Clicked, 2- Double Clicked 3- Long Pressed
-    Serial.print(" - ");
-    Serial.println(button_1.mode);
-
-    // Reset modes
-    button_1.mode = NONE;
-  }
-  else {
-    Serial.println(button_1.mode);
-  }
-
-  delay(100);
-}
