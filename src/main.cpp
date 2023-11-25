@@ -78,6 +78,7 @@ void loop()
     val = 0;
     rotateBLDC(val);
   }
+  delay(100); // optional delay
 }
 #endif
 
