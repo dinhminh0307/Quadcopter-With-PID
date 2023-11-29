@@ -11,7 +11,7 @@
 uint8_t broadcastAddress[] = {0xA8, 0x42, 0xE3, 0x47, 0x8A, 0x40};
 
 // Declare the structure
-struct_msg_Receive Receive_Data;
+struct_msg_Receive_Joystick Receive_Data_Joystick;
 struct_msg_Sent Sent_Data;
 
 // Variable for espnow communication
@@ -26,14 +26,14 @@ unsigned long time_prev_serial = 0;
 
 void OnDataReceive(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-    if (len == sizeof(struct_msg_Receive))
+    if (len == sizeof(struct_msg_Receive_Joystick))
     {
-        memcpy(&Receive_Data, incomingData, sizeof(struct_msg_Receive));
+        memcpy(&Receive_Data_Joystick, incomingData, sizeof(struct_msg_Receive_Joystick));
 
         Serial.print("Joystick X: ");
-        Serial.print(Receive_Data.joystickX);
+        Serial.print(Receive_Data_Joystick.joystickX);
         Serial.print(", Joystick Y: ");
-        Serial.println(Receive_Data.joystickY);
+        Serial.println(Receive_Data_Joystick.joystickY);
     }
 }
 

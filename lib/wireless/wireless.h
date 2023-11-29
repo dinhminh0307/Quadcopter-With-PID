@@ -1,11 +1,11 @@
 #include <esp_now.h>
 
 // Define the incoming data, RECEIVED into this board
-typedef struct struct_msg_Receive
+typedef struct struct_msg_Receive_Joystick
 {
     int joystickX;
     int joystickY;
-} struct_msg_Receive;
+} struct_msg_Receive_Joystick;
 
 // Define the outgoing data, SENT out from this board
 typedef struct struct_msg_Sent
