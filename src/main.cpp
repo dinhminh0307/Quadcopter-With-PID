@@ -11,14 +11,7 @@
 
 /*Testing MPU6050*/
 /*********
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/esp32-mpu-6050-web-server/
   
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files.
-  
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
 *********/
 
 #include <Arduino.h>
@@ -31,8 +24,8 @@
 #include "SPIFFS.h"
 
 // Replace with your network credentials
-const char* ssid = "minh";
-const char* password = "1234";
+const char* ssid = "5A1-8";
+const char* password = "sky25a18";
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -77,7 +70,7 @@ void initMPU(){
 }
 
 void initSPIFFS() {
-  if (!SPIFFS.begin()) {
+  if (!SPIFFS.begin(true)) {
     Serial.println("An error has occurred while mounting SPIFFS");
   }
   Serial.println("SPIFFS mounted successfully");
@@ -143,7 +136,7 @@ String getTemperature(){
 }
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   initWiFi();
   initSPIFFS();
   initMPU();
