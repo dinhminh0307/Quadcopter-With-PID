@@ -1,11 +1,13 @@
-#include "Arduino.h"
-#include "WiFi.h"
+#include <Arduino.h>
+#include <WiFi.h>
+#include ".."
 
 void setup()
 {
     Serial.begin(9600);
     WiFi.mode(WIFI_MODE_STA);
-    Serial.println("Hello There");
+    espnow_initialize();
+    Serial.println("Welcome to the Drone");
     Serial.println(WiFi.macAddress());
 }
 
