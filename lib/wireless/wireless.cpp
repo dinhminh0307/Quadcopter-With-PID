@@ -23,23 +23,18 @@ unsigned long time_prev_serial = 0;
 // ******************************************
 // Function definition
 // ******************************************
-void SerialDataWrite()
-{
-    Serial.print(micros() / 1000);
-    Serial.print("\t");
-    Serial.print(Receive_Data.Receive_PotValue);
-    Serial.print("\t");
-    Serial.print(Sent_Data.Sent_PotAngle);
-    Serial.println();
-}
 
 void OnDataReceive(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-    // debugging serial
-    Serial.print(micros() / 1000);
-    Serial.println("\tData received!");
-    // You must copy the incoming data to the local variables
-    memcpy(&Receive_Data, incomingData, sizeof(Receive_Data));
+    if (len == sizeof(struct_msg_Receive))
+    {
+        memcpy(&Receive_Data, incomingData, sizeof(struct_msg_Receive));
+
+        Serial.print("Joystick X: ");
+        Serial.print(Receive_Data.joystickX);
+        Serial.print(", Joystick Y: ");
+        Serial.println(Receive_Data.joystickY);
+    }
 }
 
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)

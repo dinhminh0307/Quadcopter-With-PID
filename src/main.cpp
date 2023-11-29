@@ -1,18 +1,20 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include ".."
+#include "../lib/wireless/wireless.h"
+
+struct_msg_Receive receivedData;
+
+// Forward declaration of the callback function
+void OnDataReceive(const uint8_t *mac, const uint8_t *incomingData, int len);
 
 void setup()
 {
     Serial.begin(9600);
-    WiFi.mode(WIFI_MODE_STA);
     espnow_initialize();
     Serial.println("Welcome to the Drone");
-    Serial.println(WiFi.macAddress());
 }
 
 void loop()
 {
-    Serial.println(WiFi.macAddress());
-    delay(1000);
+    // All processing is done in the OnDataReceive callback
 }
