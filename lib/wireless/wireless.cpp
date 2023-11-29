@@ -12,7 +12,8 @@ uint8_t broadcastAddress[] = {0xA8, 0x42, 0xE3, 0x47, 0x8A, 0x40};
 
 // Declare the structure
 struct_msg_Receive_Joystick Receive_Data_Joystick;
-struct_msg_Sent Sent_Data;
+struct_msg_Receive_JTButton Receive_Data_JTButton;
+struct_msg_Receive_POT Receive_Data_POT;
 
 // Variable for espnow communication
 esp_now_peer_info_t peerInfo;
@@ -35,20 +36,20 @@ void OnDataReceive(const uint8_t *mac, const uint8_t *incomingData, int len)
         Serial.print(", Joystick Y: ");
         Serial.println(Receive_Data_Joystick.joystickY);
     }
-}
-
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
-{
-    // There is nothing to do when sending data, this is just for debugging
-    Serial.print(micros() / 1000);
-    Serial.println("\tData sent!");
-    // Serial.print("\r\nLast Packet Send Status:\t");
-    // Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
-}
-
-float floatMap(float x, float in_min, float in_max, float out_min, float out_max)
-{
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    else if (len == sizeof(struct_msg_Receive_JTButton))
+    {
+        memcpy(&Receive_Data_JTButton, incomingData, sizeof(struct_msg_Receive_Joystick));
+        if (Receive_Data_JTButton.pressed)
+        {
+            Serial.println("Joystick button was pressed!");
+        };
+    }
+    else if (len == sizeof(struct_msg_Receive_POT))
+    {
+        memcpy(&Receive_Data_POT, incomingData, sizeof(struct_msg_Receive_POT));
+        Serial.print("POT : ");
+        Serial.println(Receive_Data_POT.value);
+    }
 }
 
 void espnow_initialize()
@@ -60,7 +61,6 @@ void espnow_initialize()
         return;
     }
     esp_now_register_recv_cb(OnDataReceive);
-    esp_now_register_send_cb(OnDataSent);
 
     // Register peer
     memcpy(peerInfo.peer_addr, broadcastAddress, 6);

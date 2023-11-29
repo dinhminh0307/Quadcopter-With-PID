@@ -7,16 +7,17 @@ typedef struct struct_msg_Receive_Joystick
     int joystickY;
 } struct_msg_Receive_Joystick;
 
-// Define the outgoing data, SENT out from this board
-typedef struct struct_msg_Sent
+typedef struct struct_msg_Receive_JTButton
 {
-    int Sent_PotAngle;
-} struct_msg_Sent;
+    bool pressed;
+} struct_msg_Receive_JTButton;
+
+typedef struct struct_msg_Receive_POT
+{
+    int value;
+} struct_msg_Receive_POT;
 
 // ******************************************
 // Function declaration
 // ******************************************
-void OnDataReceive(const uint8_t *mac, const uint8_t *incomingData, int len);
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
-float floatMap(float, float, float, float, float);
 void espnow_initialize();
