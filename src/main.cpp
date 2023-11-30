@@ -1,18 +1,7 @@
 /*Just a test so please ignore it, otherwise please test in the test folder
------------------------------------------------------Pin Allocation----------------------
-|Emergency stop button: Pin33 
-|
-|
-|
-|
-
-
 */
 
 /*Testing MPU6050*/
-/*********
-  
-*********/
 
 #include <Arduino.h>
 #include <WiFi.h>
@@ -136,7 +125,7 @@ String getTemperature(){
 }
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   initWiFi();
   initSPIFFS();
   initMPU();

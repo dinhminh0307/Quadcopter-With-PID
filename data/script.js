@@ -103,6 +103,14 @@ if (!!window.EventSource) {
     document.getElementById("accY").innerHTML = obj.accY;
     document.getElementById("accZ").innerHTML = obj.accZ;
   }, false);
+
+  source.addEventListener('angle_readings', function(e) {
+    console.log("angle_readings", e.data);
+    var obj = JSON.parse(e.data);
+    document.getElementById("angX").innerHTML = obj.accX;
+    document.getElementById("angY").innerHTML = obj.accY;
+    document.getElementById("angZ").innerHTML = obj.accZ;
+  }, false);
 }
 
 function resetPosition(element){
