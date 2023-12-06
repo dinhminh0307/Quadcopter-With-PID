@@ -1,13 +1,35 @@
 #include "./Drone.h"
+// Mac address of initator:  0x48,0xE7,0x29,0x96,0xBB,0x18
+// Mac address of reciever: 48:E7:29:93:D8:24
+// varible definitions
+Servo ESC;
+Servo ESC2;
+Servo ESC3;
+Servo ESC4;
+
+int val;
+int escPWM = 18;
+int escPWM2 = 19;
+// int escPWM3 = 33;
+int escPWM4 = 25;
+voltage_struct_receive recieved_Voltage;
+button_struct_receive received_Button;
+
+uint8_t broadcastAddress[] = {0x48,0xE7,0x29,0x96,0xBB,0x18};   // mac address of remote
+
 void onDataReceived(const uint8_t * mac, const uint8_t *incomingData, int len) {
-    if(len == sizeof(recieved_Voltage)) {
+      if(len == sizeof(recieved_Voltage)) {
         memcpy(&recieved_Voltage, incomingData, sizeof(recieved_Voltage));
-    }
+        Serial.println(recieved_Voltage.voltageVal);
+      }
+        
     if(len == sizeof(received_Button)) {
         memcpy(&received_Button, incomingData, sizeof(received_Button));
+        Serial.println(recieved_Voltage.voltageVal);
     }
 }
 void esp_now_config() {
+    Serial.begin(115200);
     WiFi.mode(WIFI_STA);
     // Initilize ESP-NOW
     if (esp_now_init() != ESP_OK) {
@@ -30,17 +52,17 @@ void rotateBLDC() {
   int myVal = recieved_Voltage.voltageVal;
   // check if the button is recieved yet
   if(received_Button.buttontState == INTERUPT_STATE) {
-    myVal = received_Button.buttontState;
+    myVal = 0;
   }
   while (true)
     {
       if (loopCount == 1)
       {
-        ESC.write(recieved_Voltage.voltageVal);
+        ESC.write(myVal);
       }
       else if (loopCount == 2)
       {
-        ESC2.write(recieved_Voltage.voltageVal);
+        ESC2.write( myVal);
       }
       // else if (loopCount == 3)
       // {
@@ -48,7 +70,7 @@ void rotateBLDC() {
       // }
       else if (loopCount == 4)
       {
-        ESC4.write(recieved_Voltage.voltageVal);
+        ESC4.write( myVal);
       }
       loopCount++;
       if (loopCount == 5)

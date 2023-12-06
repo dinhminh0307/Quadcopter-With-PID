@@ -1,7 +1,14 @@
 /*Just a test so please ignore it, otherwise please test in the test folder
 */
+#include "./../lib/Drone/Drone.h"
 
+void setup() {
+  droneConfig();
+}
 
+void loop() {
+  
+}
 #if 0
 void setup() {
   Serial.begin(115200);
@@ -114,5 +121,23 @@ void loop()
 #endif
 
 
+#if 0
+#include "WiFi.h"
+//----------------------------------------
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VOID SETUP
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  WiFi.mode(WIFI_MODE_STA);
+  Serial.println(WiFi.macAddress());
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VOID LOOP
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
+#endif
 
