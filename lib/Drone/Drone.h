@@ -8,6 +8,7 @@
 
 // variable declare
 
+
 typedef struct voltage_struct_receive {
     int voltageVal;
 } voltage_struct_receive;

@@ -13,8 +13,10 @@ float gyroX, gyroY, gyroZ;
 float accX, accY, accZ;
 float temperature;
 
+
 // function definition
 void initMPU(){
+  
   if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
     while (1) {
@@ -24,7 +26,7 @@ void initMPU(){
   Serial.println("MPU6050 Found!");
 }
 
-void getGyroReadings(){
+float getGyroReadings(){
   mpu.getEvent(&a, &g, &temp);
 
   float gyroX_temp = g.gyro.x;
@@ -44,6 +46,9 @@ void getGyroReadings(){
     gyroZ += gyroZ_temp/90.00;
     Serial.println(gyroZ);
   }
+  gyroDataSent.GyroX = gyroX;
+  gyroDataSent.GyroY = gyroY;
+  gyroDataSent.GyroZ = gyroZ;
 }
 
 void getAccReadings() {

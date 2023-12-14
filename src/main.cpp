@@ -1,7 +1,7 @@
 /*Just a test so please ignore it, otherwise please test in the test folder
 */
 #include "./../lib/Drone/Drone.h"
-
+#if 0
 void setup() {
   droneConfig();
 }
@@ -9,6 +9,7 @@ void setup() {
 void loop() {
   
 }
+#endif
 #if 0
 void setup() {
   Serial.begin(115200);
@@ -121,7 +122,7 @@ void loop()
 #endif
 
 
-#if 0
+#if 1
 #include "WiFi.h"
 //----------------------------------------
 
