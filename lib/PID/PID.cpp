@@ -1,8 +1,11 @@
 #include "./PID.h"
 
+
+
 void pitch_pid_init() {
     getGyroReadings();
     mpu_sensor = gyroDataSent.GyroY;
+    mpu_sensor_roll = gyroDataSent.GyroX;
     pitchPID.SetMode(AUTOMATIC);
 }
 void PID_Init() {

@@ -1,6 +1,46 @@
 /*Just a test so please ignore it, otherwise please test in the test folder
 */
 #include "./../lib/Drone/Drone.h"
+#include <MPU.h>
+#include <math.h>
+float kp=.5;
+float ki=55;
+float kd=.00001;
+
+Servo rollServo;
+int milliOld;
+int milliNew;
+int dt;
+ 
+float rollTarget=0;
+float rollActual;
+float rollError=0;
+float rollErrorOld;
+float rollErrorChange;
+float rollErrorSlope=0;
+float rollErrorArea=0;
+float rollServoVal;
+#if 1 
+void setup() {
+  initMPU();
+  milliNew=millis(); // inital time
+}
+
+void loop() {
+  rollActual = gyroDataSent.GyroX;
+  milliOld=milliNew;
+  milliNew=millis();
+  dt=milliNew-milliOld;
+  
+  rollErrorOld=rollError;
+  rollError=rollTarget-rollActual;
+  rollErrorChange=rollError-rollErrorOld;
+  rollErrorSlope=rollErrorChange/dt;
+  rollErrorArea=rollErrorArea+rollError*dt;
+  rollServoVal=rollServoVal+kp*rollError+ki*rollErrorSlope+kd*rollErrorArea;
+  rollServo.write(rollServoVal);
+}
+#endif
 #if 0
 void setup() {
   droneConfig();

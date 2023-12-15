@@ -1,7 +1,8 @@
 #include <Adafruit_MPU6050.h>
 #include <Adafruit_Sensor.h>
 #include <Arduino.h>
-
+#include <math.h>
+#define RAD_2_DEG 180/PI
 void initMPU();
 typedef struct {
     float accX;
