@@ -1,8 +1,8 @@
 #include "./Web.h"
 
 // Replace with your network credentials
-const char* ssid = "5A1-8";
-const char* password = "sky25a18";
+const char *ssid = "5A1-8";
+const char *password = "sky25a18";
 
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
@@ -14,7 +14,7 @@ AsyncEventSource events("/events");
 JSONVar readings;
 
 // Timer variables
-unsigned long lastTime = 0;  
+unsigned long lastTime = 0;
 unsigned long lastTimeTemperature = 0;
 unsigned long lastTimeAcc = 0;
 unsigned long gyroDelay = 10;
@@ -30,36 +30,43 @@ float gyroX, gyroY, gyroZ;
 float accX, accY, accZ;
 float temperature;
 
-//Gyroscope sensor deviation
+// Gyroscope sensor deviation
 float gyroXerror = 0.07;
 float gyroYerror = 0.03;
 float gyroZerror = 0.01;
 
 // Init MPU6050
-void initMPU(){
-  if (!mpu.begin()) {
+void initMPU()
+{
+  if (!mpu.begin())
+  {
     Serial.println("Failed to find MPU6050 chip");
-    while (1) {
+    while (1)
+    {
       delay(10);
     }
   }
   Serial.println("MPU6050 Found!");
 }
 
-void initSPIFFS() {
-  if (!SPIFFS.begin(true)) {
+void initSPIFFS()
+{
+  if (!SPIFFS.begin(true))
+  {
     Serial.println("An error has occurred while mounting SPIFFS");
   }
   Serial.println("SPIFFS mounted successfully");
 }
 
 // Initialize WiFi
-void initWiFi() {
+void initWiFi()
+{
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("");
   Serial.print("Connecting to WiFi...");
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED)
+  {
     Serial.print(".");
     delay(1000);
   }
@@ -67,22 +74,26 @@ void initWiFi() {
   Serial.println(WiFi.localIP());
 }
 
-String getGyroReadings(){
+String getGyroReadings()
+{
   mpu.getEvent(&a, &g, &temp);
 
   float gyroX_temp = g.gyro.x;
-  if(abs(gyroX_temp) > gyroXerror)  {
-    gyroX += gyroX_temp/50.00;
+  if (abs(gyroX_temp) > gyroXerror)
+  {
+    gyroX += gyroX_temp / 50.00;
   }
-  
+
   float gyroY_temp = g.gyro.y;
-  if(abs(gyroY_temp) > gyroYerror) {
-    gyroY += gyroY_temp/70.00;
+  if (abs(gyroY_temp) > gyroYerror)
+  {
+    gyroY += gyroY_temp / 70.00;
   }
 
   float gyroZ_temp = g.gyro.z;
-  if(abs(gyroZ_temp) > gyroZerror) {
-    gyroZ += gyroZ_temp/90.00;
+  if (abs(gyroZ_temp) > gyroZerror)
+  {
+    gyroZ += gyroZ_temp / 90.00;
   }
 
   readings["gyroX"] = String(gyroX);
@@ -93,7 +104,8 @@ String getGyroReadings(){
   return jsonString;
 }
 
-String getAccReadings() {
+String getAccReadings()
+{
   mpu.getEvent(&a, &g, &temp);
   // Get current acceleration values
   accX = a.acceleration.x;
@@ -102,11 +114,12 @@ String getAccReadings() {
   readings["accX"] = String(accX);
   readings["accY"] = String(accY);
   readings["accZ"] = String(accZ);
-  String accString = JSON.stringify (readings);
+  String accString = JSON.stringify(readings);
   return accString;
 }
 
-String getTemperature(){
+String getTemperature()
+{
   mpu.getEvent(&a, &g, &temp);
   temperature = temp.temperature;
   return String(temperature);
