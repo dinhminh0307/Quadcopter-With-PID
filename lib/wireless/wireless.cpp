@@ -8,11 +8,12 @@
 // Variable declaration
 // ******************************************
 // Insert the MAC address of the remote
-uint8_t broadcastAddress[] = {0xA8, 0x42, 0xE3, 0x47, 0x8A, 0x40};
+uint8_t broadcastAddress[] = {0x48, 0xE7, 0x29, 0x96, 0xBB, 0x18};
 
 // Declare the structure
 struct_msg_Receive_Joystick Receive_Data_Joystick;
 struct_msg_Receive_JTButton Receive_Data_JTButton;
+struct_msg_Receive_Button Receive_Data_Button;
 struct_msg_Receive_POT Receive_Data_POT;
 
 // Variable for espnow communication
@@ -36,13 +37,21 @@ void OnDataReceive(const uint8_t *mac, const uint8_t *incomingData, int len)
         Serial.print(", Joystick Y: ");
         Serial.println(Receive_Data_Joystick.joystickY);
     }
-    else if (len == sizeof(struct_msg_Receive_JTButton))
+    else if (len == sizeof(struct_msg_Receive_Button))
     {
-        memcpy(&Receive_Data_JTButton, incomingData, sizeof(struct_msg_Receive_Joystick));
-        if (Receive_Data_JTButton.pressed)
+        memcpy(&Receive_Data_Button, incomingData, sizeof(struct_msg_Receive_Joystick));
+        if (Receive_Data_Button.pressed && Receive_Data_Button.buttonNumber == 2)
         {
-            Serial.println("Joystick button was pressed!");
-        };
+            Serial.println("button left was pressed!");
+        }
+        else if (Receive_Data_Button.pressed && Receive_Data_Button.buttonNumber == 1)
+        {
+            Serial.println("button right was pressed!");
+        }
+        else if (Receive_Data_Button.pressed && Receive_Data_Button.buttonNumber == 3)
+        {
+            Serial.println("button emergency was pressed!");
+        }
     }
     else if (len == sizeof(struct_msg_Receive_POT))
     {
