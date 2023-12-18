@@ -3,6 +3,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include "wireless.h"
+#include "../motor/motor.h"
 
 // ******************************************
 // Variable declaration
@@ -28,16 +29,16 @@ unsigned long time_prev_serial = 0;
 
 void OnDataReceive(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
-    if (len == sizeof(struct_msg_Receive_Joystick))
-    {
-        memcpy(&Receive_Data_Joystick, incomingData, sizeof(struct_msg_Receive_Joystick));
+    // if (len == sizeof(struct_msg_Receive_Joystick))
+    // {
+    //     memcpy(&Receive_Data_Joystick, incomingData, sizeof(struct_msg_Receive_Joystick));
 
-        Serial.print("Joystick X: ");
-        Serial.print(Receive_Data_Joystick.joystickX);
-        Serial.print(", Joystick Y: ");
-        Serial.println(Receive_Data_Joystick.joystickY);
-    }
-    else if (len == sizeof(struct_msg_Receive_Button))
+    //     Serial.print("Joystick X: ");
+    //     Serial.print(Receive_Data_Joystick.joystickX);
+    //     Serial.print(", Joystick Y: ");
+    //     Serial.println(Receive_Data_Joystick.joystickY);
+    // }
+    if (len == sizeof(struct_msg_Receive_Button))
     {
         memcpy(&Receive_Data_Button, incomingData, sizeof(struct_msg_Receive_Joystick));
         if (Receive_Data_Button.pressed && Receive_Data_Button.buttonNumber == 2)
@@ -58,6 +59,7 @@ void OnDataReceive(const uint8_t *mac, const uint8_t *incomingData, int len)
         memcpy(&Receive_Data_POT, incomingData, sizeof(struct_msg_Receive_POT));
         Serial.print("POT : ");
         Serial.println(Receive_Data_POT.value);
+        runningMotor1(Receive_Data_POT.value);
     }
 }
 
