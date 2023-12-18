@@ -1,8 +1,8 @@
 #include "./MPU.h"
 //Gyroscope sensor deviation
-float gyroXerror = 0.07;
-float gyroYerror = 0.03;
-float gyroZerror = 0.01;
+// float gyroXerror = 0.07;
+// float gyroYerror = 0.03;
+// float gyroZerror = 0.01;
 
 // Create a sensor object
 Adafruit_MPU6050 mpu;
@@ -87,7 +87,7 @@ void initMPU(){
   delay(100);
 }
 
-float getGyroReadings(){
+void getGyroReadings(){
   mpu.getEvent(&a, &g, &temp);
 
   // float gyroX_temp = g.gyro.x;

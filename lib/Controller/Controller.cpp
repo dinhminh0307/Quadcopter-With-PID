@@ -7,7 +7,7 @@ button_t button_1;
 button_message myButton;
 voltage_stuct myPot;
 
-
+48:E7:29:96:BB:18
 
 uint8_t broadcastAddress[] = {0x48,0xE7,0x29,0x93,0xD8,0x24}; // mac address of receiver
 void IRAM_ATTR button_isr()

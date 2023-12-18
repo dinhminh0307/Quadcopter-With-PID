@@ -18,6 +18,6 @@ typedef struct {
 
 data_recieved_gyro gyroDataSent;
 
-float getGyroReadings();
+void getGyroReadings();
 void getAccReadings();
 String getTemperature();

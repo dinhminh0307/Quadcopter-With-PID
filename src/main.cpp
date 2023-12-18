@@ -1,5 +1,15 @@
 /*Just a test so please ignore it, otherwise please test in the test folder
 */
+
+#include <Drone.h>
+void setup() {
+  droneConfig();
+}
+
+void loop() {
+  rotateBLDC();
+}
+#if 0
 #include "./../lib/Drone/Drone.h"
 #include <MPU.h>
 #include <math.h>
@@ -20,7 +30,7 @@ float rollErrorChange;
 float rollErrorSlope=0;
 float rollErrorArea=0;
 float rollServoVal;
-#if 1 
+
 void setup() {
   initMPU();
   milliNew=millis(); // inital time
@@ -41,15 +51,9 @@ void loop() {
   rollServo.write(rollServoVal);
 }
 #endif
-#if 0
-void setup() {
-  droneConfig();
-}
 
-void loop() {
-  
-}
-#endif
+
+
 #if 0
 void setup() {
   Serial.begin(115200);
@@ -162,7 +166,7 @@ void loop()
 #endif
 
 
-#if 1
+#if 0
 #include "WiFi.h"
 //----------------------------------------
 

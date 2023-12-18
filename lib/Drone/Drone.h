@@ -17,8 +17,21 @@ typedef struct button_struct_receive {
     int buttontState;
 } button_struct_receive;
 
+typedef struct min_signal_receiv{
+    int minSignal;
+    bool state;
+} min_signal_receive;
+
+typedef struct max_signal_receive {
+    int maxSignal;
+    bool state;
+    bool status;
+} max_signal_receive;
+
 extern voltage_struct_receive recieved_Voltage;
 extern button_struct_receive received_Button;
+extern min_signal_receive minSignalReceiver;
+extern max_signal_receive maxSignalReceiver;
 
 void rotateBLDC();
 void esp_now_config();
