@@ -1,5 +1,7 @@
 #include <Arduino.h>
 #include <TinyGPSPlus.h>
+#include "./WifiInit.h"
+#include <HTTPClient.h>
 // ================================================================
 // Variable declaration
 // ================================================================
@@ -9,4 +11,5 @@
 #define GPS_BAUDRATE 9600
 
 void initGPS(); //Initialize the GPS
-void Get_GPSData(); // Get the GPS data
+void GetGPSData(); // Get the GPS data
+void write_to_google_sheet(String params); //Write to google sheet

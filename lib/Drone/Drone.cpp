@@ -118,17 +118,17 @@ void rotateBLDC()
     switch (loopCount)
     {
     case 1:
-      ESC.write(recieved_Voltage.voltageVal);
-      break;
+        ESC.write(recieved_Voltage.voltageVal);
+        break;
     case 2:
-      ESC2.write(recieved_Voltage.voltageVal);
-      break;
+        ESC2.write(recieved_Voltage.voltageVal);
+        break;
     case 3:
-      ESC3.write(recieved_Voltage.voltageVal);
-      break;
+        ESC3.write(recieved_Voltage.voltageVal);
+        break;
     case 4:
-      ESC4.write(recieved_Voltage.voltageVal);
-      break;
+        ESC4.write(recieved_Voltage.voltageVal);
+        break;
     }
 
     delay(500); // Delay after each command
@@ -136,7 +136,7 @@ void rotateBLDC()
     loopCount++;
     if (loopCount > 4)
     {
-      loopCount = 1;
+        loopCount = 1;
     }
   }
 }

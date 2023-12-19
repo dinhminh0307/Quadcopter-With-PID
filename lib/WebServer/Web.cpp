@@ -1,8 +1,8 @@
 #include "./Web.h"
 
 // Replace with your network credentials
-const char *ssid = "DongLao";
-const char *password = "Ntn.1991";
+// const char *ssid = "DongLao";
+// const char *password = "Ntn.1991";
 
 // Data structure
 
@@ -50,20 +50,20 @@ void initSPIFFS()
 }
 
 // Initialize WiFi
-void initWiFi()
-{
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  Serial.println("");
-  Serial.print("Connecting to WiFi...");
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    Serial.print(".");
-    delay(1000);
-  }
-  Serial.println("");
-  Serial.println(WiFi.localIP());
-}
+// void initWiFi()
+// {
+//   WiFi.mode(WIFI_STA);
+//   WiFi.begin(ssid, password);
+//   Serial.println("");
+//   Serial.print("Connecting to WiFi...");
+//   while (WiFi.status() != WL_CONNECTED)
+//   {
+//     Serial.print(".");
+//     delay(1000);
+//   }
+//   Serial.println("");
+//   Serial.println(WiFi.localIP());
+// }
 
 String getGyroWeb()
 {
