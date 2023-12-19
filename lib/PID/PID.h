@@ -1,9 +1,10 @@
-#include "./MPU.h"
+#include "../MPU/MPU.h"
 #include <math.h>
-#include "./Drone.h"
-#include "./PID_LIB.h"
+#include "../PID_LIB/PID_LIB.h"
+
+
+extern double pidPitchOutput, pidRollOutput, pidYawOutput, setpoint;
 
 void PID_Init();
-void PID_roll();
-void PID_pitch();
+void updatePID();
 void printPIDOutputValues();

@@ -1,25 +1,20 @@
 #include <Arduino.h>
-/*Just a test so please ignore it, otherwise please test in the test folder
- */
-
+#include <Serial.h>
 #include <PID.h>
+#include <Drone.h>
+
 void setup()
 {
 
-  Serial.begin(115200);
+  Init_Serial();
   PID_Init();
+  droneConfig();
 
-  // droneConfig();
-  // eventHandler();
-
-  //  Serial.println("setup");
 }
 
 void loop()
 {
-  PID_pitch();
-  PID_roll();
+  updatePID();
   printPIDOutputValues();
-  // sendEvent();
-  // rotateBLDC();
+  rotateBLDC();
 }
