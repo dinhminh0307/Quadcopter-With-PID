@@ -4,6 +4,8 @@
 const char *ssid = "5A1-8";
 const char *password = "sky25a18";
 
+// Data structure
+
 // Create AsyncWebServer object on port 80
 AsyncWebServer server(80);
 
@@ -27,7 +29,7 @@ Adafruit_MPU6050 mpu;
 sensors_event_t a, g, temp;
 
 float gyroX, gyroY, gyroZ;
-float accX, accY, accZ;
+float AccX, AccY, AccZ;
 float temperature;
 
 // Gyroscope sensor deviation
@@ -36,18 +38,7 @@ float gyroYerror = 0.03;
 float gyroZerror = 0.01;
 
 // Init MPU6050
-void initMPU()
-{
-  if (!mpu.begin())
-  {
-    Serial.println("Failed to find MPU6050 chip");
-    while (1)
-    {
-      delay(10);
-    }
-  }
-  Serial.println("MPU6050 Found!");
-}
+
 
 void initSPIFFS()
 {
@@ -74,28 +65,31 @@ void initWiFi()
   Serial.println(WiFi.localIP());
 }
 
-String getGyroReadings()
+String getGyroWeb()
 {
-  mpu.getEvent(&a, &g, &temp);
+  // mpu.getEvent(&a, &g, &temp);
 
-  float gyroX_temp = g.gyro.x;
-  if (abs(gyroX_temp) > gyroXerror)
-  {
-    gyroX += gyroX_temp / 50.00;
-  }
+  // float gyroX_temp = g.gyro.x;
+  // if (abs(gyroX_temp) > gyroXerror)
+  // {
+  //   gyroX += gyroX_temp / 50.00;
+  // }
 
-  float gyroY_temp = g.gyro.y;
-  if (abs(gyroY_temp) > gyroYerror)
-  {
-    gyroY += gyroY_temp / 70.00;
-  }
+  // float gyroY_temp = g.gyro.y;
+  // if (abs(gyroY_temp) > gyroYerror)
+  // {
+  //   gyroY += gyroY_temp / 70.00;
+  // }
 
-  float gyroZ_temp = g.gyro.z;
-  if (abs(gyroZ_temp) > gyroZerror)
-  {
-    gyroZ += gyroZ_temp / 90.00;
-  }
-
+  // float gyroZ_temp = g.gyro.z;
+  // if (abs(gyroZ_temp) > gyroZerror)
+  // {
+  //   gyroZ += gyroZ_temp / 90.00;
+  // }
+  
+  gyroX = getGyroReadings().GyroX;
+  gyroY = getGyroReadings().GyroY;
+  gyroZ = getGyroReadings().GyroZ;
   readings["gyroX"] = String(gyroX);
   readings["gyroY"] = String(gyroY);
   readings["gyroZ"] = String(gyroZ);
@@ -104,23 +98,23 @@ String getGyroReadings()
   return jsonString;
 }
 
-String getAccReadings()
+String getAccWeb()
 {
-  mpu.getEvent(&a, &g, &temp);
+  
   // Get current acceleration values
-  accX = a.acceleration.x;
-  accY = a.acceleration.y;
-  accZ = a.acceleration.z;
-  readings["accX"] = String(accX);
-  readings["accY"] = String(accY);
-  readings["accZ"] = String(accZ);
+  AccX = getAccReadings().accX;
+  AccY = getAccReadings().accY;
+  AccZ = getAccReadings().accZ;
+  readings["accX"] = String(AccX);
+  readings["accY"] = String(AccY);
+  readings["accZ"] = String(AccZ);
   String accString = JSON.stringify(readings);
   return accString;
 }
 
 String getTemperature()
 {
-  mpu.getEvent(&a, &g, &temp);
-  temperature = temp.temperature;
-  return String(temperature);
+  // mpu.getEvent(&a, &g, &temp);
+  // temperature = temp.temperature;
+  // return String(temperature);
 }

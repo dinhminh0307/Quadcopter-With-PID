@@ -16,8 +16,8 @@ typedef struct {
     float GyroZ;
 }data_recieved_gyro;
 
-data_recieved_gyro gyroDataSent;
 
-void getGyroReadings();
-void getAccReadings();
+
+data_recieved_gyro getGyroReadings();
+data_recieved_acc getAccReadings();
 String getTemperature();

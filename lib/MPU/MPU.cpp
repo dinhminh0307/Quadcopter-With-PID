@@ -8,6 +8,9 @@
 Adafruit_MPU6050 mpu;
 sensors_event_t a, g, temp;
 
+// data object
+data_recieved_gyro gyroDataSent;
+data_recieved_acc accDataSent;
 
 float gyroX, gyroY, gyroZ;
 float accX, accY, accZ;
@@ -87,7 +90,7 @@ void initMPU(){
   delay(100);
 }
 
-void getGyroReadings(){
+data_recieved_gyro getGyroReadings(){
   mpu.getEvent(&a, &g, &temp);
 
   // float gyroX_temp = g.gyro.x;
@@ -112,14 +115,15 @@ void getGyroReadings(){
   gyroDataSent.GyroX = g.gyro.x * RAD_2_DEG;
   gyroDataSent.GyroY = g.gyro.y * RAD_2_DEG;
   gyroDataSent.GyroZ = g.gyro.z * RAD_2_DEG;
+  return gyroDataSent;
 }
 
-void getAccReadings() {
+data_recieved_acc getAccReadings() {
   mpu.getEvent(&a, &g, &temp);
   // Get current acceleration values
-  accX = a.acceleration.x;
-  accY = a.acceleration.y;
-  accZ = a.acceleration.z;
+  accDataSent.accX = a.acceleration.x;
+  accDataSent.accY = a.acceleration.y;
+  accDataSent.accZ = a.acceleration.z;
   
   Serial.print(accX);
   Serial.print(" ");
