@@ -5,11 +5,9 @@
 
 void setup()
 {
-
   Init_Serial();
   PID_Init();
   droneConfig();
-
 }
 
 void loop()

@@ -1,6 +1,6 @@
-#include "../MPU/MPU.h"
+#include <MPU.h>
 #include <math.h>
-#include "../PID_LIB/PID_LIB.h"
+#include <PID_LIB.h>
 
 
 extern double pidPitchOutput, pidRollOutput, pidYawOutput, setpoint;
