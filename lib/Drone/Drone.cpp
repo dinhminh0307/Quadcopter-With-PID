@@ -1,4 +1,5 @@
 #include "./Drone.h"
+#include "../PID/PID.h"
 // Mac address of initator:  0x48,0xE7,0x29,0x96,0xBB,0x18
 // Mac address of reciever: 48:E7:29:93:D8:24
 // varible definitions
@@ -12,33 +13,82 @@ int escPWM = 32;
 int escPWM2 = 26;
 int escPWM3 = 33;
 int escPWM4 = 25;
+// 32 26 cc 25 33 cw
+//32 25 pitch back 33 26 pitch front
+// 25 26 roll right
+// 32 33 roll left
+// 25 33 yaw left 32 26 yaw right
+
 // daata struct
 voltage_struct_receive recieved_Voltage;
 button_struct_receive received_Button;
 cal_signal_receive calSignalReceiver;
+joystick_struct_receiver joystickSignalReceiver;
 
 uint8_t broadcastAddress[] = {0x48, 0xE7, 0x29, 0x96, 0xBB, 0x18}; // mac address of remote
 
 void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
 {
 
-  // Serial.println("receive data");
+switch (len) {
+    case sizeof(recieved_Voltage): 
+       
+        memcpy(&recieved_Voltage, incomingData, sizeof(recieved_Voltage));
+        Serial.println(recieved_Voltage.voltageVal);
+        break;
 
-  if (len == sizeof(recieved_Voltage))
-  { // receive the pot command from the sender
-    memcpy(&recieved_Voltage, incomingData, sizeof(recieved_Voltage));
-    Serial.println(recieved_Voltage.voltageVal);
-  }
+    case sizeof(calSignalReceiver): 
+        
+        memcpy(&calSignalReceiver, incomingData, sizeof(calSignalReceiver));
+        break;
+
+    case sizeof(joystickSignalReceiver):
+        
+        memcpy(&joystickSignalReceiver, incomingData, sizeof(joystickSignalReceiver));
+
+        // Rest of your joystick handling code...
+        if (joystickSignalReceiver.y > 6) {
+            // Moving forward
+            setpoint = map(joystickSignalReceiver.y, 7, 12, 1, 4);
+        } else if (joystickSignalReceiver.y < 6) {
+            // Moving backward
+            setpoint = map(joystickSignalReceiver.y, 0, 5, -4, -1);
+        } else {
+            // Hover
+            setpoint = 0;
+        }
+
+        if (joystickSignalReceiver.x > 6) {
+            // Rolling right
+            setpoint = map(joystickSignalReceiver.x, 7, 12, 1, 4);
+        } else if (joystickSignalReceiver.x < 6) {
+            // Rolling left
+            setpoint = map(joystickSignalReceiver.x, 0, 5, -4, -1);
+        } else {
+            // Hover
+            setpoint = 0;
+        }
+        break;
+
+    default:
+        // Handle unexpected data length
+        Serial.println("Received data of unexpected length.");
+        break;
+}
 
   // if (len == sizeof(received_Button))
   // { // receive button data
   //   memcpy(&received_Button, incomingData, sizeof(received_Button));
-  //   Serial.println(recieved_Voltage.voltageVal);
+  //   if(received_Button.state == YAW_LEFT)
+  //   {
+  //      //handle 
+  //   }
+  //   else if (recived_Button.state == YAW_RIGHT)
+  //   {
+
+  //   }
   // }
-  if (len == sizeof(calSignalReceiver))
-  {
-    memcpy(&calSignalReceiver, incomingData, sizeof(calSignalReceiver));
-  }
+
 }
 void esp_now_config()
 {
@@ -111,6 +161,24 @@ void ESC_init()
 
 void rotateBLDC()
 {
+
+  // Base speed from potentiometer
+  int baseSpeed = recieved_Voltage.voltageVal;
+
+
+  // Calculate motor speeds based on PID outputs
+  // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
+  int motorSpeed1 = baseSpeed + pidPitchOutput - pidRollOutput + pidYawOutput; // Motor 32
+  int motorSpeed2 = baseSpeed + pidPitchOutput + pidRollOutput - pidYawOutput; // Motor 26
+  int motorSpeed3 = baseSpeed - pidPitchOutput - pidRollOutput - pidYawOutput; // Motor 33
+  int motorSpeed4 = baseSpeed - pidPitchOutput + pidRollOutput + pidYawOutput; // Motor 25
+
+  // Constrain motor speeds to be within 0 to 180
+  motorSpeed1 = constrain(motorSpeed1, 0, 180);
+  motorSpeed2 = constrain(motorSpeed2, 0, 180);
+  motorSpeed3 = constrain(motorSpeed3, 0, 180);
+  motorSpeed4 = constrain(motorSpeed4, 0, 180);
+
   int loopCount = 1;
   // send the command to ESC
   while (true)
@@ -118,16 +186,16 @@ void rotateBLDC()
     switch (loopCount)
     {
     case 1:
-      ESC.write(recieved_Voltage.voltageVal);
+      ESC.write(motorSpeed1);
       break;
     case 2:
-      ESC2.write(recieved_Voltage.voltageVal);
+      ESC2.write(motorSpeed2);
       break;
     case 3:
-      ESC3.write(recieved_Voltage.voltageVal);
+      ESC3.write(motorSpeed3);
       break;
     case 4:
-      ESC4.write(recieved_Voltage.voltageVal);
+      ESC4.write(motorSpeed4);
       break;
     }
 
