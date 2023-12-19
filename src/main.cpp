@@ -1,296 +1,195 @@
-/*Just a test so please ignore it, otherwise please test in the test folder*/
-// #include <ESP32Servo.h>
-// #include <esp32_button.h>
-// Servo ESC;
-// Servo ESC2;
-// Servo ESC3;
-// Servo ESC4;
+#include <Arduino.h>
+/*Just a test so please ignore it, otherwise please test in the test folder
+ */
 
-// button_t btn1;
-// bool flag = false;
-// int btnPin = 33;
-// int potPin = 4;
-// int val;
-// int escPWM = 18;
-// int escPWM2 = 19;
-// // int escPWM3 = 33;
-// int escPWM4 = 25;
-
-// void IRAM_ATTR button_isr()
-// {
-//   button_update(&btn1);
-//   flag = true;
-// }
-
-// void setup()
-// {
-//   ESC.attach(escPWM, 1000, 2000);
-//   ESC2.attach(escPWM2, 1000, 2000);
-//   // ESC3.attach(escPWM3, 1000, 2000);
-//   ESC4.attach(escPWM4, 1000, 2000);
-//   button_add_default(&btn1, 33);
-//   pinMode(btnPin, INPUT_PULLUP);
-//   button_init(&button_isr);
-//   // Serial.begin(9600);
-// }
-
-// void loop()
-// {
-//   int loopCount = 1;
-//   val = analogRead(potPin);
-//   val = map(val, 0, 4095, 0, 180);
-//   if(flag) {
-//     val = 0;
-//     ESC.write(val);
-//     ESC2.write(val);
-//     ESC3.write(val);
-//   }
-//   else {
-
-//   }
-//   // Serial.println(val);
-//   while (true)
-//   {
-//     if (loopCount == 1)
-//     {
-//       ESC.write(val);
-//     }
-//     else if (loopCount == 2)
-//     {
-//       ESC2.write(val);
-//     }
-//     // else if (loopCount == 3)
-//     // {
-//     //   ESC3.write(val);
-//     // }
-//     else if (loopCount == 4)
-//     {
-//       ESC4.write(val);
-//     }
-//     loopCount++;
-//     if (loopCount == 5)
-//     {
-//       break;
-//     }
-//     delay(100);
-//   }
-// }
-
-/*Testing external interupt*/
-#if 0 //
-Servo ESC;
-Servo ESC2;
-int btnPin = 33;
-int potPin  = 4;
-
-// Volatile var
-volatile int val;
-volatile boolean flag = false;
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  ESC.attach(13,1000,2000);
-  ESC2.attach(18,1000,2000);
-  pinMode(btnPin, INPUT_PULLUP);
-  attachInterrupt(btnPin, ISR, FALLING);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-  if(flag) {
-    val = 50;
-    Serial.println(val);
-    flag = false;
-  }
-  else {
-    val = analogRead(potPin);
-    val = map(val, 0, 4095, 0, 180);
-    Serial.println(val);
-    ESC.write(val);
-    ESC2.write(val);
-  }
-  delay(100);
-}
-
-void IRAM_ATTR ISR() {
-  flag = true;
-}
-#endif
-#if 0
-
-/*Testing 2 way communication between ESP32*/
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Getting_the_Boards_MAC_Address
-//----------------------------------------Load libraries
-#include "WiFi.h"
-//----------------------------------------
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VOID SETUP
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
-  WiFi.mode(WIFI_MODE_STA);
-  Serial.println(WiFi.macAddress());
-}
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VOID LOOP
-void loop() {
-  // put your main code here, to run repeatedly:
-
-}
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> One-way communication ESP32 Sender
-/*
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com/esp-now-two-way-communication-esp32/
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy
-  of this software and associated documentation files.
-
-  The above copyright notice and this permission notice shall be included in all
-  copies or substantial portions of the Software.
-*/
-
-//----------------------------------------Load libraries
-#include <esp_now.h>
-#include <WiFi.h>
-//----------------------------------------
-
-uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}; //--> REPLACE WITH THE MAC Address of your receiver / ESP32 Receiver.
-
-//----------------------------------------Variables to accommodate the data to be sent.
-int send_rnd_val_1;
-int send_rnd_val_2;
-//----------------------------------------
-
-String success; //--> Variable to store if sending data was successful.
-
-//----------------------------------------Structure example to send data
-// Must match the receiver structure
-typedef struct struct_message {
-    int rnd_1;
-    int rnd_2;
-} struct_message;
-
-struct_message send_Data; //--> Create a struct_message to send data.
-//----------------------------------------
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Callback when data is sent
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
-  Serial.print("\r\nLast Packet Send Status:\t");
-  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
-  if (status ==0){
-    success = "Delivery Success :)";
-  }
-  else{
-    success = "Delivery Fail :(";
-  }
-  Serial.println(">>>>>");
-}
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VOID SETUP
-void setup() {
-  Serial.begin(115200);
-
-  WiFi.mode(WIFI_STA); //--> Set device as a Wi-Fi Station.
-
-  //----------------------------------------Init ESP-NOW
-  if (esp_now_init() != ESP_OK) {
-    Serial.println("Error initializing ESP-NOW");
-    return;
-  }
-  //----------------------------------------
-
-  //----------------------------------------Once ESPNow is successfully Init, we will register for Send CB to
-  // get the status of Trasnmitted packet
-  esp_now_register_send_cb(OnDataSent);
-  //----------------------------------------
-
-  //----------------------------------------Register peer
-  esp_now_peer_info_t peerInfo;
-  memcpy(peerInfo.peer_addr, broadcastAddress, 6);
-  peerInfo.channel = 0;
-  peerInfo.encrypt = false;
-  //----------------------------------------
-
-  //----------------------------------------Add peer
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
-  //----------------------------------------
-}
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VOID LOOP
-void loop() {
-  //----------------------------------------Set values to send
-  send_rnd_val_1 = random(0, 255);
-  send_rnd_val_2 = random(0, 255);
-  send_Data.rnd_1 = send_rnd_val_1;
-  send_Data.rnd_2 = send_rnd_val_2;
-  //----------------------------------------
-
-  Serial.println();
-  Serial.print(">>>>> ");
-  Serial.println("Send data");
-
-  //----------------------------------------Send message via ESP-NOW
-  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &send_Data, sizeof(send_Data));
-
-  if (result == ESP_OK) {
-    Serial.println("Sent with success");
-  }
-  else {
-    Serial.println("Error sending the data");
-  }
-  //----------------------------------------
-
-  delay(5000);
-}
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-#endif
-
-
-#include <esp32_button.h>
-
-#define BUTTON_1_PIN 33
-
-
-button_t button_1;
-
-void IRAM_ATTR button_isr()
-{
-  button_update(&button_1);
-}
-
+// #include <Drone.h>
+#include <Web.h>
 void setup()
 {
-  Serial.begin(9600);
-
-  button_add_default(&button_1, BUTTON_1_PIN);
-
-  button_init(&button_isr);
+  Serial.begin(115200);
+  initMPU();
+  initSPIFFS();
+  initWiFi();
+  webServerHandler();
+  eventHandler();
+  //droneConfig();
+  // Serial.println("setup");
 }
 
 void loop()
 {
-  if (button_1.mode)
-  {
-    // Print modes: 1- Clicked, 2- Double Clicked 3- Long Pressed
-    Serial.print(" - ");
-    Serial.println(button_1.mode);
-
-    // Reset modes
-    button_1.mode = NONE;
-  }
-  else {
-    Serial.println(button_1.mode);
-  }
-
-  delay(100);
+  sendEvent();
+  //rotateBLDC();
 }
+// #if 0
+// #include "./../lib/Drone/Drone.h"
+// #include <MPU.h>
+// #include <math.h>
+// float kp=.5;
+// float ki=55;
+// float kd=.00001;
+
+// Servo rollServo;
+// int milliOld;
+// int milliNew;
+// int dt;
+
+// float rollTarget=0;
+// float rollActual;
+// float rollError=0;
+// float rollErrorOld;
+// float rollErrorChange;
+// float rollErrorSlope=0;
+// float rollErrorArea=0;
+// float rollServoVal;
+
+// void setup() {
+//   initMPU();
+//   milliNew=millis(); // inital time
+// }
+
+// void loop() {
+//   rollActual = gyroDataSent.GyroX;
+//   milliOld=milliNew;
+//   milliNew=millis();
+//   dt=milliNew-milliOld;
+
+//   rollErrorOld=rollError;
+//   rollError=rollTarget-rollActual;
+//   rollErrorChange=rollError-rollErrorOld;
+//   rollErrorSlope=rollErrorChange/dt;
+//   rollErrorArea=rollErrorArea+rollError*dt;
+//   rollServoVal=rollServoVal+kp*rollError+ki*rollErrorSlope+kd*rollErrorArea;
+//   rollServo.write(rollServoVal);
+// }
+// #endif
+
+#if 0
+void setup() {
+  Serial.begin(115200);
+  initWiFi();
+  initSPIFFS();
+  initMPU();
+
+  // Handle Web Server
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(SPIFFS, "/index.html", "text/html");
+  });
+
+  server.serveStatic("/", SPIFFS, "/");
+
+  server.on("/reset", HTTP_GET, [](AsyncWebServerRequest *request){
+    gyroX=0;
+    gyroY=0;
+    gyroZ=0;
+    request->send(200, "text/plain", "OK");
+  });
+
+  server.on("/resetX", HTTP_GET, [](AsyncWebServerRequest *request){
+    gyroX=0;
+    request->send(200, "text/plain", "OK");
+  });
+
+  server.on("/resetY", HTTP_GET, [](AsyncWebServerRequest *request){
+    gyroY=0;
+    request->send(200, "text/plain", "OK");
+  });
+
+  server.on("/resetZ", HTTP_GET, [](AsyncWebServerRequest *request){
+    gyroZ=0;
+    request->send(200, "text/plain", "OK");
+  });
+
+  // Handle Web Server Events
+  events.onConnect([](AsyncEventSourceClient *client){
+    if(client->lastId()){
+      Serial.printf("Client reconnected! Last message ID that it got is: %u\n", client->lastId());
+    }
+    // send event with message "hello!", id current millis
+    // and set reconnect delay to 1 second
+    client->send("hello!", NULL, millis(), 10000);
+  });
+  server.addHandler(&events);
+
+  server.begin();
+}
+
+void loop() {
+  if ((millis() - lastTime) > gyroDelay) {
+    // Send Events to the Web Server with the Sensor Readings
+    events.send(getGyroWeb().c_str(),"gyro_readings",millis());
+    lastTime = millis();
+  }
+  if ((millis() - lastTimeAcc) > accelerometerDelay) {
+    // Send Events to the Web Server with the Sensor Readings
+    events.send(getAccReadings().c_str(),"accelerometer_readings",millis());
+    lastTimeAcc = millis();
+  }
+  if ((millis() - lastTimeTemperature) > temperatureDelay) {
+    // Send Events to the Web Server with the Sensor Readings
+    events.send(getTemperature().c_str(),"temperature_reading",millis());
+    lastTimeTemperature = millis();
+  }
+}
+
+ #endif
+
+// /*Testing external interupt*/
+// #if 0 //
+// #include <esp32_button.h>
+
+// #define BUTTON_1_PIN 33
+
+// button_t button_1;
+
+// void IRAM_ATTR button_isr()
+// {
+//   button_update(&button_1);
+// }
+
+// void setup()
+// {
+//   Serial.begin(9600);
+
+//   button_add_default(&button_1, BUTTON_1_PIN);
+
+//   button_init(&button_isr);
+// }
+
+// void loop()
+// {
+//   if (button_1.mode)
+//   {
+//     // Print modes: 1- Clicked, 2- Double Clicked 3- Long Pressed
+//     Serial.println(button_1.mode);
+
+//     // Reset modes
+//     button_1.mode = NONE;
+//   }
+//   else {
+//     Serial.println(button_1.mode);
+//   }
+
+//   delay(1000);
+// }
+// #endif
+
+// #if 0
+// #include "WiFi.h"
+// //----------------------------------------
+
+// //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VOID SETUP
+// void setup() {
+//   // put your setup code here, to run once:
+//   Serial.begin(115200);
+//   WiFi.mode(WIFI_MODE_STA);
+//   Serial.println(WiFi.macAddress());
+// }
+// //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+// //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ VOID LOOP
+// void loop() {
+//   // put your main code here, to run repeatedly:
+
+// }
+// #endif
