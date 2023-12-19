@@ -9,7 +9,7 @@
 #include <Arduino_JSON.h>
 #include "SPIFFS.h"
 #include "../MPU/MPU.h"
-
+#include "../GPS/GPS.h"
 
 String getGyroWeb();
 String getAccWeb();

@@ -8,6 +8,7 @@ void setup()
 {
   Serial.begin(115200);
   initMPU();
+  initGPS();
   initSPIFFS();
   initWiFi();
   webServerHandler();
