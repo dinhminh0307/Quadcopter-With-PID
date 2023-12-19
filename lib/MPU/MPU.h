@@ -16,6 +16,9 @@ typedef struct {
     float GyroZ;
 }data_recieved_gyro;
 
+// data object
+extern data_recieved_gyro gyroDataSent;
+extern data_recieved_acc accDataSent;
 
 
 data_recieved_gyro getGyroReadings();

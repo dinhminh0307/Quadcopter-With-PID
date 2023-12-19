@@ -12,9 +12,9 @@ sensors_event_t a, g, temp;
 data_recieved_gyro gyroDataSent;
 data_recieved_acc accDataSent;
 
-float gyroX, gyroY, gyroZ;
-float accX, accY, accZ;
-float temperature;
+// float gyroX, gyroY, gyroZ;
+// float accX, accY, accZ;
+// float temperature;
 
 
 // function definition
@@ -125,10 +125,11 @@ data_recieved_acc getAccReadings() {
   accDataSent.accY = a.acceleration.y;
   accDataSent.accZ = a.acceleration.z;
   
-  Serial.print(accX);
+  Serial.print(accDataSent.accX);
   Serial.print(" ");
-  Serial.print(accY);
+  Serial.print(accDataSent.accY);
   Serial.print(" ");
-  Serial.print(accZ);
+  Serial.print(accDataSent.accZ);
   Serial.print(" ");
+  return accDataSent;
 }

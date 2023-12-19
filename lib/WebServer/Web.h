@@ -16,3 +16,6 @@ String getAccWeb();
 String getTemperature();
 void initSPIFFS();
 void initWiFi();
+void webServerHandler();
+void eventHandler();
+void sendEvent();

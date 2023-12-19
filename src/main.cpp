@@ -10,14 +10,15 @@ void setup()
   initMPU();
   initSPIFFS();
   initWiFi();
+  webServerHandler();
+  eventHandler();
   //droneConfig();
   // Serial.println("setup");
 }
 
 void loop()
 {
-  getGyroWeb();
-  getAccWeb();
+  sendEvent();
   //rotateBLDC();
 }
 // #if 0
