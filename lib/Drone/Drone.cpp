@@ -204,7 +204,7 @@ void rotateBLDC()
     loopCount++;
     if (loopCount > 4)
     {
-      loopCount = 1;
+        loopCount = 1;
     }
   }
 }
