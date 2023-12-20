@@ -1,8 +1,8 @@
 #include "./WifiInit.h"
 
 // Replace with your network credentials
-const char *ssid = "Wifi tang 2";
-const char *password = "0918787978";
+const char *ssid = "";
+const char *password = "";
 
 // Initialize WiFi
 void iniWiFi()

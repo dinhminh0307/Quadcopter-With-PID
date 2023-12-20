@@ -21,7 +21,7 @@ void setup()
 
 void loop()
 {
-    //GetGPSData(); //Call record GPS data on google sheet
+    GetGPSData(); //Call record GPS data on google sheet
   
   //sendEvent();
   //rotateBLDC();

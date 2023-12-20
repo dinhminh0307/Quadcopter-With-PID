@@ -1,16 +1,12 @@
 #include "./GPS.h"
 TinyGPSPlus gps;
 HardwareSerial neogps(1);
-// uint8_t broadcastAddress[] = {0x48, 0xE7, 0x29, 0x96, 0xBB, 0x18}; // mac address of receiver
-
-//DeploymentID
-//AKfycbzcwI1hU_NA7lkmDErIEX7fifLU3WsGtHhMLQfOTaeR7g4SQuawbIQnUKLcxM0n5NoTRQ
 
 //Enter the google sheet script id
 String GOOGLE_SCRIPT_ID = "AKfycbzcwI1hU_NA7lkmDErIEX7fifLU3WsGtHhMLQfOTaeR7g4SQuawbIQnUKLcxM0n5NoTRQ";
 
 //Time delay in ms
-const int sendInterval = 0; //Delay 0s
+const int sendInterval = 2000; //Delay 2s
 
 void initGPS() {
     // Serial2.begin(baud-rate, protocol, RX pin, TX pin);
@@ -90,8 +86,10 @@ void GetGPSData() {
         else
             param += "&gps_date=INVALID";
         
+        //Print data to Serial
+        Serial.println(param);
         //Print data in google sheet through wifi
-        write_to_google_sheet(param);
+        //write_to_google_sheet(param);
 
     }
 }
