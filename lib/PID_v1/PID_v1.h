@@ -1,5 +1,5 @@
-#ifndef PID_LIB_H
-#define PID_LIB_H
+#ifndef PID_v1_h
+#define PID_v1_h
 #define LIBRARY_VERSION	1.2.1
 
 class PID
@@ -87,3 +87,4 @@ class PID
 	bool inAuto, pOnE;
 };
 #endif
+

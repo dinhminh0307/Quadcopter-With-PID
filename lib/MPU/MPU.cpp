@@ -1,136 +1,67 @@
-#include "./MPU.h"
-//Gyroscope sensor deviation
-// float gyroXerror = 0.07;
-// float gyroYerror = 0.03;
-// float gyroZerror = 0.01;
+#include <MPU.h>
 
-// Create a sensor object
-Adafruit_MPU6050 mpu;
-sensors_event_t a, g, temp;
+MPU6050 mpu;       // Prepare the mpu object to obtain the angles from the DMP
+MPU6050 accelgyro; // Prepare the accelgyro object to obtain the gyroscope and the acceleration data
 
-// data object
-data_recieved_gyro gyroDataSent;
-data_recieved_acc accDataSent;
+// MPU variable
+uint16_t packetSize;    // DMP packet size. Default is 42 bytes.
+uint16_t fifoCount;     // count of all bytes currently in FIFO
+uint8_t fifoBuffer[64]; // FIFO storage buffer
+Quaternion q;           // [w, x, y, z]         quaternion container
+VectorFloat gravity;    // [x, y, z]            gravity vector
+float ypr[3];           // [yaw, pitch, roll]   yaw/pitch/roll
+int16_t ax, ay, az;     // Raw acceleration data from the MPU
+int16_t gx, gy, gz;     // Raw gyroscope data from the MPU
 
-// float gyroX, gyroY, gyroZ;
-// float accX, accY, accZ;
-// float temperature;
+double anglex, angley, anglez; // angle in the x, y, z direction
+double gyrox, gyroy, gyroz;    // angle rate in the x, y, z direction
+double accx, accy, accz;       // acceleration in the x, y, z direction
 
-
-// function definition
-void initMPU(){
-  
-  if (!mpu.begin()) {
-    Serial.println("Failed to find MPU6050 chip");
-    while (1) {
-      delay(10);
-    }
-  }
-  
-  Serial.println("MPU6050 Found!");
-  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-  Serial.print("Accelerometer range set to: ");
-  switch (mpu.getAccelerometerRange()) {
-  case MPU6050_RANGE_2_G:
-    Serial.println("+-2G");
-    break;
-  case MPU6050_RANGE_4_G:
-    Serial.println("+-4G");
-    break;
-  case MPU6050_RANGE_8_G:
-    Serial.println("+-8G");
-    break;
-  case MPU6050_RANGE_16_G:
-    Serial.println("+-16G");
-    break;
-  }
-  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-  Serial.print("Gyro range set to: ");
-  switch (mpu.getGyroRange()) {
-  case MPU6050_RANGE_250_DEG:
-    Serial.println("+- 250 deg/s");
-    break;
-  case MPU6050_RANGE_500_DEG:
-    Serial.println("+- 500 deg/s");
-    break;
-  case MPU6050_RANGE_1000_DEG:
-    Serial.println("+- 1000 deg/s");
-    break;
-  case MPU6050_RANGE_2000_DEG:
-    Serial.println("+- 2000 deg/s");
-    break;
-  }
-
-  mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
-  Serial.print("Filter bandwidth set to: ");
-  switch (mpu.getFilterBandwidth()) {
-  case MPU6050_BAND_260_HZ:
-    Serial.println("260 Hz");
-    break;
-  case MPU6050_BAND_184_HZ:
-    Serial.println("184 Hz");
-    break;
-  case MPU6050_BAND_94_HZ:
-    Serial.println("94 Hz");
-    break;
-  case MPU6050_BAND_44_HZ:
-    Serial.println("44 Hz");
-    break;
-  case MPU6050_BAND_21_HZ:
-    Serial.println("21 Hz");
-    break;
-  case MPU6050_BAND_10_HZ:
-    Serial.println("10 Hz");
-    break;
-  case MPU6050_BAND_5_HZ:
-    Serial.println("5 Hz");
-    break;
-  }
-
-  Serial.println("");
-  delay(100);
+// ================================================================
+// Setup function
+// ================================================================
+// ================================================================
+void Init_MPU()
+{
+  Wire.begin(21, 22);      // Wire.begin(I2C_SDA, I2C_SCL);
+  Wire.setClock(400000);   // Set the SCL clock to 400KHz
+  accelgyro.initialize();  // Initialize the accelgyro
+  mpu.initialize();        // Initialize the MPU
+  mpu.dmpInitialize();     // Initialize the DMP (microchip that calculate the angle on the MPU6050 module)
+  mpu.setDMPEnabled(true); // Enable the DMP
+  packetSize = mpu.dmpGetFIFOPacketSize();
+  mpu.CalibrateAccel(6); // Calibrate the accelerometer
+  mpu.CalibrateGyro(6);  // Calibrate the gyroscope
 }
 
-data_recieved_gyro getGyroReadings(){
-  mpu.getEvent(&a, &g, &temp);
-
-  // float gyroX_temp = g.gyro.x;
-  // if(abs(gyroX_temp) > gyroXerror)  {
-  //   gyroX += gyroX_temp/50.00;
-  //   Serial.println(gyroX);
-  // }
-  
-  // float gyroY_temp = g.gyro.y;
-  // if(abs(gyroY_temp) > gyroYerror) {
-  //   gyroY += gyroY_temp/70.00;
-  //   Serial.println(gyroY);
-  // }
-
-  // float gyroZ_temp = g.gyro.z;
-  // if(abs(gyroZ_temp) > gyroZerror) {
-  //   gyroZ += gyroZ_temp/90.00;
-  //   Serial.println(gyroZ);
-  // }
-
-  // convert from radian to degree
-  gyroDataSent.GyroX = g.gyro.x * RAD_2_DEG;
-  gyroDataSent.GyroY = g.gyro.y * RAD_2_DEG;
-  gyroDataSent.GyroZ = g.gyro.z * RAD_2_DEG;
-  return gyroDataSent;
+// ================================================================
+void Get_MPUangle()
+{
+  // Clear buffer
+  mpu.resetFIFO();
+  // Get FIFO count
+  fifoCount = mpu.getFIFOCount();
+  // Wait for the FIFO to be filled with the correct data number
+  while (fifoCount < packetSize)
+    fifoCount = mpu.getFIFOCount();
+  // read a packet from FIFO
+  mpu.getFIFOBytes(fifoBuffer, packetSize);
+  mpu.dmpGetQuaternion(&q, fifoBuffer);
+  mpu.dmpGetGravity(&gravity, &q);
+  mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+  anglex = ypr[2] * 180 / M_PI;
+  angley = -ypr[1] * 180 / M_PI;
+  anglez = -ypr[0] * 180 / M_PI;
 }
 
-data_recieved_acc getAccReadings() {
-  mpu.getEvent(&a, &g, &temp);
-  // Get current acceleration values
-  accDataSent.accX = a.acceleration.x;
-  accDataSent.accY = a.acceleration.y;
-  accDataSent.accZ = a.acceleration.z;
-  
-  Serial.print(accDataSent.accX);
-  Serial.print(" ");
-  Serial.print(accDataSent.accY);
-  Serial.print(" ");
-  Serial.print(accDataSent.accZ);
-  Serial.print(" ");
-  return accDataSent;
+// ================================================================
+void Get_accelgyro()
+{
+  accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+  gyrox = gx / 131.0;
+  gyroy = gy / 131.0;
+  gyroz = gz / 131.0;
+  accx = ax / 16384.;
+  accy = ay / 16384.;
+  accz = az / 16384.;
 }

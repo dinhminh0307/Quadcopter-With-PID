@@ -1,7 +1,18 @@
 
 #include <ESP32Servo.h>
 #include <esp_now.h>
-#include <WiFi.h>
+#include <PID.h>
+
+#define ESC_PWM 32
+#define ESC_PWM2 26
+#define ESC_PWM3 33
+#define ESC_PWM4 25
+// 32 26 cc 25 33 cw
+// 32 25 pitch back 33 26 pitch front
+// 25 26 roll right
+// 32 33 roll left
+// 25 33 yaw left 32 26 yaw right
+
 #define BUTTON_1_PIN 33
 #define INTERUPT_STATE 300
 #define MIN_SIGNAL 1000
@@ -11,38 +22,8 @@
 #define YAW_LEFT 1
 #define YAW_RIGHT 2
 
-// variable declare
-
-typedef struct voltage_struct_receive
-{
-    int voltageVal;
-} voltage_struct_receive;
-
-typedef struct button_struct_receive
-{
-    int state;
-    char id[20];
-} button_struct_receive;
-
-typedef struct cal_signal_receive
-{
-    int signal;
-    int state;
-} cal_signal_receive;
-
-typedef struct joystick_struct_receiver
-{
-    int x;
-    int y;
-    char id[10];
-} joystick_struct_receiver;
-
-extern joystick_struct_receiver joystickSignalReceiver;
-extern voltage_struct_receive recieved_Voltage;
-extern button_struct_receive received_Button;
-extern cal_signal_receive calSignalReceiver;
+extern double motor_cmd;
 
 void rotateBLDC();
 void esp_now_config();
-void ESC_init();
-void droneConfig();
+void Init_ESC();
