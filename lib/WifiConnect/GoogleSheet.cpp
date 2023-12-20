@@ -1,8 +1,7 @@
 #include <GoogleSheet.h>
 // Replace with your network credentials
-const char *ssid = "DongLao";
-const char *password = "Ntn.1991";
-// unsigned long time_prev_1 = 0;
+const char *ssid = "Wifi tang 2";
+const char *password = "0918787978";
 
 TinyGPSPlus gps;
 
@@ -105,35 +104,39 @@ void recordGPStoGoogleSheet()
       // Print data to Serial
       Serial.println(gpsParam);
       // Print data in google sheet through wifi
-      //writeGoogleSheet(gpsParam);
+      writeGoogleSheet(gpsParam, 0);
+      break;
     }
 }
 
-void recordMPUGoogleSheet()
+void recordMPUtoGoogleSheet()
 {
-  // if (micros() - time_prev_1 >= 20000)
-  // {
     imuParam = "";
-  //   // millis, anglex,angley,anglez,gyrox,gyroy,gyroz
-  //   time_prev_1 = micros();
-  //   imuParam = "millis=" + String(millis(),6);
     imuParam += "anglex=" + String(anglex);
     imuParam += "&angley=" + String(angley);
     imuParam += "&anglez=" + String(anglez);
     imuParam += "&gyrox=" + String(gyrox);
     imuParam += "&gyroy=" + String(gyroy);
     imuParam += "&gyroz=" + String(gyroz);
-  // }
-  Serial.println(imuParam);
-  writeGoogleSheet(imuParam);
+
+    Serial.println(imuParam);
+    writeGoogleSheet(imuParam , 1);
 }
 
-void writeGoogleSheet(String params)
+void writeGoogleSheet(String params, int flag)
 {
+  String script = "";
   HTTPClient http;
-  String url = "https://script.google.com/macros/s/" + IMU_GOOGLE_SCRIPT_ID + "/exec?" + params;
+  // 0 is GPS, 1 is MPU
+  if (flag == 0)
+    script = GPS_GOOGLE_SCRIPT_ID;
+  else
+    script = IMU_GOOGLE_SCRIPT_ID;
+  
+  //Create URL
+  String url = "https://script.google.com/macros/s/" + script + "/exec?" + params;
   // Serial.print(url);
-  Serial.println("Postring data to Google Sheet");
+  Serial.println("Postring data to Google Sheet ");
   //---------------------------------------------------------------------
   // starts posting data to google sheet
   http.begin(url.c_str());

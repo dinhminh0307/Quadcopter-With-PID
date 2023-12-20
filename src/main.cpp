@@ -23,8 +23,8 @@ void loop()
   // Compute_PID();
   Get_MPUangle();
   Get_accelgyro();
-  recordMPUGoogleSheet();
-  //recordGPStoGoogleSheet();
+  recordMPUtoGoogleSheet();
+  recordGPStoGoogleSheet();
   // SerialDataPIDPrint();
   // tunningPID();
 }

@@ -8,5 +8,5 @@
 
 void Init_GoogleSheet();
 void recordGPStoGoogleSheet();
-void recordMPUGoogleSheet();
-void writeGoogleSheet(String params);
+void recordMPUtoGoogleSheet();
+void writeGoogleSheet(String params, int flag);
