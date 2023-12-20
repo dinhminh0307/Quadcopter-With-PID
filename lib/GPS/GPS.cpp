@@ -95,9 +95,9 @@ void GetGPSData() {
 }
 
 void write_to_google_sheet(String params) {
-   HTTPClient http;
-   String url = "https://script.google.com/macros/s/" + GOOGLE_SCRIPT_ID + "/exec?" + params;
-   //Serial.print(url);
+    HTTPClient http;
+    String url = "https://script.google.com/macros/s/" + GOOGLE_SCRIPT_ID + "/exec?" + params;
+    //Serial.print(url);
     Serial.println("Postring GPS data to Google Sheet");
     //---------------------------------------------------------------------
     //starts posting data to google sheet
