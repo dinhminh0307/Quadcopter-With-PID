@@ -9,4 +9,4 @@
 void Init_GoogleSheet();
 void recordGPStoGoogleSheet();
 void recordMPUGoogleSheet();
-void writeGoogleSheet(String params, String script);
+void writeGoogleSheet(String params);

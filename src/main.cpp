@@ -10,19 +10,21 @@ void tunningPID();
 void setup()
 {
   Init_Serial();
-  Init_Serial2(); // for the gps
   Init_MPU();
-  //Init_PID();
+  Init_Serial2(); // for the gps
   Init_GoogleSheet();
+  
+  //Init_PID();
+  
 }
 
 void loop()
 {
   // Compute_PID();
-  // Get_MPUangle();
-  // Get_accelgyro();
-  //recordMPUGoogleSheet();
-  recordGPStoGoogleSheet();
+  Get_MPUangle();
+  Get_accelgyro();
+  recordMPUGoogleSheet();
+  //recordGPStoGoogleSheet();
   // SerialDataPIDPrint();
   // tunningPID();
 }

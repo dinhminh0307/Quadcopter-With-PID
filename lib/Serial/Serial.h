@@ -16,7 +16,6 @@ void Init_Serial2()
   Serial2.begin(GPS_BAUDRATE, SERIAL_8N1, RXD2, TXD2);
   while (!Serial2)
     ;
-  Serial.println("serial 2 test");
 }
 
 // ================================================================
