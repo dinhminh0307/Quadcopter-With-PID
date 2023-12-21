@@ -81,30 +81,30 @@ void rotateBLDC()
   // int motorSpeed4 = baseSpeed - pidPitchOutput + pidRollOutput + pidYawOutput; // Motor 25
 
   // Constrain motor speeds to be within 0 to 180
-  motorSpeed1 = constrain(motorSpeed1, 0, 180);
-  motorSpeed2 = constrain(motorSpeed2, 0, 180);
-  motorSpeed3 = constrain(motorSpeed3, 0, 180);
-  motorSpeed4 = constrain(motorSpeed4, 0, 180);
+  // motorSpeed1 = constrain(motorSpeed1, 0, 180);
+  // motorSpeed2 = constrain(motorSpeed2, 0, 180);
+  // motorSpeed3 = constrain(motorSpeed3, 0, 180);
+  // motorSpeed4 = constrain(motorSpeed4, 0, 180);
 
   int loopCount = 1;
   // send the command to ESC
-  while (true)
-  {
-    switch (loopCount)
-    {
-    case 1:
-      ESC.write(motorSpeed1);
-      break;
-    case 2:
-      ESC2.write(motorSpeed2);
-      break;
-    case 3:
-      ESC3.write(motorSpeed3);
-      break;
-    case 4:
-      ESC4.write(motorSpeed4);
-      break;
-    }
+  // while (true)
+  // {
+  //   switch (loopCount)
+  //   {
+  //   case 1:
+  //     ESC.write(motorSpeed1);
+  //     break;
+  //   case 2:
+  //     ESC2.write(motorSpeed2);
+  //     break;
+  //   case 3:
+  //     ESC3.write(motorSpeed3);
+  //     break;
+  //   case 4:
+  //     ESC4.write(motorSpeed4);
+  //     break;
+  //   }
 
     delay(500); // Delay after each command
 
@@ -114,4 +114,4 @@ void rotateBLDC()
       loopCount = 1;
     }
   }
-}
+
