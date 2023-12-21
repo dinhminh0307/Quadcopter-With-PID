@@ -1,7 +1,11 @@
-#include <TinyGPS++.h>
-#define RX_PIN 16
-#define TX_PIN 17
+#include <TinyGPSPlus.h>
+// ================================================================
+// Variable declaration
+// ================================================================
+#define RXD2 16
+#define TXD2 17
+// The default baudrate of NEO-8M is 9600
+#define GPS_BAUDRATE 9600
 
-
-void gps_config();
-void readLocation();
+extern String gpsParams;
+extern TinyGPSPlus gps;
