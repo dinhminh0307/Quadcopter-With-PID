@@ -9,10 +9,10 @@
 // setpoint = reference setpoint, the desired angle (usually 0deg to maintain an upward position)
 // PID myPID(&input, &output, &setpoint, kp, ki, kd, DIRECT);
 
-extern double pid_output, motor_cmd;
+extern double pid_output_x, pid_output_y, pid_output_z, motor_cmd;
 // Init gain
-extern double kp, ki, kd, anglex_setpoint;
-
+extern double kp, ki, kd, anglex_setpoint, angley_setpoint, anglez_setpoint;
+extern double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 // ================================================================
 // Function Definition
 // ================================================================
