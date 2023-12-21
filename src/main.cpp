@@ -1,8 +1,10 @@
 #include <Arduino.h>
 #include <Serial.h>
 #include <MPU.h>
+#include <Drone.h>
 #include <ESPnow.h>
-#include <GoogleSheet.h>
+#include <GPS.h>
+// #include <GoogleSheet.h>
 #include <PID.h>
 
 void tunningPID();
@@ -11,20 +13,22 @@ void setup()
 {
   Init_Serial();
   Init_Serial2(); // for the gps
+  Init_ESPnow();
+  Init_ESC();
   Init_MPU();
-  //Init_PID();
-  Init_GoogleSheet();
+  Init_PID();
+
+  // Init_GoogleSheet();
 }
 
 void loop()
 {
-  // Compute_PID();
-  // Get_MPUangle();
-  // Get_accelgyro();
-  //recordMPUGoogleSheet();
-  recordGPStoGoogleSheet();
+  Get_MPUangle();
+  Compute_PID();
+  void rotateBLDC();
+  // recordGPStoGoogleSheet();
   // SerialDataPIDPrint();
-  // tunningPID();
+  tunningPID();
 }
 
 // ================================================================
@@ -36,7 +40,8 @@ void loop()
 void tunningPID()
 {
   static String received_chars;
-  while (Serial.available())
+  Serial.println("Please select tunning option");
+  while (!Serial.available())
   {
     char inChar = (char)Serial.read();
     received_chars += inChar;
@@ -45,6 +50,7 @@ void tunningPID()
       switch (received_chars[0])
       {
       case 'p':
+
         received_chars.remove(0, 1);
         kp = received_chars.toFloat();
         break;

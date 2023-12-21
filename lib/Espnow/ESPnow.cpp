@@ -3,8 +3,10 @@
 
 // variable declare
 
-extern button_struct_receive received_Button;
-extern cal_signal_receive calSignalReceiver;
+joystick_struct_receiver joystickSignalReceiver;
+voltage_struct_receive recieved_Voltage;
+button_struct_receive received_Button;
+cal_signal_receive calSignalReceiver;
 
 uint8_t broadcastAddress[] = {0x48, 0xE7, 0x29, 0x96, 0xBB, 0x18}; // mac address of remote
 
@@ -43,36 +45,50 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         memcpy(&joystickSignalReceiver, incomingData, sizeof(joystickSignalReceiver));
 
         // Rest of your joystick handling code...
-        if (joystickSignalReceiver.y > 6)
+        if (joystickSignalReceiver.y > 6 && joystickSignalReceiver.x == 5)
         {
+            Get_accelgyro();
+
             // Moving forward
-            anglex_setpoint = map(joystickSignalReceiver.y, 7, 12, 1, 4);
+            gyrox_setpoint = 30; // in degree
+            gyroy_setpoint = 0;
+            gyroz_setpoint = 0;
         }
         else if (joystickSignalReceiver.y < 6)
         {
             // Moving backward
-            anglex_setpoint = map(joystickSignalReceiver.y, 0, 5, -4, -1);
+            gyrox_setpoint = -30;
+            gyroy_setpoint = 0;
+            gyroz_setpoint = 0;
         }
         else
         {
             // Hover
-            anglex_setpoint = 0;
+            gyrox_setpoint = 0;
+            gyroy_setpoint = 0;
+            gyroz_setpoint = 0;
         }
 
         if (joystickSignalReceiver.x > 6)
         {
             // Rolling right
-            anglex_setpoint = map(joystickSignalReceiver.x, 7, 12, 1, 4);
+            gyrox_setpoint = 0;
+            gyroy_setpoint = 30;
+            gyroz_setpoint = 0;
         }
         else if (joystickSignalReceiver.x < 6)
         {
             // Rolling left
-            anglex_setpoint = map(joystickSignalReceiver.x, 0, 5, -4, -1);
+            gyrox_setpoint = 0;
+            gyroy_setpoint = -30;
+            gyroz_setpoint = 0;
         }
         else
         {
             // Hover
-            anglex_setpoint = 0;
+            gyrox_setpoint = 0;
+            gyroy_setpoint = 0;
+            gyroz_setpoint = 0;
         }
         break;
 
