@@ -4,9 +4,9 @@
 #include <PID.h>
 
 #define ESC_PWM 32
-#define ESC_PWM2 26
-#define ESC_PWM3 33
-#define ESC_PWM4 25
+#define ESC_PWM2 25
+#define ESC_PWM3 26
+#define ESC_PWM4 33
 // 32 26 cc 25 33 cw
 // 32 25 pitch back 33 26 pitch front
 // 25 26 roll right

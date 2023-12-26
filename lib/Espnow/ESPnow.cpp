@@ -9,7 +9,7 @@ button_struct_receive received_Button;
 cal_signal_receive calSignalReceiver;
 // pid_tunning_command_rcv tunningCommandReceive;
 
-uint8_t broadcastAddress[] = {0x48, 0xE7, 0x29, 0x96, 0xBB, 0x18}; // mac address of remote
+uint8_t broadcastAddress[] = {0xB0, 0xA7, 0x32, 0x17, 0x21, 0xC4}; // mac address of remote
 
 void Init_ESPnow()
 {
@@ -22,7 +22,30 @@ void Init_ESPnow()
         return;
     }
     // Register callback function
+    esp_now_peer_info_t peerInfo = {};
+    esp_now_register_send_cb(onDataSent); // call back function to getthe sent status into the  ondatasent
     esp_now_register_recv_cb(onDataReceived);
+    memcpy(peerInfo.peer_addr, broadcastAddress, sizeof(broadcastAddress));
+    peerInfo.channel = 0;
+    peerInfo.encrypt = false;
+    //----------------------------------------
+
+    //----------------------------------------Add peer
+    if (esp_now_add_peer(&peerInfo) != ESP_OK)
+    {
+        Serial.println("Failed to add peer");
+        return;
+    }
+    else
+    {
+        Serial.println("succssefull to add peer");
+        return;
+    }
+}
+
+void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
+{
+    // Serial.println("send here");
 }
 
 void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
@@ -35,11 +58,10 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         memcpy(&recieved_Voltage, incomingData, sizeof(recieved_Voltage));
         Serial.println(recieved_Voltage.voltageVal);
         break;
-    
-    // case sizeof(tunningCommandReceive):
-    //     memcpy(&tunningCommandReceive, incomingData, sizeof(tunningCommandReceive));
-    //     Serial.println(tunningCommandReceive.charRcv);
-    //     break;
+        // case sizeof(tunningCommandReceive):
+        //     memcpy(&tunningCommandReceive, incomingData, sizeof(tunningCommandReceive));
+        //     Serial.println(tunningCommandReceive.charRcv);
+        //     break;
 
     case sizeof(calSignalReceiver):
 

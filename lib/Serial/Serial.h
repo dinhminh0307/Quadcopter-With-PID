@@ -52,11 +52,11 @@ void SerialDataPIDPrint()
     Serial.print("\t");
     Serial.print(motor_cmd);
     Serial.print("\t");
-    Serial.print(kp);
+    Serial.print(kpX);
     Serial.print("\t");
-    Serial.print(ki);
+    Serial.print(kpY);
     Serial.print("\t");
-    Serial.print(kd);
+    Serial.print(kpZ);
     Serial.print("\t");
     Serial.print(anglex_setpoint);
 

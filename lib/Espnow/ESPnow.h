@@ -29,16 +29,30 @@ typedef struct joystick_struct_receiver
     char id[10];
 } joystick_struct_receiver;
 
-// typedef struct pid_tunning_command_rcv {
-//     char charRcv;
-//     int id[50];
-// } pid_tunning_command_rcv;
 
+typedef struct imu_struct_send
+{
+    float anglex; // Angle in the X direction
+    float angley; // Angle in the Y direction
+    float anglez; // Angle in the Z direction
+    float gyrox;  // Gyroscope reading in the X direction
+    float gyroy;  // Gyroscope reading in the Y direction
+    float gyroz;  // Gyroscope reading in the Z direction
+    int motor1Speed;
+    int motor2Speed;
+    int motor3Speed;
+    int motor4Speed;
+} imu_struct_send;
+
+
+extern imu_struct_send imuInfoSender;
 extern joystick_struct_receiver joystickSignalReceiver;
 extern voltage_struct_receive recieved_Voltage;
 extern button_struct_receive received_Button;
 extern cal_signal_receive calSignalReceiver;
-//extern pid_tunning_command_rcv tunningCommandReceive;
+extern uint8_t broadcastAddress[];
+
 
 void Init_ESPnow();
 void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len);
+void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);

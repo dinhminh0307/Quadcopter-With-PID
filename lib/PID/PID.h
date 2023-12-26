@@ -1,6 +1,5 @@
 #include <Arduino.h>
-#include "../Espnow/ESPnow.h"
-
+#include "../PID_v1/PID_v1.h"
 // ================================================================
 // Variable declaration
 // ================================================================
@@ -12,7 +11,12 @@
 
 extern double pid_output_x, pid_output_y, pid_output_z, motor_cmd;
 // Init gain
-extern double kp, ki, kd, anglex_setpoint, angley_setpoint, anglez_setpoint;
+extern double anglex_setpoint, angley_setpoint, anglez_setpoint;
+extern double kpX, kiX, kdX;
+// pid for y axis
+extern double kpY, kiY, kdY;
+// pid for z axis
+extern double kpZ, kiZ, kdZ;
 extern double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 // ================================================================
 // Function Definition
@@ -20,8 +24,7 @@ extern double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 void Init_PID();
 
 void Compute_PID();
-void PID_Gyro_Init();// this one to set the setpoint for the angular motor
-void PID_Angle_Init(); // this one is to sent the output to motor
-void PID_Gyro_Compute(); // compute desired angular velocity to be used as setpoint with PID 
+void PID_Gyro_Init();     // this one to set the setpoint for the angular motor
+void PID_Angle_Init();    // this one is to sent the output to motor
+void PID_Gyro_Compute();  // compute desired angular velocity to be used as setpoint with PID
 void PID_Angle_Compute(); // compute desired motor speed to get that angular velocity setpoint
-void PID_Tunning_Command();

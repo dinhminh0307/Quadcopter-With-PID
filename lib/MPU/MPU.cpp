@@ -1,4 +1,5 @@
 #include <MPU.h>
+#include <math.h>
 
 MPU6050 mpu;       // Prepare the mpu object to obtain the angles from the DMP
 MPU6050 accelgyro; // Prepare the accelgyro object to obtain the gyroscope and the acceleration data
@@ -30,8 +31,11 @@ void Init_MPU()
   mpu.dmpInitialize();     // Initialize the DMP (microchip that calculate the angle on the MPU6050 module)
   mpu.setDMPEnabled(true); // Enable the DMP
   packetSize = mpu.dmpGetFIFOPacketSize();
-  mpu.CalibrateAccel(6); // Calibrate the accelerometer
-  mpu.CalibrateGyro(6);  // Calibrate the gyroscope
+  mpu.setXGyroOffset(-25);
+  mpu.setYGyroOffset(45);
+  mpu.setZGyroOffset(-25);
+  mpu.CalibrateAccel(20); // Calibrate the accelerometer
+  mpu.CalibrateGyro(20);  // Calibrate the gyroscope
 }
 
 // ================================================================
@@ -49,9 +53,9 @@ void Get_MPUangle()
   mpu.dmpGetQuaternion(&q, fifoBuffer);
   mpu.dmpGetGravity(&gravity, &q);
   mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-  anglex = ypr[2] * 180 / M_PI;
-  angley = -ypr[1] * 180 / M_PI;
-  anglez = -ypr[0] * 180 / M_PI;
+  anglex = ypr[2] * 180 / M_PI; // Absolute value of the x-angle
+  angley = ypr[1] * 180 / M_PI; // Absolute value of the y-angle
+  anglez = ypr[0] * 180 / M_PI; // Absolute value of the z-angle
 }
 
 // ================================================================
