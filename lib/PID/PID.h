@@ -21,6 +21,6 @@ void Init_PID();
 void Compute_PID();
 void PID_Gyro_Init();// this one to set the setpoint for the angular motor
 void PID_Angle_Init(); // this one is to sent the output to motor
-void PID_Gyro_Compute();
-void PID_Angle_Compute();
+void PID_Gyro_Compute(); // compute desired angular velocity to be used as setpoint with PID 
+void PID_Angle_Compute(); // compute desired motor speed to get that angular velocity setpoint
 void PID_Tunning_Command();

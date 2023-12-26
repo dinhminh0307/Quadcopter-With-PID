@@ -4,18 +4,23 @@
 #include <string.h>
 
 double pid_output_x = 0, pid_output_y = 0, pid_output_z = 0;
-double kp = 5.0, ki = 0.0, kd = 0.0, anglex_setpoint = 0, angley_setpoint = 0, anglez_setpoint = 0;
+double kpX = 5.0, kiX = 0.0, kdX = 0.0, anglex_setpoint = 0, angley_setpoint = 0, anglez_setpoint = 0;
+// pid for y axis
+double kpY = 5.0, kiY = 0.0, kdY= 0.0;
+// pid for z axis
+double kpZ= 5.0, kiZ = 0.0, kdZ = 0.0;
+
 double gyrox_setpoint = 0, gyroy_setpoint = 0, gyroz_setpoint = 0;
 /*to control the angle setpoint, it means that we need to control the angular velocity to stay at that setpoint
 - Then that angular velocity will be gotten by controlling the speed of motor (cmd_send_motor)
 Formula: angle -> v -> motor command*/
-PID PIDgyroX(&anglex, &gyrox_setpoint, &anglex_setpoint, kp, ki, kd, DIRECT);
-PID PIDgyroY(&angley, &gyroy_setpoint, &angley_setpoint, kp, ki, kd, DIRECT);
-PID PIDgyroZ(&anglez, &gyroz_setpoint, &anglez_setpoint, kp, ki, kd, DIRECT);
+PID PIDgyroX(&anglex, &gyrox_setpoint, &anglex_setpoint, kpX, kiX, kdX, DIRECT);
+PID PIDgyroY(&angley, &gyroy_setpoint, &angley_setpoint, kpY,  kiY,  kdY, DIRECT);
+PID PIDgyroZ(&anglez, &gyroz_setpoint, &anglez_setpoint, kpZ, kiZ, kdZ, DIRECT);
 
-PID PIDangleX(&gyrox, &pid_output_x, &gyrox_setpoint, kp, ki, kd, DIRECT);
-PID PIDangleY(&gyroy, &pid_output_y, &gyroy_setpoint, kp, ki, kd, DIRECT);
-PID PIDangleZ(&gyroz, &pid_output_z, &gyroz_setpoint, kp, ki, kd, DIRECT);
+PID PIDangleX(&gyrox, &pid_output_x, &gyrox_setpoint, kpX, kiX, kdX, DIRECT);
+PID PIDangleY(&gyroy, &pid_output_y, &gyroy_setpoint,  kpY,  kiY,  kdY, DIRECT);
+PID PIDangleZ(&gyroz, &pid_output_z, &gyroz_setpoint, kpZ, kiZ, kdZ, DIRECT);
 
 void PID_Gyro_Init() {
     // if the current angle is below 45 => the desired angular vel is blew current angle, else 
@@ -74,24 +79,24 @@ void Init_PID()
 }
 
 void PID_Gyro_Compute() {
-    PIDgyroX.SetTunings(kp, ki, kd); 
+    PIDgyroX.SetTunings(kpX, kiX, kdX); 
     PIDgyroX.Compute(); // measure the correction for the x angle The correction in this case can applied as an increase/decrease in the power level of the motors
 
-    PIDgyroY.SetTunings(kp, ki, kd);
+    PIDgyroY.SetTunings(kpY,  kiY,  kdY);
     PIDgyroY.Compute();
 
-    PIDgyroZ.SetTunings(kp, ki, kd);
+    PIDgyroZ.SetTunings(kpZ, kiZ, kdZ);
     PIDgyroZ.Compute();
 }
 
 void PID_Angle_Compute() {
-    PIDangleX.SetTunings(kp, ki, kd); 
+    PIDangleX.SetTunings(kpX, kiX, kdX); 
     PIDangleX.Compute(); // measure the correction for the x angle The correction in this case can applied as an increase/decrease in the power level of the motors
 
-    PIDangleY.SetTunings(kp, ki, kd);
+    PIDangleY.SetTunings(kpY,  kiY,  kdY);
     PIDangleY.Compute();
 
-    PIDangleZ.SetTunings(kp, ki, kd);
+    PIDangleZ.SetTunings(kpZ, kiZ, kdZ);
     PIDangleZ.Compute();
 }
 
