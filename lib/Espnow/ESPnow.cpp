@@ -7,6 +7,7 @@ joystick_struct_receiver joystickSignalReceiver;
 voltage_struct_receive recieved_Voltage;
 button_struct_receive received_Button;
 cal_signal_receive calSignalReceiver;
+pid_tunning_command_rcv tunningCommandReceive;
 
 uint8_t broadcastAddress[] = {0x48, 0xE7, 0x29, 0x96, 0xBB, 0x18}; // mac address of remote
 
@@ -33,6 +34,11 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
 
         memcpy(&recieved_Voltage, incomingData, sizeof(recieved_Voltage));
         Serial.println(recieved_Voltage.voltageVal);
+        break;
+    
+    case sizeof(tunningCommandReceive):
+        memcpy(&tunningCommandReceive, incomingData, sizeof(tunningCommandReceive));
+        Serial.println(tunningCommandReceive.charRcv);
         break;
 
     case sizeof(calSignalReceiver):

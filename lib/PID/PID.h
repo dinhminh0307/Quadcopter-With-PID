@@ -1,5 +1,5 @@
 #include <Arduino.h>
-
+#include "../Espnow/ESPnow.h"
 // ================================================================
 // Variable declaration
 // ================================================================
@@ -19,3 +19,8 @@ extern double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 void Init_PID();
 
 void Compute_PID();
+void PID_Gyro_Init();// this one to set the setpoint for the angular motor
+void PID_Angle_Init(); // this one is to sent the output to motor
+void PID_Gyro_Compute();
+void PID_Angle_Compute();
+void PID_Tunning_Command();

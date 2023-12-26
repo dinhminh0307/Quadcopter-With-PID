@@ -3,6 +3,7 @@
     "files.associations": {
         "random": "cpp",
         "*.tcc": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "cmath": "cpp"
     }
 }
