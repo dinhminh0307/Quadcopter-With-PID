@@ -37,6 +37,10 @@ typedef struct imu_struct_send
     float gyrox;  // Gyroscope reading in the X direction
     float gyroy;  // Gyroscope reading in the Y direction
     float gyroz;  // Gyroscope reading in the Z direction
+    int motor1Speed;
+    int motor2Speed;
+    int motor3Speed;
+    int motor4Speed;
 } imu_struct_send;
 
 extern imu_struct_send imuInfoSender;

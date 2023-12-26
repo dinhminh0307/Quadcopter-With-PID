@@ -10,7 +10,7 @@ TinyGPSPlus gps;
 // Enter the google sheet script id
 const String GPS_GOOGLE_SCRIPT_ID = "AKfycbzcwI1hU_NA7lkmDErIEX7fifLU3WsGtHhMLQfOTaeR7g4SQuawbIQnUKLcxM0n5NoTRQ";
 const String IMU_GOOGLE_SCRIPT_ID = "AKfycbyRkC0qvVPZ-zysX_nEwLutK1uqZ5_9UvHCH3yp495s2h_NVAVYrJSI-Yf4BXLLnzNEng";
-imu_struct_send imuInfoSender;
+// imu_struct_send imuInfoSender;
 String gpsParam;
 String imuParam;
 // Time delay in ms
@@ -122,13 +122,13 @@ void recordMPUtoGoogleSheet()
     imuParam += "&gyroz=" + String(gyroz);
 
     Serial.println(imuParam);
-    imuInfoSender.anglex = anglex;
-    imuInfoSender.angley = angley;
-    imuInfoSender.anglez = anglez;
-    imuInfoSender.gyrox = gyrox;
-    imuInfoSender.gyroy = gyroy;
-    imuInfoSender.gyroz = gyroz;
-    esp_err_t dataSent = esp_now_send(broadcastAddress, (uint8_t *)&imuInfoSender, sizeof(imuInfoSender));
+    // imuInfoSender.anglex = anglex;
+    // imuInfoSender.angley = angley;
+    // imuInfoSender.anglez = anglez;
+    // imuInfoSender.gyrox = gyrox;
+    // imuInfoSender.gyroy = gyroy;
+    // imuInfoSender.gyroz = gyroz;
+    // esp_err_t dataSent = esp_now_send(broadcastAddress, (uint8_t *)&imuInfoSender, sizeof(imuInfoSender));
     // writeGoogleSheet(imuParam , 1);
 }
 

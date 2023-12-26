@@ -28,38 +28,38 @@ void PID_Gyro_Init()
     if (abs(anglex) <= 45)
     {
         PIDgyroX.SetMode(AUTOMATIC);
-        PIDgyroX.SetOutputLimits(0, anglex);
+        PIDgyroX.SetOutputLimits(-anglex, anglex);
         PIDgyroX.SetSampleTime(10);
     }
     else
     {
         PIDgyroX.SetMode(AUTOMATIC);
-        PIDgyroX.SetOutputLimits(0, 45);
+        PIDgyroX.SetOutputLimits(-45, 45);
         PIDgyroX.SetSampleTime(10);
     }
 
     if (abs(angley) <= 45)
     {
         PIDgyroY.SetMode(AUTOMATIC);
-        PIDgyroY.SetOutputLimits(0, angley);
+        PIDgyroY.SetOutputLimits(-angley, angley);
         PIDgyroY.SetSampleTime(10);
     }
     else
     {
         PIDgyroY.SetMode(AUTOMATIC);
-        PIDgyroY.SetOutputLimits(0, 45);
+        PIDgyroY.SetOutputLimits(-45, 45);
         PIDgyroY.SetSampleTime(10);
     }
     if (abs(anglez) <= 45)
     {
         PIDgyroZ.SetMode(AUTOMATIC);
-        PIDgyroZ.SetOutputLimits(0, anglez);
+        PIDgyroZ.SetOutputLimits(0, 0);
         PIDgyroZ.SetSampleTime(10);
     }
     else
     {
         PIDgyroZ.SetMode(AUTOMATIC);
-        PIDgyroZ.SetOutputLimits(0, 45);
+        PIDgyroZ.SetOutputLimits(0, 0);
         PIDgyroZ.SetSampleTime(10);
     }
 }
