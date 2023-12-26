@@ -22,19 +22,19 @@ void Init_ESC()
   ESC4.attach(ESC_PWM4, 1000, 2000); //// 25
 
   // when disconnecting battery
-  // while (calSignalReceiver.signal != MAX_SIGNAL || calSignalReceiver.state != MAX_SIGNAL_STATE)
-  // {
-  //   unsigned long currentMillis = millis();
+  while (calSignalReceiver.signal != MAX_SIGNAL || calSignalReceiver.state != MAX_SIGNAL_STATE)
+  {
+    unsigned long currentMillis = millis();
 
-  //   if (currentMillis - previousMillis >= interval)
-  //   {
-  //     // save the last time the loop was run
-  //     previousMillis = currentMillis;
+    if (currentMillis - previousMillis >= interval)
+    {
+      // save the last time the loop was run
+      previousMillis = currentMillis;
 
-  //     // your repetitive task here
-  //     Serial.println("Waiting for max signal");
-  //   }
-  // }
+      // your repetitive task here
+      Serial.println("Waiting for max signal");
+    }
+  }
 
   // wait for data receive
 
@@ -45,20 +45,20 @@ void Init_ESC()
   Serial.print("set max value: ");
   Serial.println(calSignalReceiver.signal);
 
-  // while (calSignalReceiver.signal != MIN_SIGNAL || calSignalReceiver.state != MIN_SIGNAL_STATE)
-  // {
-  //   unsigned long currentMillis = millis();
+  while (calSignalReceiver.signal != MIN_SIGNAL || calSignalReceiver.state != MIN_SIGNAL_STATE)
+  {
+    unsigned long currentMillis = millis();
 
-  //   if (currentMillis - previousMillis >= interval)
-  //   {
-  //     // save the last time the loop was run
-  //     previousMillis = currentMillis;
+    if (currentMillis - previousMillis >= interval)
+    {
+      // save the last time the loop was run
+      previousMillis = currentMillis;
 
-  //     // your repetitive task here
-  //     Serial.println("Waiting for min signal");
-  //   }
+      // your repetitive task here
+      Serial.println("Waiting for min signal");
+    }
 
-  // } // wait for data received
+  } // wait for data received
   ESC.writeMicroseconds(MIN_SIGNAL);
   ESC2.writeMicroseconds(MIN_SIGNAL);
   ESC3.writeMicroseconds(MIN_SIGNAL);
@@ -87,11 +87,15 @@ void rotateBLDC()
   // motorSpeed4 = constrain(motorSpeed4, 0, 180);
 
   Serial.println(motorSpeed1);
+  Serial.println(motorSpeed2);
+  Serial.println(motorSpeed3);
+  Serial.println(motorSpeed4);
 
   int loopCount = 1;
   // send the command to ESC
   while (true)
   {
+
     switch (loopCount)
     {
     case 1:
@@ -113,6 +117,7 @@ void rotateBLDC()
     if (loopCount > 4)
     {
       loopCount = 1;
+      break;
     }
   }
 }
