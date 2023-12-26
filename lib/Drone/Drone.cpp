@@ -71,29 +71,20 @@ void rotateBLDC()
 {
 
   // Base speed from potentiometer
-  // int baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
-  int baseSpeed = recieved_Voltage.voltageVal;
-
-  Serial.print("basespeed: ");
-  Serial.println(baseSpeed);
+  int baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
 
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
-  // int motorSpeed1 = baseSpeed + pid_output_x - pid_output_y + pid_output_z; // Motor 32
-  // int motorSpeed2 = baseSpeed + pid_output_x + pid_output_y - pid_output_z; // Motor 26
-  // int motorSpeed3 = baseSpeed - pid_output_x - pid_output_y - pid_output_z; // Motor 33
-  // int motorSpeed4 = baseSpeed - pid_output_x + pid_output_y + pid_output_z; // Motor 25
-
-  int motorSpeed1 = baseSpeed;
-  int motorSpeed2 = baseSpeed;
-  int motorSpeed3 = baseSpeed;
-  int motorSpeed4 = baseSpeed;
+  int motorSpeed1 = baseSpeed + pid_output_x - pid_output_y + pid_output_z; // Motor 32
+  int motorSpeed2 = baseSpeed + pid_output_x + pid_output_y - pid_output_z; // Motor 26
+  int motorSpeed3 = baseSpeed - pid_output_x - pid_output_y - pid_output_z; // Motor 33
+  int motorSpeed4 = baseSpeed - pid_output_x + pid_output_y + pid_output_z; // Motor 25
 
   // Constrain motor speeds to be within 0 to 180
-  // motorSpeed1 = constrain(motorSpeed1, 0, 180);
-  // motorSpeed2 = constrain(motorSpeed2, 0, 180);
-  // motorSpeed3 = constrain(motorSpeed3, 0, 180);
-  // motorSpeed4 = constrain(motorSpeed4, 0, 180);
+  motorSpeed1 = constrain(motorSpeed1, 0, 180);
+  motorSpeed2 = constrain(motorSpeed2, 0, 180);
+  motorSpeed3 = constrain(motorSpeed3, 0, 180);
+  motorSpeed4 = constrain(motorSpeed4, 0, 180);
 
   Serial.println(motorSpeed1);
   Serial.println(motorSpeed2);
@@ -104,6 +95,7 @@ void rotateBLDC()
   // send the command to ESC
   while (true)
   {
+
     switch (loopCount)
     {
     case 1:
@@ -126,6 +118,7 @@ void rotateBLDC()
     if (loopCount > 4)
     {
       loopCount = 1;
+      break;
     }
   }
 }

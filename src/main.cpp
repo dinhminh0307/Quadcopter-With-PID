@@ -12,7 +12,7 @@ void tunningPID();
 void setup()
 {
   Init_Serial();
-  Init_Serial2(); // for the gps
+  // Init_Serial2(); // for the gps
   Init_ESPnow();
   Init_ESC();
   Init_MPU();
@@ -25,10 +25,11 @@ void loop()
 {
   Get_MPUangle();
   Compute_PID();
-  void rotateBLDC();
+  rotateBLDC();
   // recordGPStoGoogleSheet();
-  // SerialDataPIDPrint();
+  SerialDataPIDPrint();
   tunningPID();
+  // Serial.println("in loop");
 }
 
 // ================================================================

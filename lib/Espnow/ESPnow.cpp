@@ -40,57 +40,57 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         memcpy(&calSignalReceiver, incomingData, sizeof(calSignalReceiver));
         break;
 
-    // case sizeof(joystickSignalReceiver):
+    case sizeof(joystickSignalReceiver):
 
-    //     memcpy(&joystickSignalReceiver, incomingData, sizeof(joystickSignalReceiver));
+        memcpy(&joystickSignalReceiver, incomingData, sizeof(joystickSignalReceiver));
 
-    //     // Rest of your joystick handling code...
-    //     if (joystickSignalReceiver.y > 6 && joystickSignalReceiver.x == 5)
-    //     {
-    //         Get_accelgyro();
+        // Rest of your joystick handling code...
+        if (joystickSignalReceiver.y > 6 && joystickSignalReceiver.x == 5)
+        {
+            Get_accelgyro();
 
-    //         // Moving forward
-    //         gyrox_setpoint = 30; // in degree
-    //         gyroy_setpoint = 0;
-    //         gyroz_setpoint = 0;
-    //     }
-    //     else if (joystickSignalReceiver.y < 6)
-    //     {
-    //         // Moving backward
-    //         gyrox_setpoint = -30;
-    //         gyroy_setpoint = 0;
-    //         gyroz_setpoint = 0;
-    //     }
-    //     else
-    //     {
-    //         // Hover
-    //         gyrox_setpoint = 0;
-    //         gyroy_setpoint = 0;
-    //         gyroz_setpoint = 0;
-    //     }
+            // Moving forward
+            gyrox_setpoint = 30; // in degree
+            gyroy_setpoint = 0;
+            gyroz_setpoint = 0;
+        }
+        else if (joystickSignalReceiver.y < 6)
+        {
+            // Moving backward
+            gyrox_setpoint = -30;
+            gyroy_setpoint = 0;
+            gyroz_setpoint = 0;
+        }
+        else
+        {
+            // Hover
+            gyrox_setpoint = 0;
+            gyroy_setpoint = 0;
+            gyroz_setpoint = 0;
+        }
 
-    //     if (joystickSignalReceiver.x > 6)
-    //     {
-    //         // Rolling right
-    //         gyrox_setpoint = 0;
-    //         gyroy_setpoint = 30;
-    //         gyroz_setpoint = 0;
-    //     }
-    //     else if (joystickSignalReceiver.x < 6)
-    //     {
-    //         // Rolling left
-    //         gyrox_setpoint = 0;
-    //         gyroy_setpoint = -30;
-    //         gyroz_setpoint = 0;
-    //     }
-    //     else
-    //     {
-    //         // Hover
-    //         gyrox_setpoint = 0;
-    //         gyroy_setpoint = 0;
-    //         gyroz_setpoint = 0;
-    //     }
-    //     break;
+        if (joystickSignalReceiver.x > 6)
+        {
+            // Rolling right
+            gyrox_setpoint = 0;
+            gyroy_setpoint = 30;
+            gyroz_setpoint = 0;
+        }
+        else if (joystickSignalReceiver.x < 6)
+        {
+            // Rolling left
+            gyrox_setpoint = 0;
+            gyroy_setpoint = -30;
+            gyroz_setpoint = 0;
+        }
+        else
+        {
+            // Hover
+            gyrox_setpoint = 0;
+            gyroy_setpoint = 0;
+            gyroz_setpoint = 0;
+        }
+        break;
 
     default:
         // Handle unexpected data length
