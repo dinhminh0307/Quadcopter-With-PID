@@ -2,14 +2,15 @@
 #include <MPU.h>
 #include <string.h>
 
-double pid_output_x = 0, pid_output_y = 0, pid_output_z = 0;
-double kpX = 0.5, kiX = 0.5, kdX = 0.5, anglex_setpoint = 0, angley_setpoint = 0, anglez_setpoint = 0;
+double pid_output_x, pid_output_y, pid_output_z;
+double anglex_setpoint, angley_setpoint, anglez_setpoint;
+double kpX = 0.5, kiX = 0.5, kdX = 0.5; 
 // pid for y axis
 double kpY = 1, kiY = 0, kdY = 0;
 // pid for z axis
 double kpZ = 0.5, kiZ = 0.5, kdZ = 0.5;
 
-double gyrox_setpoint = 0, gyroy_setpoint = 0, gyroz_setpoint = 0;
+double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 /*to control the angle setpoint, it means that we need to control the angular velocity to stay at that setpoint
 - Then that angular velocity will be gotten by controlling the speed of motor (cmd_send_motor)
 Formula: angle -> v -> motor command*/
@@ -27,26 +28,26 @@ void PID_Gyro_Init()
     if (abs(anglex) <= 45)
     {
         PIDgyroX.SetMode(AUTOMATIC);
-        PIDgyroX.SetOutputLimits(-anglex, anglex);
+        PIDgyroX.SetOutputLimits(0, anglex);
         PIDgyroX.SetSampleTime(10);
     }
     else
     {
         PIDgyroX.SetMode(AUTOMATIC);
-        PIDgyroX.SetOutputLimits(-45, 45);
+        PIDgyroX.SetOutputLimits(0, 45);
         PIDgyroX.SetSampleTime(10);
     }
 
     if (abs(angley) <= 45)
     {
         PIDgyroY.SetMode(AUTOMATIC);
-        PIDgyroY.SetOutputLimits(-angley, angley);
+        PIDgyroY.SetOutputLimits(0, angley);
         PIDgyroY.SetSampleTime(10);
     }
     else
     {
         PIDgyroY.SetMode(AUTOMATIC);
-        PIDgyroY.SetOutputLimits(-45, 45);
+        PIDgyroY.SetOutputLimits(0, 45);
         PIDgyroY.SetSampleTime(10);
     }
     if (abs(anglez) <= 45)
@@ -67,22 +68,33 @@ void PID_Angle_Init()
 {
 
     PIDangleX.SetMode(AUTOMATIC);
-    PIDangleX.SetOutputLimits(0, 90);
+    PIDangleX.SetOutputLimits(-90, 90); // extend the value range for motor command so that when the drone both pitch and roll for different direction, the command is still counted different to 0
     PIDangleX.SetSampleTime(10);
 
     PIDangleY.SetMode(AUTOMATIC);
-    PIDangleY.SetOutputLimits(0, 90);
+    PIDangleY.SetOutputLimits(-90, 90);
     PIDangleY.SetSampleTime(10);
 
     PIDangleZ.SetMode(AUTOMATIC);
-    PIDangleZ.SetOutputLimits(0, 90);
+    PIDangleZ.SetOutputLimits(-90, 90);
     PIDangleZ.SetSampleTime(10);
 }
 
 void Init_PID()
 {
+    //init input param
+    anglex = 0;
+    angley = 0;
+    anglez = 0;
+    // init setpoint
+    anglex_setpoint = 0, angley_setpoint = 0, anglez_setpoint = 0;
+    gyrox_setpoint = 0, gyroy_setpoint = 0, gyroz_setpoint = 0;
+    // init output
+    pid_output_x = 0, pid_output_y = 0, pid_output_z = 0;
+    // turn on PID
     PID_Angle_Init();
     PID_Gyro_Init();
+
 }
 
 void PID_Gyro_Compute()
@@ -114,10 +126,11 @@ void Compute_PID()
     PID_Angle_Compute();
     PID_Gyro_Compute();
 
-    if (abs(anglex) > 45 || abs(angley) > 45)
-    {
-        pid_output_x = 0; // motor stop when fall
-        pid_output_y = 0;
-    }
+    /*Temporary remove this one*/
+    // if (abs(anglex) > 45 || abs(angley) > 45)
+    // {
+    //     pid_output_x = 0; // motor stop when fall
+    //     pid_output_y = 0;
+    // }
 }
 
