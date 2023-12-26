@@ -1,6 +1,5 @@
 #include <PID.h>
 #include "../PID_v1/PID_v1.h"
-#include <MPU.h>
 #include <string.h>
 
 double pid_output_x = 0, pid_output_y = 0, pid_output_z = 0;
@@ -39,7 +38,7 @@ void PID_Gyro_Init() {
         PIDgyroY.SetMode(AUTOMATIC);
         PIDgyroY.SetOutputLimits(0, angley);
         PIDgyroY.SetSampleTime(10);
-    }
+    }-
     else {
         PIDgyroY.SetMode(AUTOMATIC);
         PIDgyroY.SetOutputLimits(0, 45);
@@ -113,14 +112,14 @@ void Compute_PID()
     }
 }
 
-void PID_Tunning_Command() {
-    switch (tunningCommandReceive.charRcv)
-        case 'p':
-            if(1) {
-                kp += tunningCommandReceive.charRcv;
-            }
-            else {
-                kp -= tunningCommandReceive.charRcv;
-            }
+// void PID_Tunning_Command() {
+//     switch (tunningCommandReceive.charRcv)
+//         case 'p':
+//             if(1) {
+//                 kp += tunningCommandReceive.charRcv;
+//             }
+//             else {
+//                 kp -= tunningCommandReceive.charRcv;
+//             }
 
-}
+// }
