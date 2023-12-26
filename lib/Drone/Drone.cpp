@@ -76,15 +76,15 @@ void rotateBLDC()
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
   int motorSpeed1 = baseSpeed + pid_output_x - pid_output_y + pid_output_z; // Motor 32
-  int motorSpeed2 = baseSpeed + pid_output_x + pid_output_y - pid_output_z; // Motor 26
-  int motorSpeed3 = baseSpeed - pid_output_x - pid_output_y - pid_output_z; // Motor 33
-  int motorSpeed4 = baseSpeed - pid_output_x + pid_output_y + pid_output_z; // Motor 25
+  int motorSpeed2 = baseSpeed + pid_output_x + pid_output_y - pid_output_z; // Motor 25
+  int motorSpeed3 = baseSpeed - pid_output_x + pid_output_y + pid_output_z; // Motor 26
+  int motorSpeed4 = baseSpeed - pid_output_x - pid_output_y - pid_output_z; // Motor 33
 
   // Constrain motor speeds to be within 0 to 180
-  // motorSpeed1 = constrain(motorSpeed1, 0, 180);
-  // motorSpeed2 = constrain(motorSpeed2, 0, 180);
-  // motorSpeed3 = constrain(motorSpeed3, 0, 180);
-  // motorSpeed4 = constrain(motorSpeed4, 0, 180);
+  motorSpeed1 = constrain(motorSpeed1, 10, 170);
+  motorSpeed2 = constrain(motorSpeed2, 10, 170);
+  motorSpeed3 = constrain(motorSpeed3, 10, 170);
+  motorSpeed4 = constrain(motorSpeed4, 10, 170);
 
   Serial.println(motorSpeed1);
   Serial.println(motorSpeed2);

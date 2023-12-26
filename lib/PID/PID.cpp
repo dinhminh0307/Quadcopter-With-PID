@@ -1,5 +1,5 @@
 #include <PID.h>
-#include "../PID_v1/PID_v1.h"
+
 #include <MPU.h>
 #include <string.h>
 
@@ -120,18 +120,4 @@ void Compute_PID()
         pid_output_x = 0; // motor stop when fall
         pid_output_y = 0;
     }
-}
-
-void PID_Tunning_Command()
-{
-    switch (tunningCommandReceive.charRcv)
-    case 'p':
-        if (1)
-        {
-            kp += tunningCommandReceive.charRcv;
-        }
-        else
-        {
-            kp -= tunningCommandReceive.charRcv;
-        }
 }
