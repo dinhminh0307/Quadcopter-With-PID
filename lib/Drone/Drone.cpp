@@ -22,19 +22,19 @@ void Init_ESC()
   ESC4.attach(ESC_PWM4, 1000, 2000); //// 25
 
   // when disconnecting battery
-  // while (calSignalReceiver.signal != MAX_SIGNAL || calSignalReceiver.state != MAX_SIGNAL_STATE)
-  // {
-  //   unsigned long currentMillis = millis();
+  while (calSignalReceiver.signal != MAX_SIGNAL || calSignalReceiver.state != MAX_SIGNAL_STATE)
+  {
+    unsigned long currentMillis = millis();
 
-  //   if (currentMillis - previousMillis >= interval)
-  //   {
-  //     // save the last time the loop was run
-  //     previousMillis = currentMillis;
+    if (currentMillis - previousMillis >= interval)
+    {
+      // save the last time the loop was run
+      previousMillis = currentMillis;
 
-  //     // your repetitive task here
-  //     Serial.println("Waiting for max signal");
-  //   }
-  // }
+      // your repetitive task here
+      Serial.println("Waiting for max signal");
+    }
+  }
 
   // wait for data receive
 
@@ -45,20 +45,20 @@ void Init_ESC()
   Serial.print("set max value: ");
   Serial.println(calSignalReceiver.signal);
 
-  // while (calSignalReceiver.signal != MIN_SIGNAL || calSignalReceiver.state != MIN_SIGNAL_STATE)
-  // {
-  //   unsigned long currentMillis = millis();
+  while (calSignalReceiver.signal != MIN_SIGNAL || calSignalReceiver.state != MIN_SIGNAL_STATE)
+  {
+    unsigned long currentMillis = millis();
 
-  //   if (currentMillis - previousMillis >= interval)
-  //   {
-  //     // save the last time the loop was run
-  //     previousMillis = currentMillis;
+    if (currentMillis - previousMillis >= interval)
+    {
+      // save the last time the loop was run
+      previousMillis = currentMillis;
 
-  //     // your repetitive task here
-  //     Serial.println("Waiting for min signal");
-  //   }
+      // your repetitive task here
+      Serial.println("Waiting for min signal");
+    }
 
-  // } // wait for data received
+  } // wait for data received
   ESC.writeMicroseconds(MIN_SIGNAL);
   ESC2.writeMicroseconds(MIN_SIGNAL);
   ESC3.writeMicroseconds(MIN_SIGNAL);
@@ -71,22 +71,34 @@ void rotateBLDC()
 {
 
   // Base speed from potentiometer
-  int baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
+  // int baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
+  int baseSpeed = recieved_Voltage.voltageVal;
+
+  Serial.print("basespeed: ");
+  Serial.println(baseSpeed);
 
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
-  int motorSpeed1 = baseSpeed + pid_output_x - pid_output_y + pid_output_z; // Motor 32
-  int motorSpeed2 = baseSpeed + pid_output_x + pid_output_y - pid_output_z; // Motor 26
-  int motorSpeed3 = baseSpeed - pid_output_x - pid_output_y - pid_output_z; // Motor 33
-  int motorSpeed4 = baseSpeed - pid_output_x + pid_output_y + pid_output_z; // Motor 25
+  // int motorSpeed1 = baseSpeed + pid_output_x - pid_output_y + pid_output_z; // Motor 32
+  // int motorSpeed2 = baseSpeed + pid_output_x + pid_output_y - pid_output_z; // Motor 26
+  // int motorSpeed3 = baseSpeed - pid_output_x - pid_output_y - pid_output_z; // Motor 33
+  // int motorSpeed4 = baseSpeed - pid_output_x + pid_output_y + pid_output_z; // Motor 25
+
+  int motorSpeed1 = baseSpeed;
+  int motorSpeed2 = baseSpeed;
+  int motorSpeed3 = baseSpeed;
+  int motorSpeed4 = baseSpeed;
 
   // Constrain motor speeds to be within 0 to 180
-  motorSpeed1 = constrain(motorSpeed1, 0, 180);
-  motorSpeed2 = constrain(motorSpeed2, 0, 180);
-  motorSpeed3 = constrain(motorSpeed3, 0, 180);
-  motorSpeed4 = constrain(motorSpeed4, 0, 180);
+  // motorSpeed1 = constrain(motorSpeed1, 0, 180);
+  // motorSpeed2 = constrain(motorSpeed2, 0, 180);
+  // motorSpeed3 = constrain(motorSpeed3, 0, 180);
+  // motorSpeed4 = constrain(motorSpeed4, 0, 180);
 
   Serial.println(motorSpeed1);
+  Serial.println(motorSpeed2);
+  Serial.println(motorSpeed3);
+  Serial.println(motorSpeed4);
 
   int loopCount = 1;
   // send the command to ESC
