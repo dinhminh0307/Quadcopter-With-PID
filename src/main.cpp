@@ -4,13 +4,13 @@
 #include <Drone.h>
 #include <ESPnow.h>
 #include <GPS.h>
-// #include <GoogleSheet.h>
+#include <GoogleSheet.h>
 #include <PID.h>
 
 void setup()
 {
   Init_Serial();
-  // Init_Serial2(); // for the gps
+  Init_Serial2(); // for the gps
   Init_ESPnow();
   Init_ESC();
   Init_MPU();
@@ -22,9 +22,11 @@ void setup()
 void loop()
 {
   Get_MPUangle();
+  
   Compute_PID();
   rotateBLDC();
   // recordGPStoGoogleSheet();
+  recordMPUtoGoogleSheet();
   SerialDataPIDPrint();
   // Serial.println("in loop");
 }

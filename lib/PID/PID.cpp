@@ -6,7 +6,7 @@
 double pid_output_x = 0, pid_output_y = 0, pid_output_z = 0;
 double kpX = 0.5, kiX = 0.5, kdX = 0.5, anglex_setpoint = 0, angley_setpoint = 0, anglez_setpoint = 0;
 // pid for y axis
-double kpY = 0.5, kiY = 0.5, kdY = 0.5;
+double kpY = 1, kiY = 0, kdY = 0;
 // pid for z axis
 double kpZ = 0.5, kiZ = 0.5, kdZ = 0.5;
 
