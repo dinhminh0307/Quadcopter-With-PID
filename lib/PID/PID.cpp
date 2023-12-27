@@ -9,16 +9,16 @@
 
 double pid_output_x, pid_output_y, pid_output_z;
 double anglex_setpoint, angley_setpoint, anglez_setpoint;
-double kpX = 0.5, kiX = 0.5, kdX = 0.5; 
+double kpX = 1, kiX = 0, kdX = 0;
 // pid for y axis
-double kpY = 1, kiY = 0, kdY = 0;
+double kpY = 10, kiY = 0, kdY = 0;
 // pid for z axis
 double kpZ = 0.5, kiZ = 0.5, kdZ = 0.5;
 
 double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 /*to control the angle setpoint, it means that we need to control the angular velocity to stay at that setpoint
 - Then that angular velocity will be gotten by controlling the speed of motor (cmd_send_motor)
-Formula: angle -> v -> motor command*/
+Formula: angle -> v -> mo tor command*/
 PID PIDgyroX(&anglex, &gyrox_setpoint, &anglex_setpoint, kpX, kiX, kdX, DIRECT);
 PID PIDgyroY(&angley, &gyroy_setpoint, &angley_setpoint, kpY, kiY, kdY, DIRECT);
 PID PIDgyroZ(&anglez, &gyroz_setpoint, &anglez_setpoint, kpZ, kiZ, kdZ, DIRECT);
@@ -30,43 +30,17 @@ PID PIDangleZ(&gyroz, &pid_output_z, &gyroz_setpoint, kpZ, kiZ, kdZ, DIRECT);
 void PID_Gyro_Init()
 {
     // if the current angle is below 45 => the desired angular vel is blew current angle, else
-    if (abs(anglex) <= 45)
-    {
-        PIDgyroX.SetMode(AUTOMATIC);
-        PIDgyroX.SetOutputLimits(0, anglex);
-        PIDgyroX.SetSampleTime(10);
-    }
-    else
-    {
-        PIDgyroX.SetMode(AUTOMATIC);
-        PIDgyroX.SetOutputLimits(0, 45);
-        PIDgyroX.SetSampleTime(10);
-    }
+    PIDgyroX.SetMode(AUTOMATIC);
+    PIDgyroX.SetOutputLimits(-90, 90);
+    PIDgyroX.SetSampleTime(10);
 
-    if (abs(angley) <= 45)
-    {
-        PIDgyroY.SetMode(AUTOMATIC);
-        PIDgyroY.SetOutputLimits(0, angley);
-        PIDgyroY.SetSampleTime(10);
-    }
-    else
-    {
-        PIDgyroY.SetMode(AUTOMATIC);
-        PIDgyroY.SetOutputLimits(0, 45);
-        PIDgyroY.SetSampleTime(10);
-    }
-    if (abs(anglez) <= 45)
-    {
-        PIDgyroZ.SetMode(AUTOMATIC);
-        PIDgyroZ.SetOutputLimits(0, 0);
-        PIDgyroZ.SetSampleTime(10);
-    }
-    else
-    {
-        PIDgyroZ.SetMode(AUTOMATIC);
-        PIDgyroZ.SetOutputLimits(0, 0);
-        PIDgyroZ.SetSampleTime(10);
-    }
+    PIDgyroY.SetMode(AUTOMATIC);
+    PIDgyroY.SetOutputLimits(-90, 90);
+    PIDgyroY.SetSampleTime(10);
+
+    PIDgyroZ.SetMode(AUTOMATIC);
+    PIDgyroZ.SetOutputLimits(-90, 90);
+    PIDgyroZ.SetSampleTime(10);
 }
 
 void PID_Angle_Init()
@@ -87,7 +61,7 @@ void PID_Angle_Init()
 
 void Init_PID()
 {
-    //init input param
+    // init input param
     anglex = 0;
     angley = 0;
     anglez = 0;
@@ -99,7 +73,6 @@ void Init_PID()
     // turn on PID
     PID_Angle_Init();
     PID_Gyro_Init();
-
 }
 
 void PID_Gyro_Compute()
@@ -138,4 +111,3 @@ void Compute_PID()
     //     pid_output_y = 0;
     // }
 }
-

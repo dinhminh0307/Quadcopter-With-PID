@@ -107,25 +107,24 @@ void rotateBLDC()
 
     switch (loopCount)
     {
-    // case 1:
-    //   ESC.write(motorSpeed1);
-    //   break;
-    // case 2:
-    //   ESC2.write(motorSpeed2);
-    //   break;
-    // case 3:
-    //   ESC3.write(motorSpeed3);
-    //   break;
-    // case 4:
-    //   ESC4.write(motorSpeed4);
-    //   break;
+      case 1:
+        ESC.write(motorSpeed1);
+        break;
+      case 2:
+        ESC2.write(motorSpeed2);
+        break;
+      case 3:
+        ESC3.write(motorSpeed3);
+        break;
+      case 4:
+        ESC4.write(motorSpeed4);
+        break;
     }
-    delay(500); // Delay after each command
+    delay(50); // Delay after each command
 
     loopCount++;
     if (loopCount > 4)
     {
-      loopCount = 1;
       break;
     }
   }

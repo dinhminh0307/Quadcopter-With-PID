@@ -10,7 +10,7 @@
 void setup()
 {
   Init_Serial();
-  Init_Serial2(); // for the gps
+  // Init_Serial2(); // for the gps
   Init_ESPnow();
   Init_ESC();
   Init_MPU();
@@ -22,12 +22,12 @@ void setup()
 void loop()
 {
   Get_MPUangle();
-  
+  Get_accelgyro();
   Compute_PID();
   rotateBLDC();
   // recordGPStoGoogleSheet();
-  recordMPUtoGoogleSheet();
-  SerialDataPIDPrint();
+  // recordMPUtoGoogleSheet();
+  // SerialDataPIDPrint();
   // Serial.println("in loop");
 }
 
