@@ -1,6 +1,11 @@
 #include <PID.h>
 #include <MPU.h>
 #include <string.h>
+/*Note: if the motor and its axis does not work as how it must work, tunning the kp
+================== PID explain =====================
+---- kp: linear element that decides the speed of balancing Error to setpoint. kp increase -> the speed of balancing is fast
+---- kd: the change of Error in dt, this constant used to adjust the speed from kp. If Error is large, the speed is large and vice versa. de = e - olde
+---- ki: If kd is to large, so the de is 0 before it reach the setpoint, this constant used to increase the error until it reaches setpoint*/
 
 double pid_output_x, pid_output_y, pid_output_z;
 double anglex_setpoint, angley_setpoint, anglez_setpoint;
