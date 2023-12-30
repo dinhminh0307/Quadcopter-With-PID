@@ -23,7 +23,9 @@
 #define YAW_RIGHT 2
 
 extern double motor_cmd;
+extern int motorSpeed1,motorSpeed2,motorSpeed3,motorSpeed4; // these must be global to easily changed when pitch, roll
 
 void rotateBLDC();
 void esp_now_config();
 void Init_ESC();
+void applyPitch();

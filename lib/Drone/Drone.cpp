@@ -10,6 +10,9 @@ Servo ESC2;
 Servo ESC3;
 Servo ESC4;
 
+// motor speed variable declaration
+int motorSpeed1, motorSpeed2, motorSpeed3, motorSpeed4;
+
 double motor_cmd;
 imu_struct_send imuInfoSender;
 unsigned long previousMillis = 0;
@@ -68,6 +71,25 @@ void Init_ESC()
   Serial.println(calSignalReceiver.signal);
 }
 
+void applyPitch() {
+  // Map joystick value to motor speed range
+    int speedDifference = map(joystickSignalReceiver.x, 0, 12, 0, 180);
+
+    // Assuming baseline speed for hover (you need to determine this value)
+    int baselineSpeed = 90; // Example value, adjust as needed
+
+    // Calculate new speeds for pitching forward
+    int frontMotorSpeed = constrain(baselineSpeed + speedDifference, 0, 180);
+    int rearMotorSpeed = constrain(baselineSpeed - speedDifference, 0, 180);
+
+    // Apply new speeds to motors
+    // Front motors (Motors 1 and 2) speed up
+    motorSpeed1 = frontMotorSpeed;
+    motorSpeed2 = frontMotorSpeed;
+    motorSpeed3 = rearMotorSpeed;
+    motorSpeed4 = rearMotorSpeed;
+}
+
 void rotateBLDC()
 {
 
@@ -76,10 +98,10 @@ void rotateBLDC()
 
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
-  int motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32
-  int motorSpeed2 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 25
-  int motorSpeed3 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 26
-  int motorSpeed4 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 33
+  motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32
+  motorSpeed2 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 25
+  motorSpeed3 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 26
+  motorSpeed4 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 33
 
   // Constrain motor speeds to be within 0 to 180
   motorSpeed1 = constrain(motorSpeed1, 10, 170);

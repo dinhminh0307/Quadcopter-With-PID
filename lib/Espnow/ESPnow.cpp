@@ -7,6 +7,7 @@ joystick_struct_receiver joystickSignalReceiver;
 voltage_struct_receive recieved_Voltage;
 button_struct_receive received_Button;
 cal_signal_receive calSignalReceiver;
+tunning_struct_receive tunningReceiver;
 // pid_tunning_command_rcv tunningCommandReceive;
 
 uint8_t broadcastAddress[] = {0xB0, 0xA7, 0x32, 0x17, 0x21, 0xC4}; // mac address of remote
@@ -119,7 +120,9 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
             gyroz_setpoint = 0;
         }
         break;
-
+    case sizeof(tunningReceiver):
+        memcpy(&tunningReceiver, incomingData, sizeof(tunningReceiver));
+        break;
     default:
         // Handle unexpected data length
         Serial.println("Received data of unexpected length.");

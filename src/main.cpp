@@ -25,6 +25,9 @@ void loop()
   Get_accelgyro();
   Compute_PID();
   rotateBLDC();
+  if(joystickSignalReceiver.x != 0) {
+    applyPitch();
+  }
   // recordGPStoGoogleSheet();
   // recordMPUtoGoogleSheet();
   // SerialDataPIDPrint();
