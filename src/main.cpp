@@ -24,9 +24,11 @@ void loop()
   Get_MPUangle();
   Get_accelgyro();
   Compute_PID();
-  rotateBLDC();
   if(joystickSignalReceiver.x != 0) {
     applyPitch();
+  }
+  else {
+    droneHovering();
   }
   // recordGPStoGoogleSheet();
   // recordMPUtoGoogleSheet();

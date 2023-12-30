@@ -25,7 +25,8 @@
 extern double motor_cmd;
 extern int motorSpeed1,motorSpeed2,motorSpeed3,motorSpeed4; // these must be global to easily changed when pitch, roll
 
-void rotateBLDC();
+void droneHovering();
 void esp_now_config();
 void Init_ESC();
 void applyPitch();
+void rotateBLDC(); // this function used in every movement of the drone(hover,pitch, roll, yaw), it contains the logic to turn 4 motor

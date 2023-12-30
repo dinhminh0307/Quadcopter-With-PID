@@ -71,6 +71,37 @@ void Init_ESC()
   Serial.println(calSignalReceiver.signal);
 }
 
+void rotateBLDC() {
+   int loopCount = 1;
+  // send the command to ESC
+  while (true)
+  {
+
+    switch (loopCount)
+    {
+      case 1:
+        ESC.write(motorSpeed1);
+        break;
+      case 2:
+        ESC2.write(motorSpeed2);
+        break;
+      case 3:
+        ESC3.write(motorSpeed3);
+        break;
+      case 4:
+        ESC4.write(motorSpeed4);
+        break;
+    }
+    delay(50); // Delay after each command
+
+    loopCount++;
+    if (loopCount > 4)
+    {
+      break;
+    }
+  }
+}
+
 void applyPitch() {
   // Map joystick value to motor speed range
     int speedDifference = map(joystickSignalReceiver.x, 0, 12, 0, 180);
@@ -88,9 +119,11 @@ void applyPitch() {
     motorSpeed2 = frontMotorSpeed;
     motorSpeed3 = rearMotorSpeed;
     motorSpeed4 = rearMotorSpeed;
+
+    rotateBLDC(); // rotate the motor when speed is computed
 }
 
-void rotateBLDC()
+void droneHovering()
 {
 
   // Base speed from potentiometer
@@ -121,33 +154,5 @@ void rotateBLDC()
   imuInfoSender.motor4Speed = motorSpeed4;
 
   esp_err_t dataSent = esp_now_send(broadcastAddress, (uint8_t *)&imuInfoSender, sizeof(imuInfoSender));
-
-  int loopCount = 1;
-  // send the command to ESC
-  while (true)
-  {
-
-    switch (loopCount)
-    {
-      case 1:
-        ESC.write(motorSpeed1);
-        break;
-      case 2:
-        ESC2.write(motorSpeed2);
-        break;
-      case 3:
-        ESC3.write(motorSpeed3);
-        break;
-      case 4:
-        ESC4.write(motorSpeed4);
-        break;
-    }
-    delay(50); // Delay after each command
-
-    loopCount++;
-    if (loopCount > 4)
-    {
-      break;
-    }
-  }
+  rotateBLDC();
 }
