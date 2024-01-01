@@ -1,5 +1,5 @@
 #include <ESPnow.h>
-#include <PID.h>
+
 
 // variable declare
 
@@ -140,4 +140,18 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
 
     //   }
     // }
+}
+
+void resetTunning() {
+    // Tunning for roll axis
+    kpX = tunningReceiver.kpRoll;
+    kdX = tunningReceiver.kdRoll;
+    kiX = tunningReceiver.kiRoll;
+
+    //tunning for pitch axis
+    kpY = tunningReceiver.kpPitch;
+    kdY = tunningReceiver.kdPitch;
+    kiY = tunningReceiver.kiPitch;
+
+    // tunning for yaw axis
 }

@@ -2,10 +2,9 @@
 #include <Serial.h>
 #include <MPU.h>
 #include <Drone.h>
-#include <ESPnow.h>
 #include <GPS.h>
-#include <GoogleSheet.h>
 #include <PID.h>
+#include <ESPnow.h>
 
 void setup()
 {
@@ -23,7 +22,10 @@ void loop()
 {
   Get_MPUangle();
   Get_accelgyro();
+  setBaseSpeed(); // called befor moving the drone and pid
   Compute_PID();
+  //displayPID(); // justused for printing
+  Serial.println(recieved_Voltage.voltageVal);
   if(joystickSignalReceiver.x != 0) {
     applyPitch();
   }

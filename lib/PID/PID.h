@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "../PID_v1/PID_v1.h"
+
 // ================================================================
 // Variable declaration
 // ================================================================
@@ -28,3 +29,5 @@ void PID_Gyro_Init();     // this one to set the setpoint for the angular motor
 void PID_Angle_Init();    // this one is to sent the output to motor
 void PID_Gyro_Compute();  // compute desired angular velocity to be used as setpoint with PID
 void PID_Angle_Compute(); // compute desired motor speed to get that angular velocity setpoint
+void resetTunning(); // reset kp,ki,kd for 3 axis after tunning
+void displayPID();

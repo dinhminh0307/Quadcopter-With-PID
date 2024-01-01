@@ -1,7 +1,8 @@
 
 #include <ESP32Servo.h>
-#include <esp_now.h>
+
 #include <PID.h>
+#include <MPU.h>
 
 #define ESC_PWM 32
 #define ESC_PWM2 25
@@ -24,9 +25,10 @@
 
 extern double motor_cmd;
 extern int motorSpeed1,motorSpeed2,motorSpeed3,motorSpeed4; // these must be global to easily changed when pitch, roll
+extern int baseSpeed;
 
 void droneHovering();
-void esp_now_config();
 void Init_ESC();
 void applyPitch();
 void rotateBLDC(); // this function used in every movement of the drone(hover,pitch, roll, yaw), it contains the logic to turn 4 motor
+void setBaseSpeed(); // this function must be called first in the program

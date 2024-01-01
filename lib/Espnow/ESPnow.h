@@ -2,6 +2,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include <MPU.h>
+#include <PID.h>
 
 // variable declare
 
@@ -63,3 +64,4 @@ extern uint8_t broadcastAddress[];
 void Init_ESPnow();
 void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len);
 void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
+void resetTunning();

@@ -1,7 +1,5 @@
 #include <Drone.h>
-#include <PID.h>
 #include <ESPnow.h>
-#include <MPU.h>
 // Mac address of initator:  0x48,0xE7,0x29,0x96,0xBB,0x18
 // Mac address of reciever: 48:E7:29:93:D8:24
 // varible definitions
@@ -12,6 +10,7 @@ Servo ESC4;
 
 // motor speed variable declaration
 int motorSpeed1, motorSpeed2, motorSpeed3, motorSpeed4;
+int baseSpeed;
 
 double motor_cmd;
 imu_struct_send imuInfoSender;
@@ -102,16 +101,20 @@ void rotateBLDC() {
   }
 }
 
+void setBaseSpeed() {
+  // Base speed from potentiometer
+  baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
+}
+
 void applyPitch() {
   // Map joystick value to motor speed range
     int speedDifference = map(joystickSignalReceiver.x, 0, 12, 0, 180);
 
     // Assuming baseline speed for hover (you need to determine this value)
-    int baselineSpeed = 90; // Example value, adjust as needed
 
     // Calculate new speeds for pitching forward
-    int frontMotorSpeed = constrain(baselineSpeed + speedDifference, 0, 180);
-    int rearMotorSpeed = constrain(baselineSpeed - speedDifference, 0, 180);
+    int frontMotorSpeed = constrain(baseSpeed + speedDifference, 0, 180);
+    int rearMotorSpeed = constrain(baseSpeed - speedDifference, 0, 180);
 
     // Apply new speeds to motors
     // Front motors (Motors 1 and 2) speed up
@@ -125,10 +128,6 @@ void applyPitch() {
 
 void droneHovering()
 {
-
-  // Base speed from potentiometer
-  int baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
-
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
   motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32

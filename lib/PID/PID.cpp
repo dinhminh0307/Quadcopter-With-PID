@@ -1,6 +1,7 @@
 #include <PID.h>
 #include <MPU.h>
 #include <string.h>
+// #include <ESPnow.h>
 /*Note: if the motor and its axis does not work as how it must work, tunning the kp
 ================== PID explain =====================
 ---- kp: linear element that decides the speed of balancing Error to setpoint. kp increase -> the speed of balancing is fast
@@ -59,6 +60,8 @@ void PID_Angle_Init()
     PIDangleZ.SetSampleTime(10);
 }
 
+
+
 void Init_PID()
 {
     // init input param
@@ -77,6 +80,7 @@ void Init_PID()
 
 void PID_Gyro_Compute()
 {
+    resetTunning();
     PIDgyroX.SetTunings(kpX, kiX, kdX);
     PIDgyroX.Compute(); // measure the correction for the x angle The correction in this case can applied as an increase/decrease in the power level of the motors
 
@@ -89,6 +93,7 @@ void PID_Gyro_Compute()
 
 void PID_Angle_Compute()
 {
+    resetTunning();
     PIDangleX.SetTunings(kpX, kiX, kdX);
     PIDangleX.Compute(); // measure the correction for the x angle The correction in this case can applied as an increase/decrease in the power level of the motors
 
@@ -110,4 +115,33 @@ void Compute_PID()
     //     pid_output_x = 0; // motor stop when fall
     //     pid_output_y = 0;
     // }
+}
+
+void displayPID() {
+    Serial.println("PID Tuning Values");
+    Serial.println("================================");
+    
+    // Headers
+    Serial.println("      | Pitch    | Roll     ");
+    Serial.println("--------------------------------");
+
+    // Row for Kp
+    Serial.print("Kp    | ");
+    Serial.print(kpY);
+    Serial.print("   | ");
+    Serial.println(kpX);
+
+    // Row for Kd
+    Serial.print("Kd    | ");
+    Serial.print(kdY);
+    Serial.print("   | ");
+    Serial.println(kdX);
+
+    // Row for Ki
+    Serial.print("Ki    | ");
+    Serial.print(kiY);
+    Serial.print("   | ");
+    Serial.println(kiX);
+
+    Serial.println("================================");
 }
