@@ -66,8 +66,10 @@ void Init_ESC()
   ESC2.writeMicroseconds(MIN_SIGNAL);
   ESC3.writeMicroseconds(MIN_SIGNAL);
   ESC4.writeMicroseconds(MIN_SIGNAL);
+
   Serial.print("set min value: ");
   Serial.println(calSignalReceiver.signal);
+  delay(2000);
 }
 
 void rotateBLDC() {
