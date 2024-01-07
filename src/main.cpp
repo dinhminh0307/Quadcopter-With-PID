@@ -23,6 +23,7 @@ void loop()
   Get_MPUangle();
   Get_accelgyro();
   setBaseSpeed(); // called befor moving the drone and pid
+  Serial.println(baseSpeed);
   Compute_PID();
   //displayPID(); // justused for printing
   Serial.println(recieved_Voltage.voltageVal);
@@ -36,5 +37,6 @@ void loop()
   // recordMPUtoGoogleSheet();
   // SerialDataPIDPrint();
   // Serial.println("in loop");
+  delay(500);
 }
 

@@ -46,9 +46,9 @@ typedef struct imu_struct_send
 } imu_struct_send;
 
 typedef struct tunning_struct_receive {
-    double kpPitch,kdPitch,kiPitch;
-    double kpRoll,kdRoll,kiRoll;
-    double kpYaw,kdYaw,kiYaw;
+    float kpPitch,kdPitch,kiPitch;
+    float kpRoll,kdRoll,kiRoll;
+    float kpYaw,kdYaw,kiYaw;
 } tunning_struct_receive;
 
 
