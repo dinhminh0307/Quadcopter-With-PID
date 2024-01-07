@@ -66,8 +66,10 @@ void Init_ESC()
   ESC2.writeMicroseconds(MIN_SIGNAL);
   ESC3.writeMicroseconds(MIN_SIGNAL);
   ESC4.writeMicroseconds(MIN_SIGNAL);
+
   Serial.print("set min value: ");
   Serial.println(calSignalReceiver.signal);
+  delay(2000);
 }
 
 void rotateBLDC()
@@ -133,10 +135,10 @@ void droneHovering()
 {
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
-  motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32
-  motorSpeed2 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 25
-  motorSpeed3 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 26
-  motorSpeed4 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 33
+  int motorSpeed1 = baseSpeed + pid_output_x - pid_output_y + pid_output_z; // Motor 32
+  int motorSpeed2 = baseSpeed - pid_output_x - pid_output_y - pid_output_z; // Motor 25
+  int motorSpeed3 = baseSpeed - pid_output_x + pid_output_y + pid_output_z; // Motor 26
+  int motorSpeed4 = baseSpeed + pid_output_x + pid_output_y - pid_output_z; // Motor 33
 
   // Constrain motor speeds to be within 0 to 180
   motorSpeed1 = constrain(motorSpeed1, 0, 100);
