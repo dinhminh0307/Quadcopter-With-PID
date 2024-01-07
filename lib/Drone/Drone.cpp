@@ -138,10 +138,10 @@ void droneHovering()
   motorSpeed4 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 33
 
   // Constrain motor speeds to be within 0 to 180
-  motorSpeed1 = constrain(motorSpeed1, 10, 170);
-  motorSpeed2 = constrain(motorSpeed2, 10, 170);
-  motorSpeed3 = constrain(motorSpeed3, 10, 170);
-  motorSpeed4 = constrain(motorSpeed4, 10, 170);
+  motorSpeed1 = constrain(motorSpeed1, 0, 100);
+  motorSpeed2 = constrain(motorSpeed2, 0, 100);
+  motorSpeed3 = constrain(motorSpeed3, 0, 100);
+  motorSpeed4 = constrain(motorSpeed4, 0, 100);
 
   imuInfoSender.anglex = anglex;
   imuInfoSender.angley = angley;
