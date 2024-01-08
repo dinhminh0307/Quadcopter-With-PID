@@ -10,11 +10,11 @@
 
 double pid_output_x, pid_output_y, pid_output_z;
 double anglex_setpoint, angley_setpoint, anglez_setpoint;
-double kpX = 1, kiX = 0, kdX = 0;
+double kpX , kiX , kdX ;
 // pid for y axis
-double kpY = 10, kiY = 0, kdY = 0;
+double kpY, kiY, kdY;
 // pid for z axis
-double kpZ = 0.5, kiZ = 0.5, kdZ = 0.5;
+double kpZ , kiZ , kdZ;
 
 double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 /*to control the angle setpoint, it means that we need to control the angular velocity to stay at that setpoint
