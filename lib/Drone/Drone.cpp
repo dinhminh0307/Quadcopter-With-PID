@@ -118,8 +118,8 @@ void applyPitch()
   // Assuming baseline speed for hover (you need to determine this value)
 
   // Calculate new speeds for pitching forward
-  int frontMotorSpeed = constrain(baseSpeed + speedDifference, 0, 180);
-  int rearMotorSpeed = constrain(baseSpeed - speedDifference, 0, 180);
+  int frontMotorSpeed = constrain(baseSpeed + speedDifference, 0, 100);
+  int rearMotorSpeed = constrain(baseSpeed - speedDifference, 0, 100);
 
   // Apply new speeds to motors
   // Front motors (Motors 1 and 2) speed up
