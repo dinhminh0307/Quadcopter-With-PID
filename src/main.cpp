@@ -30,7 +30,7 @@ void loop()
   //   applyPitch();
   // }
   // else {
-  //   droneHovering();
+    droneHovering();
   // }
   // recordGPStoGoogleSheet();
   // recordMPUtoGoogleSheet();
