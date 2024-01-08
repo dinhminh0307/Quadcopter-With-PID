@@ -43,6 +43,7 @@ typedef struct imu_struct_send
     int motor2Speed;
     int motor3Speed;
     int motor4Speed;
+    int baseSpeedSend;
 } imu_struct_send;
 
 typedef struct tunning_struct_receive {

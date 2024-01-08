@@ -72,28 +72,29 @@ void Init_ESC()
   delay(2000);
 }
 
-void rotateBLDC() {
-   int loopCount = 1;
+void rotateBLDC()
+{
+  int loopCount = 1;
   // send the command to ESC
   while (true)
   {
 
     switch (loopCount)
     {
-      case 1:
-        ESC.write(motorSpeed1);
-        break;
-      case 2:
-        ESC2.write(motorSpeed2);
-        break;
-      case 3:
-        ESC3.write(motorSpeed3);
-        break;
-      case 4:
-        ESC4.write(motorSpeed4);
-        break;
+    case 1:
+      ESC.write(motorSpeed1);
+      break;
+    case 2:
+      ESC2.write(motorSpeed2);
+      break;
+    case 3:
+      ESC3.write(motorSpeed3);
+      break;
+    case 4:
+      ESC4.write(motorSpeed4);
+      break;
     }
-    delay(50); // Delay after each command
+    delay(10); // Delay after each command
 
     loopCount++;
     if (loopCount > 4)
@@ -103,39 +104,42 @@ void rotateBLDC() {
   }
 }
 
-void setBaseSpeed() {
+void setBaseSpeed()
+{
   // Base speed from potentiometer
   baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
 }
 
-void applyPitch() {
+void applyPitch()
+{
   // Map joystick value to motor speed range
-    int speedDifference = map(joystickSignalReceiver.x, 0, 12, 0, 180);
+  int speedDifference = map(joystickSignalReceiver.x, 0, 12, 0, 180);
 
-    // Assuming baseline speed for hover (you need to determine this value)
+  // Assuming baseline speed for hover (you need to determine this value)
 
-    // Calculate new speeds for pitching forward
-    int frontMotorSpeed = constrain(baseSpeed + speedDifference, 0, 180);
-    int rearMotorSpeed = constrain(baseSpeed - speedDifference, 0, 180);
+  // Calculate new speeds for pitching forward
+  int frontMotorSpeed = constrain(baseSpeed + speedDifference, 0, 180);
+  int rearMotorSpeed = constrain(baseSpeed - speedDifference, 0, 180);
 
-    // Apply new speeds to motors
-    // Front motors (Motors 1 and 2) speed up
-    motorSpeed1 = frontMotorSpeed;
-    motorSpeed2 = frontMotorSpeed;
-    motorSpeed3 = rearMotorSpeed;
-    motorSpeed4 = rearMotorSpeed;
+  // Apply new speeds to motors
+  // Front motors (Motors 1 and 2) speed up
+  motorSpeed1 = frontMotorSpeed;
+  motorSpeed2 = frontMotorSpeed;
+  motorSpeed3 = rearMotorSpeed;
+  motorSpeed4 = rearMotorSpeed;
 
-    rotateBLDC(); // rotate the motor when speed is computed
+  rotateBLDC(); // rotate the motor when speed is computed
 }
 
 void droneHovering()
 {
+  Serial.println("fuck you");
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
-  motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32
-  motorSpeed2 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 25
-  motorSpeed3 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 26
-  motorSpeed4 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 33
+  motorSpeed1 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 32
+  motorSpeed2 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 25
+  motorSpeed3 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 26
+  motorSpeed4 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 33
 
   // Constrain motor speeds to be within 0 to 180
   motorSpeed1 = constrain(motorSpeed1, 0, 100);
