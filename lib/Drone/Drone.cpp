@@ -131,6 +131,7 @@ void applyPitch()
 
 void droneHovering()
 {
+  Serial.println("fuck you");
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
   motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32
