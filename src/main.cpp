@@ -8,7 +8,6 @@
 
 void setup()
 {
-  Serial.begin(115200);
   Init_Serial();
   // Init_Serial2(); // for the gps
   Init_ESPnow();
@@ -32,12 +31,12 @@ void loop()
   Compute_PID();
   //displayPID(); // justused for printing
   
-  if(joystickSignalReceiver.x != 0) {
-    applyPitch();
-  }
-  else {
+  // if(joystickSignalReceiver.x != 0) {
+  //   applyPitch();
+  // }
+  //else {
    droneHovering();
-  }
+  //}
   delay(500);
 }
 
