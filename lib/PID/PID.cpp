@@ -117,13 +117,6 @@ void Compute_PID()
 {
     PID_Angle_Compute();
     PID_Gyro_Compute();
-
-    /*Temporary remove this one*/
-    // if (abs(anglex) > 45 || abs(angley) > 45)
-    // {
-    //     pid_output_x = 0; // motor stop when fall
-    //     pid_output_y = 0;
-    // }
 }
 
 void displayPID() {
