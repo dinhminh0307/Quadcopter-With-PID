@@ -14,7 +14,7 @@ typedef struct voltage_struct_receive
 typedef struct button_struct_receive
 {
     int state;
-    char id[20];
+    int id[25];
 } button_struct_receive;
 
 typedef struct cal_signal_receive
@@ -30,6 +30,11 @@ typedef struct joystick_struct_receiver
     char id[10];
 } joystick_struct_receiver;
 
+typedef struct button_struct_send
+{
+    int state;
+    int id[20];
+} button_struct_send;
 
 typedef struct imu_struct_send
 {
@@ -46,12 +51,21 @@ typedef struct imu_struct_send
     int baseSpeedSend;
 } imu_struct_send;
 
-typedef struct tunning_struct_receive {
-    double kpPitch,kdPitch,kiPitch;
-    double kpRoll,kdRoll,kiRoll;
-    double kpYaw,kdYaw,kiYaw;
+typedef struct tunning_struct_receive
+{
+    double kpPitch, kdPitch, kiPitch;
+    double kpRoll, kdRoll, kiRoll;
+    double kpYaw, kdYaw, kiYaw;
     int tunningState;
 } tunning_struct_receive;
+
+typedef struct tunning_struct_send
+{
+    double kpPitch, kdPitch, kiPitch;
+    double kpRoll, kdRoll, kiRoll;
+    double kpYaw, kdYaw, kiYaw;
+    int tunningState;
+} tunning_struct_send;
 
 extern imu_struct_send imuInfoSender;
 extern joystick_struct_receiver joystickSignalReceiver;
@@ -59,10 +73,13 @@ extern voltage_struct_receive recieved_Voltage;
 extern button_struct_receive received_Button;
 extern cal_signal_receive calSignalReceiver;
 extern tunning_struct_receive tunningReceiver;
+extern button_struct_send buttonSender;
+extern int isStop;
 extern uint8_t broadcastAddress[];
-
 
 void Init_ESPnow();
 void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len);
 void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
+void setNewPIValue();
+void sendPIDValue();
 void resetTunning();

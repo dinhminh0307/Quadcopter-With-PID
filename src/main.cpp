@@ -22,21 +22,20 @@ void loop()
 {
   Get_MPUangle();
   Get_accelgyro();
-    // Serial.print(anglex);
-    // Serial.print(" ");
-    // Serial.print(angley);
-    // Serial.print(" ");
-    // Serial.println(anglez);
+  //   // Serial.print(anglex);
+  //   // Serial.print(" ");
+  //   // Serial.print(angley);
+  //   // Serial.print(" ");
+  //   // Serial.println(anglez);
   setBaseSpeed(); // called befor moving the drone and pid
   Compute_PID();
-  //displayPID(); // justused for printing
-  
+  // displayPID(); // justused for printing
+
   // if(joystickSignalReceiver.x != 0) {
   //   applyPitch();
   // }
-  //else {
-   droneHovering();
+  // else {
+  droneHovering();
   //}
   delay(500);
 }
-

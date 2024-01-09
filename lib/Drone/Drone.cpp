@@ -74,6 +74,20 @@ void Init_ESC()
 
 void rotateBLDC()
 {
+
+  Serial.print("stop State: ");
+  Serial.println(isStop);
+  if (isStop == STOP)
+  {
+    Serial.println("Stopping");
+    motorSpeed1 = 0;
+    motorSpeed2 = 0;
+    motorSpeed3 = 0;
+    motorSpeed4 = 0;
+  }
+  sendBackInfo();
+  esp_err_t dataSent = esp_now_send(broadcastAddress, (uint8_t *)&imuInfoSender, sizeof(imuInfoSender));
+
   int loopCount = 1;
   // send the command to ESC
   while (true)
@@ -110,43 +124,46 @@ void setBaseSpeed()
   baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
 }
 
-void applyPitch()
-{
-  // Map joystick value to motor speed range
-  int speedDifference = map(joystickSignalReceiver.x, 0, 12, 0, 180);
+// void applyPitch()
+// {
+//   // Map joystick value to motor speed range
+//   int speedDifference = map(joystickSignalReceiver.x, 0, 12, 0, 180);
 
-  // Assuming baseline speed for hover (you need to determine this value)
+//   // Assuming baseline speed for hover (you need to determine this value)
 
-  // Calculate new speeds for pitching forward
-  int frontMotorSpeed = constrain(baseSpeed + speedDifference, 0, 100);
-  int rearMotorSpeed = constrain(baseSpeed - speedDifference, 0, 100);
+//   // Calculate new speeds for pitching forward
+//   int frontMotorSpeed = constrain(baseSpeed + speedDifference, 0, 100);
+//   int rearMotorSpeed = constrain(baseSpeed - speedDifference, 0, 100);
 
-  // Apply new speeds to motors
-  // Front motors (Motors 1 and 2) speed up
-  motorSpeed1 = frontMotorSpeed;
-  motorSpeed2 = frontMotorSpeed;
-  motorSpeed3 = rearMotorSpeed;
-  motorSpeed4 = rearMotorSpeed;
+//   // Apply new speeds to motors
+//   // Front motors (Motors 1 and 2) speed up
+//   motorSpeed1 = frontMotorSpeed;
+//   motorSpeed2 = frontMotorSpeed;
+//   motorSpeed3 = rearMotorSpeed;
+//   motorSpeed4 = rearMotorSpeed;
 
-  rotateBLDC(); // rotate the motor when speed is computed
-}
+// }
 
 void droneHovering()
 {
-  Serial.println("fuck you");
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
-  motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32
-  motorSpeed2 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 25
-  motorSpeed3 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 26
-  motorSpeed4 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 33
+  motorSpeed1 = baseSpeed + pid_output_y ; // Motor 32
+  motorSpeed2 = baseSpeed + pid_output_y ; // Motor 25
+  motorSpeed3 = baseSpeed - pid_output_y ; // Motor 26
+  motorSpeed4 = baseSpeed - pid_output_y ; // Motor 33
 
   // Constrain motor speeds to be within 0 to 180
-  motorSpeed1 = constrain(motorSpeed1, 0, 120);
-  motorSpeed2 = constrain(motorSpeed2, 0, 120);
-  motorSpeed3 = constrain(motorSpeed3, 0, 120);
-  motorSpeed4 = constrain(motorSpeed4, 0, 120);
+  motorSpeed1 = constrain(motorSpeed1, 0, 110);
+  motorSpeed2 = constrain(motorSpeed2, 0, 110);
+  motorSpeed3 = constrain(motorSpeed3, 0, 110);
+  motorSpeed4 = constrain(motorSpeed4, 0, 110);
 
+  rotateBLDC();
+}
+
+void sendBackInfo()
+{
   imuInfoSender.anglex = anglex;
   imuInfoSender.angley = angley;
   imuInfoSender.anglez = anglez;
@@ -157,7 +174,4 @@ void droneHovering()
   imuInfoSender.motor2Speed = motorSpeed2;
   imuInfoSender.motor3Speed = motorSpeed3;
   imuInfoSender.motor4Speed = motorSpeed4;
-
-  esp_err_t dataSent = esp_now_send(broadcastAddress, (uint8_t *)&imuInfoSender, sizeof(imuInfoSender));
-  rotateBLDC();
 }

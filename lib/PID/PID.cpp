@@ -10,11 +10,11 @@
 
 double pid_output_x, pid_output_y, pid_output_z;
 double anglex_setpoint, angley_setpoint, anglez_setpoint;
-double kpX , kiX , kdX ;
+double kpX, kiX, kdX;
 // pid for y axis
 double kpY, kiY, kdY;
 // pid for z axis
-double kpZ , kiZ , kdZ;
+double kpZ, kiZ, kdZ;
 
 double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 /*to control the angle setpoint, it means that we need to control the angular velocity to stay at that setpoint
@@ -60,10 +60,8 @@ void PID_Angle_Init()
     PIDangleZ.SetSampleTime(10);
 }
 
-
-
 void Init_PID()
-{   
+{
     // init input param
     anglex = 0;
     angley = 0;
@@ -87,9 +85,7 @@ void Init_PID()
 }
 
 void PID_Gyro_Compute()
-{   
-    
-    resetTunning();
+{
     PIDgyroX.SetTunings(kpX, kiX, kdX);
     PIDgyroX.Compute(); // measure the correction for the x angle The correction in this case can applied as an increase/decrease in the power level of the motors
 
@@ -102,7 +98,6 @@ void PID_Gyro_Compute()
 
 void PID_Angle_Compute()
 {
-    resetTunning();
     PIDangleX.SetTunings(kpX, kiX, kdX);
     PIDangleX.Compute(); // measure the correction for the x angle The correction in this case can applied as an increase/decrease in the power level of the motors
 
@@ -119,10 +114,11 @@ void Compute_PID()
     PID_Gyro_Compute();
 }
 
-void displayPID() {
+void displayPID()
+{
     Serial.println("PID Tuning Values");
     Serial.println("================================");
-    
+
     // Headers
     Serial.println("      | Pitch    | Roll     ");
     Serial.println("--------------------------------");
