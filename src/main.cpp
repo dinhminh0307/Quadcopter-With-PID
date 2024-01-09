@@ -32,9 +32,9 @@ void loop()
   else {
     droneHovering();
   }
-  // recordGPStoGoogleSheet();
-  // recordMPUtoGoogleSheet();
-  // SerialDataPIDPrint();
-  // Serial.println("in loop");
+  // // recordGPStoGoogleSheet();
+  // // recordMPUtoGoogleSheet();
+  // // SerialDataPIDPrint();
+  // // Serial.println("in loop");
 }
 
