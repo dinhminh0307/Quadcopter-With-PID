@@ -149,6 +149,5 @@ void resetTunning() {
         kdY = tunningReceiver.kdPitch;
         kiY = tunningReceiver.kiPitch;
     }
-
     // tunning for yaw axis
 }
