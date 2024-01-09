@@ -25,16 +25,16 @@ void loop()
   setBaseSpeed(); // called befor moving the drone and pid
   Compute_PID();
   //displayPID(); // justused for printing
-  Serial.println(recieved_Voltage.voltageVal);
-  if(joystickSignalReceiver.x != 0) {
-    applyPitch();
-  }
-  else {
+  
+  // if(joystickSignalReceiver.x != 0) {
+  //   applyPitch();
+  // }
+  // else {
     droneHovering();
-  }
-  // // recordGPStoGoogleSheet();
-  // // recordMPUtoGoogleSheet();
-  // // SerialDataPIDPrint();
-  // // Serial.println("in loop");
+  // }
+  // recordGPStoGoogleSheet();
+  // recordMPUtoGoogleSheet();
+  // SerialDataPIDPrint();
+  // Serial.println("in loop");
 }
 

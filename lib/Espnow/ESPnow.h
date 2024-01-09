@@ -43,14 +43,15 @@ typedef struct imu_struct_send
     int motor2Speed;
     int motor3Speed;
     int motor4Speed;
+    int baseSpeedSend;
 } imu_struct_send;
 
 typedef struct tunning_struct_receive {
     double kpPitch,kdPitch,kiPitch;
     double kpRoll,kdRoll,kiRoll;
     double kpYaw,kdYaw,kiYaw;
+    int tunningState;
 } tunning_struct_receive;
-
 
 extern imu_struct_send imuInfoSender;
 extern joystick_struct_receiver joystickSignalReceiver;

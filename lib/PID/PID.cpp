@@ -10,11 +10,11 @@
 
 double pid_output_x, pid_output_y, pid_output_z;
 double anglex_setpoint, angley_setpoint, anglez_setpoint;
-double kpX = 1, kiX = 0, kdX = 0;
+double kpX , kiX , kdX ;
 // pid for y axis
-double kpY = 10, kiY = 0, kdY = 0;
+double kpY, kiY, kdY;
 // pid for z axis
-double kpZ = 0.5, kiZ = 0.5, kdZ = 0.5;
+double kpZ , kiZ , kdZ;
 
 double gyrox_setpoint, gyroy_setpoint, gyroz_setpoint;
 /*to control the angle setpoint, it means that we need to control the angular velocity to stay at that setpoint
@@ -63,7 +63,7 @@ void PID_Angle_Init()
 
 
 void Init_PID()
-{
+{   
     // init input param
     anglex = 0;
     angley = 0;
@@ -71,6 +71,14 @@ void Init_PID()
     // init setpoint
     anglex_setpoint = 0, angley_setpoint = 0, anglez_setpoint = 0;
     gyrox_setpoint = 0, gyroy_setpoint = 0, gyroz_setpoint = 0;
+    kpX = 0.4;
+    kdX = 0.2;
+    kiX = 0;
+
+    // tunning for pitch axis
+    kpY = 0.4;
+    kdY = 0.2;
+    kiY = 0;
     // init output
     pid_output_x = 0, pid_output_y = 0, pid_output_z = 0;
     // turn on PID
@@ -79,7 +87,8 @@ void Init_PID()
 }
 
 void PID_Gyro_Compute()
-{
+{   
+    
     resetTunning();
     PIDgyroX.SetTunings(kpX, kiX, kdX);
     PIDgyroX.Compute(); // measure the correction for the x angle The correction in this case can applied as an increase/decrease in the power level of the motors

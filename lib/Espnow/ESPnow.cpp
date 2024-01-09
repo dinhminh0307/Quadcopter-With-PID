@@ -46,7 +46,7 @@ void Init_ESPnow()
 
 void onDataSent(const uint8_t *mac_addr, esp_now_send_status_t status)
 {
-    // Serial.println("send here");
+    
 }
 
 void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
@@ -59,11 +59,6 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         memcpy(&recieved_Voltage, incomingData, sizeof(recieved_Voltage));
         Serial.println(recieved_Voltage.voltageVal);
         break;
-        // case sizeof(tunningCommandReceive):
-        //     memcpy(&tunningCommandReceive, incomingData, sizeof(tunningCommandReceive));
-        //     Serial.println(tunningCommandReceive.charRcv);
-        //     break;
-
     case sizeof(calSignalReceiver):
 
         memcpy(&calSignalReceiver, incomingData, sizeof(calSignalReceiver));
@@ -128,30 +123,32 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         Serial.println("Received data of unexpected length.");
         break;
     }
-    // if (len == sizeof(received_Button))
-    // { // receive button data
-    //   memcpy(&received_Button, incomingData, sizeof(received_Button));
-    //   if(received_Button.state == YAW_LEFT)
-    //   {
-    //      //handle
-    //   }
-    //   else if (recived_Button.state == YAW_RIGHT)
-    //   {
-
-    //   }
-    // }
 }
 
 void resetTunning() {
     // Tunning for roll axis
-    kpX = tunningReceiver.kpRoll;
-    kdX = tunningReceiver.kdRoll;
-    kiX = tunningReceiver.kiRoll;
+    // kpX = tunningReceiver.kpRoll;
+    // kdX = tunningReceiver.kdRoll;
+    // kiX = tunningReceiver.kiRoll;
+    if(tunningReceiver.tunningState == 0) {
+        kpX = 0.4;
+        kdX = 0.2;
+        kiX = 0;
 
-    //tunning for pitch axis
-    kpY = tunningReceiver.kpPitch;
-    kdY = tunningReceiver.kdPitch;
-    kiY = tunningReceiver.kiPitch;
+        // tunning for pitch axis
+        kpY = 0.4;
+        kdY = 0.2;
+        kiY = 0;
+    }
+    else {
+        kpX = tunningReceiver.kpRoll;
+        kdX = tunningReceiver.kdRoll;
+        kiX = tunningReceiver.kiRoll;
+
+        kpY = tunningReceiver.kpPitch;
+        kdY = tunningReceiver.kdPitch;
+        kiY = tunningReceiver.kiPitch;
+    }
 
     // tunning for yaw axis
 }
