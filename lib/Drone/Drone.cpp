@@ -134,16 +134,16 @@ void droneHovering()
   Serial.println("fuck you");
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
-  motorSpeed1 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 32
-  motorSpeed2 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 25
-  motorSpeed3 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 26
-  motorSpeed4 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 33
+  motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32
+  motorSpeed2 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 25
+  motorSpeed3 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 26
+  motorSpeed4 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 33
 
   // Constrain motor speeds to be within 0 to 180
-  motorSpeed1 = constrain(motorSpeed1, 0, 100);
-  motorSpeed2 = constrain(motorSpeed2, 0, 100);
-  motorSpeed3 = constrain(motorSpeed3, 0, 100);
-  motorSpeed4 = constrain(motorSpeed4, 0, 100);
+  motorSpeed1 = constrain(motorSpeed1, 0, 150);
+  motorSpeed2 = constrain(motorSpeed2, 0, 150);
+  motorSpeed3 = constrain(motorSpeed3, 0, 150);
+  motorSpeed4 = constrain(motorSpeed4, 0, 150);
 
   imuInfoSender.anglex = anglex;
   imuInfoSender.angley = angley;
