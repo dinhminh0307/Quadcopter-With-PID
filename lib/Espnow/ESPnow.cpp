@@ -127,14 +127,28 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
 
 void resetTunning() {
     // Tunning for roll axis
-    kpX = tunningReceiver.kpRoll;
-    kdX = tunningReceiver.kdRoll;
-    kiX = tunningReceiver.kiRoll;
+    // kpX = tunningReceiver.kpRoll;
+    // kdX = tunningReceiver.kdRoll;
+    // kiX = tunningReceiver.kiRoll;
+    if(tunningReceiver.tunningState == 0) {
+        kpX = 0.4;
+        kdX = 0.2;
+        kiX = 0;
 
-    //tunning for pitch axis
-    kpY = tunningReceiver.kpPitch;
-    kdY = tunningReceiver.kdPitch;
-    kiY = tunningReceiver.kiPitch;
+        // tunning for pitch axis
+        kpY = 0.4;
+        kdY = 0.2;
+        kiY = 0;
+    }
+    else {
+        kpX = tunningReceiver.kpRoll;
+        kdX = tunningReceiver.kdRoll;
+        kiX = tunningReceiver.kiRoll;
+
+        kpY = tunningReceiver.kpPitch;
+        kdY = tunningReceiver.kdPitch;
+        kiY = tunningReceiver.kiPitch;
+    }
 
     // tunning for yaw axis
 }

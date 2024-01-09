@@ -47,11 +47,11 @@ typedef struct imu_struct_send
 } imu_struct_send;
 
 typedef struct tunning_struct_receive {
-    float kpPitch,kdPitch,kiPitch;
-    float kpRoll,kdRoll,kiRoll;
-    float kpYaw,kdYaw,kiYaw;
+    double kpPitch,kdPitch,kiPitch;
+    double kpRoll,kdRoll,kiRoll;
+    double kpYaw,kdYaw,kiYaw;
+    int tunningState;
 } tunning_struct_receive;
-
 
 extern imu_struct_send imuInfoSender;
 extern joystick_struct_receiver joystickSignalReceiver;
