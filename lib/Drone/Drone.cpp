@@ -74,12 +74,8 @@ void Init_ESC()
 
 void rotateBLDC()
 {
-
-  Serial.print("stop State: ");
-  Serial.println(isStop);
   if (isStop == STOP)
   {
-    Serial.println("Stopping");
     motorSpeed1 = 0;
     motorSpeed2 = 0;
     motorSpeed3 = 0;

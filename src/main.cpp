@@ -29,10 +29,23 @@ void loop()
 {
   Get_MPUangle();
   Get_accelgyro();
-
-  setBaseSpeed(); // called befor moving the drone and pid
-  Compute_PID();
-  displayPID(); // justused for printing
+  Serial.print(anglex);
+  Serial.print(" ");
+  Serial.print(angley);
+  Serial.print(" ");
+  Serial.print(anglez);
+  Serial.print(" ");
+  Serial.print(motorSpeed1);
+  Serial.print(" ");
+  Serial.print(motorSpeed2);
+  Serial.print(" ");
+  Serial.print(motorSpeed3);
+  Serial.print(" ");
+  Serial.print(motorSpeed4);
+  Serial.println(" ");
+  // setBaseSpeed(); // called befor moving the drone and pid
+  // Compute_PID();
+  //displayPID(); // justused for printing
 
   // if(joystickSignalReceiver.x != 0) {
   //   applyPitch();
