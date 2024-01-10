@@ -8,6 +8,7 @@ button_struct_receive received_Button;
 cal_signal_receive calSignalReceiver;
 tunning_struct_receive tunningReceiver;
 button_struct_send buttonSender;
+imu_calibrate_send imuCalStatus;
 int isStop;
 // pid_tunning_command_rcv tunningCommandReceive;
 
@@ -16,6 +17,7 @@ uint8_t broadcastAddress[] = {0xB0, 0xA7, 0x32, 0x17, 0x21, 0xC4}; // mac addres
 void Init_ESPnow()
 {
     isStop = 300;
+    imuCalStatus.status = 200;
     WiFi.mode(WIFI_STA);
     // Initilize ESP-NOW
     if (esp_now_init() != ESP_OK)
@@ -143,18 +145,21 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
 void resetTunning()
 {
 
-    kpX = 0.4;
-    kdX = 0.2;
-    kiX = 0;
+    kpX = 1.25;
+    kdX = 0.006;
+    kiX = 0.015;
 
     // tunning for pitch axis
-    kpY = 0.4;
-    kdY = 0.2;
-    kiY = 0;
+    kpX = 0.95;
+    kdX = 0.013;
+    kiX = 0.015;
 
     // tunning for yaw axis
-
-    void sendPIDValue();
+    
+    kpZ = 1.00;
+    kdZ = 0.00;
+    kiZ = 0.00;
+    sendPIDValue();
 }
 
 void setNewPIValue()
@@ -167,6 +172,10 @@ void setNewPIValue()
     kpY = tunningReceiver.kpPitch;
     kdY = tunningReceiver.kdPitch;
     kiY = tunningReceiver.kiPitch;
+
+    kpZ = tunningReceiver.kpYaw;
+    kdZ = tunningReceiver.kdYaw;
+    kiZ = tunningReceiver.kiYaw;
     sendPIDValue();
 }
 
@@ -179,6 +188,20 @@ void sendPIDValue()
     Serial.print(kdY);
     Serial.print(" send kiy: ");
     Serial.println(kiY);
+
+    Serial.print("send kpx: ");
+    Serial.print(kpX);
+    Serial.print(" send kdx: ");
+    Serial.print(kdX);
+    Serial.print(" send kix: ");
+    Serial.println(kiX);
+
+    Serial.print("send kpz: ");
+    Serial.print(kpZ);
+    Serial.print(" send kdz: ");
+    Serial.print(kdZ);
+    Serial.print(" send kiz: ");
+    Serial.println(kiZ);
     pid_info_send.kpPitch = kpY;
     pid_info_send.kdPitch = kdY;
     pid_info_send.kiPitch = kiY;
@@ -186,6 +209,10 @@ void sendPIDValue()
     pid_info_send.kpRoll = kpX;
     pid_info_send.kdRoll = kdX;
     pid_info_send.kiRoll = kiX;
+
+    pid_info_send.kpYaw = kpZ;
+    pid_info_send.kdYaw = kdZ;
+    pid_info_send.kiYaw = kiZ;
 
     esp_now_send(broadcastAddress, (uint8_t *)&pid_info_send, sizeof(pid_info_send));
 }

@@ -53,18 +53,18 @@ void Get_MPUangle()
   mpu.dmpGetQuaternion(&q, fifoBuffer);
   mpu.dmpGetGravity(&gravity, &q);
   mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
-  anglex = ypr[2] * 180 / M_PI; // Absolute value of the x-angle // need a filter here
-  angley = ypr[1] * 180 / M_PI; // Absolute value of the y-angle
-  anglez = ypr[0] * 180 / M_PI; // Absolute value of the z-angle
+  anglex = round(ypr[2] * 180 / M_PI); // Absolute value of the x-angle // need a filter here
+  angley = round(ypr[1] * 180 / M_PI); // Absolute value of the y-angle
+  anglez = round(ypr[0] * 180 / M_PI); // Absolute value of the z-angle
 }
 
 // ================================================================
 void Get_accelgyro()
 {
   accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-  gyrox = gx / 131.0;
-  gyroy = gy / 131.0; // obtain degree per second
-  gyroz = gz / 131.0;
+  gyrox = round(gx / 131.0);
+  gyroy = round(gy / 131.0); // obtain degree per second
+  gyroz = round(gz / 131.0);
   accx = ax / 16384.;
   accy = ay / 16384.;
   accz = az / 16384.;

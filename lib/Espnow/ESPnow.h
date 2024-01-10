@@ -51,6 +51,12 @@ typedef struct imu_struct_send
     int baseSpeedSend;
 } imu_struct_send;
 
+typedef struct imu_calibrate_send
+{
+    int status;
+    char id[98];
+} imu_calibrate_send;
+
 typedef struct tunning_struct_receive
 {
     double kpPitch, kdPitch, kiPitch;
@@ -76,6 +82,7 @@ extern tunning_struct_receive tunningReceiver;
 extern button_struct_send buttonSender;
 extern int isStop;
 extern uint8_t broadcastAddress[];
+extern imu_calibrate_send imuCalStatus;
 
 void Init_ESPnow();
 void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len);

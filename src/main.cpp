@@ -14,6 +14,13 @@ void setup()
   Init_ESC();
   Init_MPU();
   Init_PID();
+  imuCalStatus.status = 300;
+  if (imuCalStatus.status == 300)
+  {
+
+    esp_now_send(broadcastAddress, (uint8_t *)&imuCalStatus, sizeof(imuCalStatus));
+    
+  }
 
   // Init_GoogleSheet();
 }
@@ -22,14 +29,10 @@ void loop()
 {
   Get_MPUangle();
   Get_accelgyro();
-  //   // Serial.print(anglex);
-  //   // Serial.print(" ");
-  //   // Serial.print(angley);
-  //   // Serial.print(" ");
-  //   // Serial.println(anglez);
+
   setBaseSpeed(); // called befor moving the drone and pid
   Compute_PID();
-  // displayPID(); // justused for printing
+  displayPID(); // justused for printing
 
   // if(joystickSignalReceiver.x != 0) {
   //   applyPitch();
@@ -37,5 +40,6 @@ void loop()
   // else {
   droneHovering();
   //}
+
   delay(500);
 }

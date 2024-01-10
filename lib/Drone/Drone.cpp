@@ -148,10 +148,10 @@ void droneHovering()
 {
   // Calculate motor speeds based on PID outputs
   // This is a simplified example. You'll need to adjust the formula based on your quadcopter's design
-  motorSpeed1 = baseSpeed + pid_output_y ; // Motor 32
-  motorSpeed2 = baseSpeed + pid_output_y ; // Motor 25
-  motorSpeed3 = baseSpeed - pid_output_y ; // Motor 26
-  motorSpeed4 = baseSpeed - pid_output_y ; // Motor 33
+  motorSpeed1 = baseSpeed + pid_output_x + pid_output_y + pid_output_z; // Motor 32
+  motorSpeed2 = baseSpeed - pid_output_x + pid_output_y - pid_output_z; // Motor 25
+  motorSpeed3 = baseSpeed - pid_output_x - pid_output_y + pid_output_z; // Motor 26
+  motorSpeed4 = baseSpeed + pid_output_x - pid_output_y - pid_output_z; // Motor 33
 
   // Constrain motor speeds to be within 0 to 180
   motorSpeed1 = constrain(motorSpeed1, 0, 110);
@@ -174,4 +174,6 @@ void sendBackInfo()
   imuInfoSender.motor2Speed = motorSpeed2;
   imuInfoSender.motor3Speed = motorSpeed3;
   imuInfoSender.motor4Speed = motorSpeed4;
+
+  esp_now_send(broadcastAddress, (uint8_t *)&imuInfoSender, sizeof(imuInfoSender));
 }
