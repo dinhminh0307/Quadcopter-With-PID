@@ -9,6 +9,7 @@ cal_signal_receive calSignalReceiver;
 tunning_struct_receive tunningReceiver;
 button_struct_send buttonSender;
 imu_calibrate_send imuCalStatus;
+yaw_struct_receive yaw_signal_receiver;
 int isStop;
 // pid_tunning_command_rcv tunningCommandReceive;
 
@@ -18,6 +19,7 @@ void Init_ESPnow()
 {
     isStop = 300;
     imuCalStatus.status = 200;
+    yaw_signal_receiver.yawState = YAW_NEUTRAL_STATE;
     WiFi.mode(WIFI_STA);
     // Initilize ESP-NOW
     if (esp_now_init() != ESP_OK)
@@ -71,51 +73,44 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         memcpy(&joystickSignalReceiver, incomingData, sizeof(joystickSignalReceiver));
 
         // Rest of your joystick handling code...
-        if (joystickSignalReceiver.y > 6 && joystickSignalReceiver.x == 5)
+        if (joystickSignalReceiver.y <= 12 && joystickSignalReceiver.y > 5 && joystickSignalReceiver.x == 5)
         {
-            Get_accelgyro();
 
             // Moving forward
-            gyrox_setpoint = 30; // in degree
-            gyroy_setpoint = 0;
-            gyroz_setpoint = 0;
+            angley_setpoint = -15;
+            anglex_setpoint = 0;
         }
-        else if (joystickSignalReceiver.y < 6)
+        else if (joystickSignalReceiver.y >= 0 && joystickSignalReceiver.y < 5 && joystickSignalReceiver.x == 5)
         {
             // Moving backward
-            gyrox_setpoint = -30;
-            gyroy_setpoint = 0;
-            gyroz_setpoint = 0;
+            angley_setpoint = 15;
+            anglex_setpoint = 0;
         }
-        else
-        {
-            // Hover
-            gyrox_setpoint = 0;
-            gyroy_setpoint = 0;
-            gyroz_setpoint = 0;
-        }
-
-        if (joystickSignalReceiver.x > 6)
+        else if (joystickSignalReceiver.y == 5 && joystickSignalReceiver.x >= 0 && joystickSignalReceiver.x < 5)
         {
             // Rolling right
-            gyrox_setpoint = 0;
-            gyroy_setpoint = 30;
-            gyroz_setpoint = 0;
+            anglex_setpoint = 20;
+            angley_setpoint = 0;
         }
-        else if (joystickSignalReceiver.x < 6)
+        else if (joystickSignalReceiver.y == 5 && joystickSignalReceiver.x >5  && joystickSignalReceiver.x <= 12)
         {
             // Rolling left
-            gyrox_setpoint = 0;
-            gyroy_setpoint = -30;
-            gyroz_setpoint = 0;
+            anglex_setpoint = -20;
+            angley_setpoint = 0;
         }
         else
         {
             // Hover
-            gyrox_setpoint = 0;
-            gyroy_setpoint = 0;
-            gyroz_setpoint = 0;
+            angley_setpoint = 0;
+            anglex_setpoint = 0;
         }
+
+        Serial.println(anglex_setpoint);
+        Serial.println(angley_setpoint);
+        Serial.println(anglez_setpoint);
+        Serial.println(joystickSignalReceiver.y);
+        Serial.println(joystickSignalReceiver.x);
+
         break;
     case sizeof(tunningReceiver):
         memcpy(&tunningReceiver, incomingData, sizeof(tunningReceiver));
@@ -135,6 +130,31 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         Serial.println("set stop");
         isStop = received_Button.state;
         break;
+    case sizeof(yaw_signal_receiver):
+        memcpy(&yaw_signal_receiver, incomingData, sizeof(yaw_signal_receiver));
+        if (yaw_signal_receiver.yawState == YAW_LEFT_STATE)
+        {
+            Serial.print("Yaw state: ");
+            Serial.println(yaw_signal_receiver.yawState);
+            anglez_setpoint -= 20;
+
+            yaw_signal_receiver.yawState = YAW_NEUTRAL_STATE;
+        }
+        else if (yaw_signal_receiver.yawState == YAW_RIGHT_STATE)
+        {
+            Serial.print("Yaw state: ");
+            Serial.println(yaw_signal_receiver.yawState);
+            anglez_setpoint += 20;
+
+            yaw_signal_receiver.yawState = YAW_NEUTRAL_STATE;
+        }
+        else
+        {
+            anglez_setpoint = 0;
+        }
+        Serial.print("angle set point z: ");
+        Serial.println(anglez_setpoint);
+        break;
     default:
         // Handle unexpected data length
         Serial.println("Received data of unexpected length.");
@@ -145,9 +165,9 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
 void resetTunning()
 {
 
-    kpX = 1.25;
-    kdX = 0.006;
-    kiX = 0.015;
+    kpY = 1.25;
+    kdY = 0.006;
+    kiY = 0.015;
 
     // tunning for pitch axis
     kpX = 0.95;
@@ -155,8 +175,7 @@ void resetTunning()
     kiX = 0.015;
 
     // tunning for yaw axis
-    
-    kpZ = 1.00;
+    kpZ = 0.75;
     kdZ = 0.00;
     kiZ = 0.00;
     sendPIDValue();
@@ -182,26 +201,26 @@ void setNewPIValue()
 void sendPIDValue()
 {
     tunning_struct_send pid_info_send;
-    Serial.print("send kpy: ");
-    Serial.print(kpY);
-    Serial.print(" send kdy: ");
-    Serial.print(kdY);
-    Serial.print(" send kiy: ");
-    Serial.println(kiY);
+    // Serial.print("send kpy: ");
+    // Serial.print(kpY);
+    // Serial.print(" send kdy: ");
+    // Serial.print(kdY);
+    // Serial.print(" send kiy: ");
+    // Serial.println(kiY);
 
-    Serial.print("send kpx: ");
-    Serial.print(kpX);
-    Serial.print(" send kdx: ");
-    Serial.print(kdX);
-    Serial.print(" send kix: ");
-    Serial.println(kiX);
+    // Serial.print("send kpx: ");
+    // Serial.print(kpX);
+    // Serial.print(" send kdx: ");
+    // Serial.print(kdX);
+    // Serial.print(" send kix: ");
+    // Serial.println(kiX);
 
-    Serial.print("send kpz: ");
-    Serial.print(kpZ);
-    Serial.print(" send kdz: ");
-    Serial.print(kdZ);
-    Serial.print(" send kiz: ");
-    Serial.println(kiZ);
+    // Serial.print("send kpz: ");
+    // Serial.print(kpZ);
+    // Serial.print(" send kdz: ");
+    // Serial.print(kdZ);
+    // Serial.print(" send kiz: ");
+    // Serial.println(kiZ);
     pid_info_send.kpPitch = kpY;
     pid_info_send.kdPitch = kdY;
     pid_info_send.kiPitch = kiY;

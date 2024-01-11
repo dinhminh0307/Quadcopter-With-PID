@@ -33,3 +33,4 @@ void Init_ESC();
 void sendBackInfo();
 void rotateBLDC();   // this function used in every movement of the drone(hover,pitch, roll, yaw), it contains the logic to turn 4 motor
 void setBaseSpeed(); // this function must be called first in the program
+void droneYawing();

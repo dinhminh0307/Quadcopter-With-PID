@@ -4,6 +4,9 @@
 #include <MPU.h>
 #include <PID.h>
 
+#define YAW_LEFT_STATE 1
+#define YAW_RIGHT_STATE 2
+#define YAW_NEUTRAL_STATE 0
 // variable declare
 
 typedef struct voltage_struct_receive
@@ -73,6 +76,12 @@ typedef struct tunning_struct_send
     int tunningState;
 } tunning_struct_send;
 
+typedef struct yaw_struct_receive
+{
+    int yawState;
+    char id[45];
+} yaw_struct_receive;
+
 extern imu_struct_send imuInfoSender;
 extern joystick_struct_receiver joystickSignalReceiver;
 extern voltage_struct_receive recieved_Voltage;
@@ -83,6 +92,7 @@ extern button_struct_send buttonSender;
 extern int isStop;
 extern uint8_t broadcastAddress[];
 extern imu_calibrate_send imuCalStatus;
+extern yaw_struct_receive yaw_signal_receiver;
 
 void Init_ESPnow();
 void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len);

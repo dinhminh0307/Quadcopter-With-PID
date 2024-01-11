@@ -19,7 +19,6 @@ void setup()
   {
 
     esp_now_send(broadcastAddress, (uint8_t *)&imuCalStatus, sizeof(imuCalStatus));
-    
   }
 
   // Init_GoogleSheet();
@@ -29,23 +28,26 @@ void loop()
 {
   Get_MPUangle();
   Get_accelgyro();
-  Serial.print(anglex);
-  Serial.print(" ");
-  Serial.print(angley);
-  Serial.print(" ");
-  Serial.print(anglez);
-  Serial.print(" ");
-  Serial.print(motorSpeed1);
-  Serial.print(" ");
-  Serial.print(motorSpeed2);
-  Serial.print(" ");
-  Serial.print(motorSpeed3);
-  Serial.print(" ");
-  Serial.print(motorSpeed4);
-  Serial.println(" ");
-  // setBaseSpeed(); // called befor moving the drone and pid
-  // Compute_PID();
-  //displayPID(); // justused for printing
+  setBaseSpeed(); // called befor moving the drone and pid
+  Compute_PID();
+  // Serial.print(anglex);
+  // Serial.print(" ");
+  // Serial.print(angley);
+  // Serial.print(" ");
+  // Serial.print(anglez);
+  // Serial.print(" ");
+  // Serial.print("Yaw state: ");
+  // Serial.println(yaw_signal_receiver.yawState);
+  // Serial.print(motorSpeed1);
+  // Serial.print(" ");
+  // Serial.print(motorSpeed2);
+  // Serial.print(" ");
+  // Serial.print(motorSpeed3);
+  // Serial.print(" ");
+  // Serial.print(motorSpeed4);
+  // Serial.println(" ");
+
+  // displayPID(); // justused for printing
 
   // if(joystickSignalReceiver.x != 0) {
   //   applyPitch();

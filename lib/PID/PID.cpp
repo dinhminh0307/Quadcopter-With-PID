@@ -69,17 +69,17 @@ void Init_PID()
     // init setpoint
     anglex_setpoint = 0, angley_setpoint = 0, anglez_setpoint = 0;
     gyrox_setpoint = 0, gyroy_setpoint = 0, gyroz_setpoint = 0;
-    kpX = 1.25;
-    kdX = 0.006;
-    kiX = 0.015;
+    kpY = 1.25;
+    kdY = 0.006;
+    kiY = 0.015;
 
     // tunning for pitch axis
     kpX = 0.90;
-    kdX = 0.015;
-    kiX = 0.01;
+    kdX = 0.013;
+    kiX = 0.015;
 
     // tunning for yaw axis
-    kpZ = 1.00;
+    kpZ = 0.75;
     kdZ = 0.00;
     kiZ = 0.00;
     // init output

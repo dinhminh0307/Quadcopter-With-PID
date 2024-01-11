@@ -120,25 +120,6 @@ void setBaseSpeed()
   baseSpeed = map(recieved_Voltage.voltageVal, 0, 180, 0, 90);
 }
 
-// void applyPitch()
-// {
-//   // Map joystick value to motor speed range
-//   int speedDifference = map(joystickSignalReceiver.x, 0, 12, 0, 180);
-
-//   // Assuming baseline speed for hover (you need to determine this value)
-
-//   // Calculate new speeds for pitching forward
-//   int frontMotorSpeed = constrain(baseSpeed + speedDifference, 0, 100);
-//   int rearMotorSpeed = constrain(baseSpeed - speedDifference, 0, 100);
-
-//   // Apply new speeds to motors
-//   // Front motors (Motors 1 and 2) speed up
-//   motorSpeed1 = frontMotorSpeed;
-//   motorSpeed2 = frontMotorSpeed;
-//   motorSpeed3 = rearMotorSpeed;
-//   motorSpeed4 = rearMotorSpeed;
-
-// }
 
 void droneHovering()
 {
@@ -173,3 +154,5 @@ void sendBackInfo()
 
   esp_now_send(broadcastAddress, (uint8_t *)&imuInfoSender, sizeof(imuInfoSender));
 }
+
+
