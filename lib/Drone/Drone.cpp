@@ -134,6 +134,7 @@ void droneHovering()
 
 void sendBackInfo()
 {
+  // update data read from IMU
   imuInfoSender.anglex = anglex;
   imuInfoSender.angley = angley;
   imuInfoSender.anglez = anglez;
