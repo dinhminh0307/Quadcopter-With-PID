@@ -9,7 +9,6 @@
 void setup()
 {
   Init_Serial();
-  // Init_Serial2(); // for the gps
   Init_ESPnow();
   Init_ESC();
   Init_MPU();
@@ -17,11 +16,9 @@ void setup()
   imuCalStatus.status = 300;
   if (imuCalStatus.status == 300)
   {
-
     esp_now_send(broadcastAddress, (uint8_t *)&imuCalStatus, sizeof(imuCalStatus));
   }
 
-  // Init_GoogleSheet();
 }
 
 void loop()
@@ -30,31 +27,6 @@ void loop()
   Get_accelgyro();
   setBaseSpeed(); // called befor moving the drone and pid
   Compute_PID();
-  // Serial.print(anglex);
-  // Serial.print(" ");
-  // Serial.print(angley);
-  // Serial.print(" ");
-  // Serial.print(anglez);
-  // Serial.print(" ");
-  // Serial.print("Yaw state: ");
-  // Serial.println(yaw_signal_receiver.yawState);
-  // Serial.print(motorSpeed1);
-  // Serial.print(" ");
-  // Serial.print(motorSpeed2);
-  // Serial.print(" ");
-  // Serial.print(motorSpeed3);
-  // Serial.print(" ");
-  // Serial.print(motorSpeed4);
-  // Serial.println(" ");
-
-  // displayPID(); // justused for printing
-
-  // if(joystickSignalReceiver.x != 0) {
-  //   applyPitch();
-  // }
-  // else {
   droneHovering();
-  //}
-
   delay(500);
 }

@@ -61,55 +61,36 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
     case sizeof(recieved_Voltage):
 
         memcpy(&recieved_Voltage, incomingData, sizeof(recieved_Voltage));
-        Serial.println(recieved_Voltage.voltageVal);
         break;
     case sizeof(calSignalReceiver):
-
         memcpy(&calSignalReceiver, incomingData, sizeof(calSignalReceiver));
         break;
 
     case sizeof(joystickSignalReceiver):
-
         memcpy(&joystickSignalReceiver, incomingData, sizeof(joystickSignalReceiver));
 
-        // Rest of your joystick handling code...
-        if (joystickSignalReceiver.y <= 12 && joystickSignalReceiver.y > 5 && joystickSignalReceiver.x == 5)
-        {
-
+        // Determine the setpoint based on joystick position
+        if (joystickSignalReceiver.y <= JOYSTICK_MAX && joystickSignalReceiver.y > JOYSTICK_MIDDLE && joystickSignalReceiver.x == JOYSTICK_MIDDLE) {
             // Moving forward
-            angley_setpoint = -15;
-            anglex_setpoint = 0;
-        }
-        else if (joystickSignalReceiver.y >= 0 && joystickSignalReceiver.y < 5 && joystickSignalReceiver.x == 5)
-        {
+            angley_setpoint = ANGLE_FORWARD;
+            anglex_setpoint = ANGLE_HOVER;
+        } else if (joystickSignalReceiver.y >= JOYSTICK_MIN && joystickSignalReceiver.y < JOYSTICK_MIDDLE && joystickSignalReceiver.x == JOYSTICK_MIDDLE) {
             // Moving backward
-            angley_setpoint = 15;
-            anglex_setpoint = 0;
-        }
-        else if (joystickSignalReceiver.y == 5 && joystickSignalReceiver.x >= 0 && joystickSignalReceiver.x < 5)
-        {
+            angley_setpoint = ANGLE_BACKWARD;
+            anglex_setpoint = ANGLE_HOVER;
+        } else if (joystickSignalReceiver.y == JOYSTICK_MIDDLE && joystickSignalReceiver.x >= JOYSTICK_MIN && joystickSignalReceiver.x < JOYSTICK_MIDDLE) {
             // Rolling right
-            anglex_setpoint = 20;
-            angley_setpoint = 0;
-        }
-        else if (joystickSignalReceiver.y == 5 && joystickSignalReceiver.x >5  && joystickSignalReceiver.x <= 12)
-        {
+            anglex_setpoint = ANGLE_ROLL_RIGHT;
+            angley_setpoint = ANGLE_HOVER;
+        } else if (joystickSignalReceiver.y == JOYSTICK_MIDDLE && joystickSignalReceiver.x > JOYSTICK_MIDDLE && joystickSignalReceiver.x <= JOYSTICK_MAX) {
             // Rolling left
-            anglex_setpoint = -20;
-            angley_setpoint = 0;
-        }
-        else
-        {
+            anglex_setpoint = ANGLE_ROLL_LEFT;
+            angley_setpoint = ANGLE_HOVER;
+        } else {
             // Hover
-            angley_setpoint = 0;
-            anglex_setpoint = 0;
+            angley_setpoint = ANGLE_HOVER;
+            anglex_setpoint = ANGLE_HOVER;
         }
-
-        Serial.println(anglex_setpoint);
-        Serial.println(angley_setpoint);
-        Serial.println(anglez_setpoint);
-        Serial.println(joystickSignalReceiver.y);
-        Serial.println(joystickSignalReceiver.x);
 
         break;
     case sizeof(tunningReceiver):
@@ -127,23 +108,18 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         break;
     case sizeof(received_Button):
         memcpy(&received_Button, incomingData, sizeof(received_Button));
-        Serial.println("set stop");
         isStop = received_Button.state;
         break;
     case sizeof(yaw_signal_receiver):
         memcpy(&yaw_signal_receiver, incomingData, sizeof(yaw_signal_receiver));
         if (yaw_signal_receiver.yawState == YAW_LEFT_STATE)
         {
-            Serial.print("Yaw state: ");
-            Serial.println(yaw_signal_receiver.yawState);
             anglez_setpoint -= 20;
 
             yaw_signal_receiver.yawState = YAW_NEUTRAL_STATE;
         }
         else if (yaw_signal_receiver.yawState == YAW_RIGHT_STATE)
         {
-            Serial.print("Yaw state: ");
-            Serial.println(yaw_signal_receiver.yawState);
             anglez_setpoint += 20;
 
             yaw_signal_receiver.yawState = YAW_NEUTRAL_STATE;
@@ -152,12 +128,9 @@ void onDataReceived(const uint8_t *mac, const uint8_t *incomingData, int len)
         {
             anglez_setpoint = 0;
         }
-        Serial.print("angle set point z: ");
-        Serial.println(anglez_setpoint);
         break;
     default:
         // Handle unexpected data length
-        Serial.println("Received data of unexpected length.");
         break;
     }
 }
@@ -201,26 +174,6 @@ void setNewPIValue()
 void sendPIDValue()
 {
     tunning_struct_send pid_info_send;
-    // Serial.print("send kpy: ");
-    // Serial.print(kpY);
-    // Serial.print(" send kdy: ");
-    // Serial.print(kdY);
-    // Serial.print(" send kiy: ");
-    // Serial.println(kiY);
-
-    // Serial.print("send kpx: ");
-    // Serial.print(kpX);
-    // Serial.print(" send kdx: ");
-    // Serial.print(kdX);
-    // Serial.print(" send kix: ");
-    // Serial.println(kiX);
-
-    // Serial.print("send kpz: ");
-    // Serial.print(kpZ);
-    // Serial.print(" send kdz: ");
-    // Serial.print(kdZ);
-    // Serial.print(" send kiz: ");
-    // Serial.println(kiZ);
     pid_info_send.kpPitch = kpY;
     pid_info_send.kdPitch = kdY;
     pid_info_send.kiPitch = kiY;

@@ -72,45 +72,38 @@ void Init_ESC()
   delay(2000);
 }
 
-void rotateBLDC()
-{
-  if (isStop == STOP)
-  {
+void rotateBLDC() {  
+  // Stop the motors if the stop condition is met
+  if (isStop == STOP) {
     motorSpeed1 = 0;
     motorSpeed2 = 0;
     motorSpeed3 = 0;
     motorSpeed4 = 0;
   }
+
+  // Send back information (functionality of sendBackInfo is assumed)
   sendBackInfo();
+
+  // Send IMU information using ESP-NOW
   esp_err_t dataSent = esp_now_send(broadcastAddress, (uint8_t *)&imuInfoSender, sizeof(imuInfoSender));
 
-  int loopCount = 1;
-  // send the command to ESC
-  while (true)
-  {
-
-    switch (loopCount)
-    {
-    case 1:
-      ESC.write(motorSpeed1);
-      break;
-    case 2:
-      ESC2.write(motorSpeed2);
-      break;
-    case 3:
-      ESC3.write(motorSpeed3);
-      break;
-    case 4:
-      ESC4.write(motorSpeed4);
-      break;
+  // Send the speed command to each ESC (Electronic Speed Controller)
+  for (int i = 1; i <= 4; ++i) {
+    switch (i) {
+      case 1:
+        ESC.write(motorSpeed1);
+        break;
+      case 2:
+        ESC2.write(motorSpeed2);
+        break;
+      case 3:
+        ESC3.write(motorSpeed3);
+        break;
+      case 4:
+        ESC4.write(motorSpeed4);
+        break;
     }
-    delay(10); // Delay after each command
-
-    loopCount++;
-    if (loopCount > 4)
-    {
-      break;
-    }
+    delay(10); // Delay after each command to allow the ESC to process it
   }
 }
 

@@ -7,6 +7,18 @@
 #define YAW_LEFT_STATE 1
 #define YAW_RIGHT_STATE 2
 #define YAW_NEUTRAL_STATE 0
+
+// Joystick positions
+#define JOYSTICK_MIDDLE 5
+#define JOYSTICK_MAX    12
+#define JOYSTICK_MIN    0
+
+// Setpoint angles
+#define ANGLE_FORWARD   -15
+#define ANGLE_BACKWARD  15
+#define ANGLE_ROLL_RIGHT 20
+#define ANGLE_ROLL_LEFT -20
+#define ANGLE_HOVER     0
 // variable declare
 
 typedef struct voltage_struct_receive
