@@ -4,6 +4,34 @@
 
 This document details the advanced movement control system implemented in the Quadcopter Project, focusing on the use of a cascading PID (Proportional-Integral-Derivative) control system to manage the pitch, roll, and yaw movements. The integration of these technologies ensures precise and responsive maneuvering of the quadcopter.
 
+## Quadcopter Layout and Components
+
+### ESP32 and Control System
+- Central to the quadcopter's control system is the **ESP32** microcontroller.
+- It acts as the brain of the quadcopter, processing inputs and managing communication.
+
+### Electronic Speed Controllers (ESCs)
+- Four **ESCs** are connected to the ESP32.
+- Each ESC is responsible for controlling one **Brushless DC (BLDC) motor**, providing precise speed control.
+
+### BLDC Motors
+- The quadcopter is equipped with four **BLDC motors**.
+- These motors provide the necessary thrust and maneuverability for the quadcopter.
+
+### MPU6050 - Motion Processing Unit
+- Connected to the ESP32, the **MPU6050** sensor module provides gyroscopic and accelerometer data.
+- This data is crucial for stabilizing the quadcopter and for pitch, roll, and yaw adjustments.
+
+### GPS Neo8m Module
+- The **GPS Neo8m module** offers location tracking capabilities.
+- It provides valuable data for navigation and autonomous flight features.
+
+### Power Distribution Board (PDB) and Battery
+- All components are connected to a **Power Distribution Board (PDB)**.
+- The quadcopter is powered by a **LiPo 4s battery**, ensuring adequate power supply for extended flight times.
+
+![Drone layout](img/drone.jpg)
+
 ## Cascading PID Control for Movement
 
 ### Overview of Cascading PID
