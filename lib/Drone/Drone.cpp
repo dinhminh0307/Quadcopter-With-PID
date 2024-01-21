@@ -15,10 +15,10 @@ int baseSpeed;
 double motor_cmd;
 imu_struct_send imuInfoSender;
 unsigned long previousMillis = 0;
-const long interval = 3000;
+
 void Init_ESC()
 {
-
+  const long interval = 3000;
   ESC.attach(ESC_PWM, 1000, 2000);   // 32pin
   ESC2.attach(ESC_PWM2, 1000, 2000); //// 26
   ESC3.attach(ESC_PWM3, 1000, 2000); //// 33
